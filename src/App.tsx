@@ -1,7 +1,13 @@
+import { Header } from "src/components/Header";
+import { Hero } from "src/components/Hero";
+
 function App() {
   return (
     <>
-      <h1 className="text-3xl">hello world</h1>
+      <Header />
+      <main className="flex flex-col">
+        <Hero />
+      </main>
     </>
   );
 }

@@ -7,7 +7,7 @@ export function Header() {
       <AnimatedLogo />
       <nav>
         <ul className="flex w-full h-20">
-          <li className="cursor-pointer text-dark font-secondary h-full flex items-center justify-center px-8">
+          <li className="cursor-pointer text-dark font-secondary h-full flex items-center justify-center px-8 text-secondary bg-secondary/10 border-secondary border-b-4">
             Home
           </li>
           <li className="cursor-pointer text-dark font-secondary h-full flex items-center justify-center px-8">
