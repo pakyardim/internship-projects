@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*::selection {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.text-slide > div {
+  height: 40px;
+  line-height: 40px;
+  overflow: hidden;
+  font-size: 30px;
+  text-align: center;
+}
+
+.text {
+  animation: text-animation ease 5s infinite;
+  animation-delay: 2s;
+}
+
+@keyframes text-animation {
+  0% {
+    top: 0;
+  }
+
+  30% {
+    top: 0;
+  }
+
+  40% {
+    top: -40px;
+  }
+
+  70% {
+    top: -40px;
+  }
+
+  80% {
+    top: -80px;
+  }
+
+  90% {
+    top: -80px;
+  }
+
+  100% {
+    top: 0px;
+  }
+}
+
