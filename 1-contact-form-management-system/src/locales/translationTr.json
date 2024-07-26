@@ -3,6 +3,7 @@
   "en": "English",
   "tr": "Türkçe",
   "Submit": "Gönder",
+  "Submitting": "Gönderiliyor...",
   "reserved": "Tüm hakları saklıdır.",
   "contactHeader": "Temasa geçin",
   "contactParagraph": "Sorularınız veya <1>endişeleriniz</1> ile ilgili olarak bizimle <1>iletişime geçmekten</1> çekinmeyin. Mümkün olan <1>en kısa sürede</1> size geri döneceğiz.",
@@ -16,5 +17,7 @@
   "required": "Bu alan zorunludur!",
   "more3": "3 karakterden fazla yazın",
   "less50": "50 karakterden az yazın",
-  "less500": "500 karakterden az yazın"
+  "less500": "500 karakterden az yazın",
+  "loading": "Yükleniyor...",
+  "successMsg": "İşlem başarıyla tamamlandı!"
 }

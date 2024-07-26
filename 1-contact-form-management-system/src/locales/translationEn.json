@@ -3,6 +3,7 @@
   "en": "English",
   "tr": "Türkçe",
   "Submit": "Submit",
+  "Submitting": "Submitting...",
   "reserved": "All rights reserved.",
   "contactHeader": "Get in touch",
   "contactParagraph": "Feel free to <1>reach out</1> to us with any questions or <1>concerns</1> you may have. <1>We</1> will get back to you as soon as <1>possible</1>.",
@@ -16,5 +17,7 @@
   "required": "This field is required!",
   "more3": "Type more than 3 characters",
   "less50": "Type less than 50 characters",
-  "less500": "Type less than 500 characters"
+  "less500": "Type less than 500 characters",
+  "loading": "Loading...",
+  "successMsg": "Operation successfully completed!"
 }
