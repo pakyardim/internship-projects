@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "@tanstack/react-query": "^5.51.15",
+    "axios": "^1.7.2",
     "i18next": "^23.12.2",
     "i18next-browser-languagedetector": "^8.0.0",
     "react": "^18.3.1",
@@ -21,6 +23,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.51.15",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",

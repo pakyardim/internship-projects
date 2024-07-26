@@ -2,10 +2,14 @@ import { useTranslation, Trans } from "react-i18next";
 import * as yup from "yup";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { HighlightedText } from "src/components/ui/HighlightedText";
 import { PrimaryButton } from "src/components/ui/PrimaryButton";
 import { CustomDropdown } from "src/components/ui/CustomDropdown";
+import { fetchCountries, submitContactForm } from "src/fetchers/contact";
+import { Spinner } from "./ui/Spinner";
+import { useSnackbar } from "src/contexts/SnackbarContext";
 
 const schema = yup.object().shape({
   name: yup.string().required("required").min(3, "more3").max(50, "less50"),
@@ -16,18 +20,43 @@ const schema = yup.object().shape({
 
 type Contact = yup.InferType<typeof schema>;
 
-export function ContactForm({ options }: { options: string[] }) {
+export function ContactForm() {
   const {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
+    reset,
   } = useForm<Contact>({ resolver: yupResolver(schema) });
+
+  const { showSnackbar } = useSnackbar();
+
+  const { data, status } = useQuery({
+    queryKey: ["countries"],
+    queryFn: fetchCountries,
+    retry: 1,
+    gcTime: 1000 * 60,
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: submitContactForm,
+    retry: 1,
+    onSuccess: () => {
+      showSnackbar("successMsg", "success");
+      reset();
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      showSnackbar(error.response.data.error, "error");
+    },
+  });
+
+  const countries = data?.countries;
 
   const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<Contact> = (data: Contact) => {
-    console.log(data);
-    // signupMutation.mutate(data);
+    mutate(data);
   };
 
   return (
@@ -94,9 +123,13 @@ export function ContactForm({ options }: { options: string[] }) {
               {t("country")}
             </label>
             <CustomDropdown
-              options={options}
+              isLoading={status === "pending"}
+              options={countries}
               control={control}
               isError={errors.country ? true : false}
+              setValue={(val: string) => {
+                setValue("country", val);
+              }}
             />
             {errors.country && (
               <p className="absolute left-0 text-sm text-primary">
@@ -208,7 +241,12 @@ export function ContactForm({ options }: { options: string[] }) {
             )}
           </div>
           <div className="flex w-full justify-end">
-            <PrimaryButton>{t("Submit")}</PrimaryButton>
+            <PrimaryButton isDisabled={isPending}>
+              <div className="flex items-center gap-x-2">
+                <p>{isPending ? t("Submitting") : t("Submit")}</p>
+                {isPending && <Spinner size={4} />}
+              </div>
+            </PrimaryButton>
           </div>
         </form>
       </div>

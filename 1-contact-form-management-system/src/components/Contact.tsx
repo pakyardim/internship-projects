@@ -1,6 +1,7 @@
 import { useTranslation, Trans } from "react-i18next";
-import { HighlightedText } from "src/components/ui/HighlightedText";
+
 import heroImg from "src/assets/hero2.png";
+import { HighlightedText } from "src/components/ui/HighlightedText";
 import { ContactForm } from "./ContactForm";
 
 export function Contact() {
@@ -8,7 +9,6 @@ export function Contact() {
 
   const text = t("contactHeader");
   const textArray = text.split(/(?!$)/u);
-  const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
   return (
     <main className="transition-colors duration-300 bg-secondary dark:bg-darkBackground flex font-primary flex-1 gap-8 p-20 items-center border-b">
@@ -42,7 +42,7 @@ export function Contact() {
           <img className="w-full h-full" src={heroImg} alt="ash and pikachu" />
         </div>
       </div>
-      <ContactForm options={options} />
+      <ContactForm />
     </main>
   );
 }

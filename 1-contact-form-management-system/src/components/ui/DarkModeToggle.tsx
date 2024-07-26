@@ -8,8 +8,8 @@ export function DarkModeToggle({ onClick, isChecked }: Props) {
     <label className="cursor-pointer relative inline-block w-14 h-6">
       <input onClick={onClick} type="checkbox" className="sr-only" />
       <div
-        className={`w-full h-full bg-light rounded-full ${
-          isChecked && "bg-dark"
+        className={`w-full h-full rounded-full ${
+          isChecked ? "bg-dark" : "bg-light"
         } transition-colors duration-300`}
       ></div>
       <div
