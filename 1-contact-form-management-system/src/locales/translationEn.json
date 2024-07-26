@@ -12,5 +12,9 @@
   "gender": "Gender",
   "male": "Male",
   "female": "Female",
-  "country": "Country"
+  "country": "Country",
+  "required": "This field is required!",
+  "more3": "Type more than 3 characters",
+  "less50": "Type less than 50 characters",
+  "less500": "Type less than 500 characters"
 }

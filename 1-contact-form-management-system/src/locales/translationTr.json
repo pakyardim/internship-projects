@@ -12,5 +12,9 @@
   "gender": "Cinsiyet",
   "male": "Erkek",
   "female": "Kadın",
-  "country": "Ülke"
+  "country": "Ülke",
+  "required": "Bu alan zorunludur!",
+  "more3": "3 karakterden fazla yazın",
+  "less50": "50 karakterden az yazın",
+  "less500": "500 karakterden az yazın"
 }
