@@ -1,23 +1,25 @@
 import { useState } from "react";
+import { Header } from "src/components/Header";
+import { Footer } from "src/components/Footer";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number>(0);
 
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="container mx-auto flex flex-col min-h-screen">
+      <Header />
+      <main className="flex flex-1">
+        <div className="container mx-auto card">
+          <button onClick={() => setCount((count) => count + 1)}>
+            count is {count}
+          </button>
+          <p>
+            Edit <code>src/App.tsx</code> and save to test HMR
+          </p>
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 }
 

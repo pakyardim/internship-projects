@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --body_background: #fff5ee;
+}
+
+[data-theme="dark"] {
+  --body_background: #323136;
+}
+
+body {
+  background-color: var(--body_background);
+}
+
+.text-slide > div {
+  height: 36px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.text {
+  animation: text-animation ease 5s infinite;
+  animation-delay: 2s;
+}
+
+@keyframes text-animation {
+  0% {
+    top: 0;
+  }
+
+  30% {
+    top: 0;
+  }
+
+  40% {
+    top: -36px;
+  }
+
+  70% {
+    top: -36px;
+  }
+
+  80% {
+    top: -72px;
+  }
+
+  90% {
+    top: -72px;
+  }
+
+  100% {
+    top: 0px;
+  }
+}
