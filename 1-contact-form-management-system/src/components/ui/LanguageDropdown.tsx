@@ -36,7 +36,7 @@ export function LanguageDropdown() {
   };
 
   return (
-    <div className="relative w-40">
+    <div className="relative">
       <div
         ref={dropdownRef}
         tabIndex={0}
@@ -49,10 +49,10 @@ export function LanguageDropdown() {
           alt="Flag"
           className="mr-1 h-5 w-8"
         />
-        <FiChevronDown />
+        <FiChevronDown className="dark:text-light" />
       </div>
       {isOpen && (
-        <ul className="dark:bg-darkBackground dark:text-light absolute right-[25%] z-20 mt-1 bg-light border border-primary/30 shadow-lg max-h-60 ">
+        <ul className="dark:bg-darkBackground dark:text-light w-32 absolute right-0 z-20 mt-1 bg-light border border-primary/30 shadow-lg max-h-60 ">
           {Object.keys(languages).map((option, index) => (
             <li
               key={index}
