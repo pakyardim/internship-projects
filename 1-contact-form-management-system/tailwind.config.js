@@ -11,7 +11,7 @@ export default {
         primary: "#fa615b",
         secondary: "#fff5ee",
         tertiary: "#f5f5f5",
-        dark: "#333333",
+        dark: "#262626",
         light: "#ffffff",
         gray: "#807c7b",
         darkBackground: "#323136",

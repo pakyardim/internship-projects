@@ -3,15 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --body_background: #fff5ee;
+  --body-background: #fff5ee;
+  --primary-color: #fa615b;
+  --shadow: rgba(0, 0, 0, 0.8);
 }
 
 [data-theme="dark"] {
-  --body_background: #323136;
+  --body-background: #323136;
+  --primary-color: #fa615b;
+  --shadow: rgba(255, 255, 255, 0.8);
 }
 
 body {
-  background-color: var(--body_background);
+  transition-property: background-color;
+  transition-duration: 300ms;
+  background-color: var(--body-background);
+}
+
+*::selection {
+  background-color: var(--primary-color);
+  color: #fff;
 }
 
 .text-slide > div {
@@ -53,4 +64,77 @@ body {
   100% {
     top: 0px;
   }
+}
+
+.hero-text {
+  overflow: hidden;
+  transition-property: color;
+  transition-duration: 300ms;
+
+  span {
+    animation: reveal 1s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;
+    animation-fill-mode: backwards;
+  }
+}
+
+.animated-text {
+  transition-property: color;
+  transition-duration: 300ms;
+  animation: fromBottomReveal 1s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;
+  animation-fill-mode: backwards;
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: translate(0, 100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes fromBottomReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  min-width: 70%;
+  padding: 2rem;
+  transition-property: color;
+  transition-duration: 300ms;
+  box-shadow: 3px 3px 0px var(--shadow);
+}
+
+.bg-image {
+  background-image: url("src/assets/bg-pattern.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: repeat;
+  filter: invert(51%) sepia(18%) saturate(4913%) hue-rotate(326deg)
+    brightness(100%) contrast(96%);
+  opacity: 0.2;
+}
+
+.btn {
+  transition-property: color;
+  transition-duration: 300ms;
+  box-shadow: 3px 3px 0px var(--shadow);
+}
+
+.radio-custom {
+  @apply w-4 h-4 border border-gray rounded-full flex items-center justify-center cursor-pointer;
+}
+
+input:checked ~ .radio-custom::before {
+  content: "";
+  @apply w-2 h-2 bg-primary rounded-full;
 }

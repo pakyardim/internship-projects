@@ -1,0 +1,16 @@
+{
+  "Login": "Login",
+  "en": "English",
+  "tr": "Türkçe",
+  "Submit": "Submit",
+  "reserved": "All rights reserved.",
+  "contactHeader": "Get in touch",
+  "contactParagraph": "Feel free to <1>reach out</1> to us with any questions or <1>concerns</1> you may have. <1>We</1> will get back to you as soon as <1>possible</1>.",
+  "formHeader": "Send us a <1>message</1>",
+  "name": "Name",
+  "message": "Message",
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "country": "Country"
+}

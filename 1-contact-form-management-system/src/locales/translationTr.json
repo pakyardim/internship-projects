@@ -1,0 +1,16 @@
+{
+  "Login": "Giriş Yap",
+  "en": "English",
+  "tr": "Türkçe",
+  "Submit": "Gönder",
+  "reserved": "Tüm hakları saklıdır.",
+  "contactHeader": "Temasa geçin",
+  "contactParagraph": "Sorularınız veya <1>endişeleriniz</1> ile ilgili olarak bizimle <1>iletişime geçmekten</1> çekinmeyin. Mümkün olan <1>en kısa sürede</1> size geri döneceğiz.",
+  "formHeader": "Bize bir <1>mesaj</1> gönderin",
+  "name": "İsim",
+  "message": "Mesaj",
+  "gender": "Cinsiyet",
+  "male": "Erkek",
+  "female": "Kadın",
+  "country": "Ülke"
+}
