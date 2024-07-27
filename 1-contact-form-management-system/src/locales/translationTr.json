@@ -20,5 +20,9 @@
   "less500": "500 karakterden az yazın",
   "loading": "Yükleniyor...",
   "successMsg": "İşlem başarıyla tamamlandı!",
-  "Language": "Dil"
+  "Language": "Dil",
+  "pageNotFound": "Sayfa bulunamadı!",
+  "go back": "Geri dön",
+  "notAuthorized": "Dur bakalım!",
+  "notAuthorizedParagraph": "Buradan sonrasına giriş yapmadan geçiş yok."
 }

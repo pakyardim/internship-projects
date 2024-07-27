@@ -20,5 +20,9 @@
   "less500": "Type less than 500 characters",
   "loading": "Loading...",
   "successMsg": "Operation successfully completed!",
-  "Language": "Language"
+  "Language": "Language",
+  "pageNotFound": "Page not found!",
+  "notAuthorized": "Hold on!",
+  "notAuthorizedParagraph": "You can not proceed from here. You have to be logged in.",
+  "go back": "Go back"
 }

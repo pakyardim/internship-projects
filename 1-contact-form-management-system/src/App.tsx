@@ -1,15 +1,7 @@
-import { Header } from "src/components/Header";
-import { Footer } from "src/components/Footer";
-import { Contact } from "src/components/Contact";
+import { AppRoutes } from "src/routes/AppRoutes";
 
 function App() {
-  return (
-    <div className="lg:container mx-auto flex flex-col min-h-screen">
-      <Header />
-      <Contact />
-      <Footer />
-    </div>
-  );
+  return <AppRoutes />;
 }
 
 export default App;

@@ -2,7 +2,7 @@ import { useTranslation, Trans } from "react-i18next";
 
 import heroImg from "src/assets/hero2.png";
 import { HighlightedText } from "src/components/ui/HighlightedText";
-import { ContactForm } from "./ContactForm";
+import { ContactForm } from "src/components/ContactForm";
 
 export function Contact() {
   const { t } = useTranslation();

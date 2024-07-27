@@ -1,14 +1,11 @@
 import { useState } from "react";
 
-import { useTranslation } from "react-i18next";
 import { NavbarItemLocale } from "./NavbarItemLocale";
-import { CiLogin } from "react-icons/ci";
 import { DarkModeToggle } from "../ui/DarkModeToggle";
+import { LoginButton } from "../ui/LoginButton";
 
 export function MobileNavbar() {
   const [navOpen, setNavOpen] = useState(false);
-
-  const { t } = useTranslation();
 
   const closeNav = (): void => {
     setNavOpen(false);
@@ -46,10 +43,7 @@ export function MobileNavbar() {
             <DarkModeToggle />
           </div>
           <div className="flex justify-center mt-8">
-            <button className="w-28 h-12 font-primary flex flex-row justify-center items-center p-3 border-2 text-primary border-primary font-bold hover:text-white hover:bg-primary text-sm duration-300 cursor-pointer group">
-              <CiLogin size={20} />
-              <span className="ml-2">{t("Login")}</span>
-            </button>
+            <LoginButton size="lg" />
           </div>
         </div>
       </div>

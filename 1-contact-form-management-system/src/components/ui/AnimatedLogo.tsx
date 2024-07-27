@@ -1,6 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
 export function AnimatedLogo() {
+  const navigate = useNavigate();
+
   return (
-    <div className="uppercase cursor-pointer flex items-center text-primary font-primary font-bold sm:text-2xl lg:text-3xl">
+    <div
+      onClick={() => {
+        navigate("/");
+      }}
+      className="uppercase cursor-pointer flex items-center text-primary font-primary font-bold sm:text-2xl lg:text-3xl"
+    >
       <span>Contact</span>
       <div className="text-wrap overflow-hidden text-center h-6 sm:h-8 lg:h-9">
         <div className="sm:text-2xl lg:text-3xl text text-darkBackground dark:text-light relative">
