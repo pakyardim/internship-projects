@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { showSnackbar } = useSnackbar();
 
   const injectToken = (token: string) => {
-    axios.defaults.headers.Authorization = "Bearer " + token;
+    axios.defaults.headers.token = token;
   };
 
   const login = useCallback(

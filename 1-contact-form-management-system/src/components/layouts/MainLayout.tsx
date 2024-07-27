@@ -9,7 +9,7 @@ interface Props {
 
 export function MainLayout({ children }: Props) {
   return (
-    <div className="lg:container mx-auto flex flex-col min-h-screen">
+    <div className="xl:container mx-auto flex flex-col min-h-screen">
       <Header />
       {children || <Outlet />}
       <Footer />

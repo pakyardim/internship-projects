@@ -10,7 +10,7 @@ interface Props {
 
 export function ProtectedLayout({ children }: Props) {
   return (
-    <div className="lg:container mx-auto flex flex-col min-h-screen">
+    <div className="xl:container mx-auto flex flex-col min-h-screen">
       <ProtectedHeader />
       {children || <Outlet />}
       <Footer />

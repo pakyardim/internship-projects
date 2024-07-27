@@ -171,6 +171,10 @@ body {
   box-shadow: 3px 3px 0px var(--shadow);
 }
 
+.nav-list-item {
+  @apply cursor-pointer font-primary h-full flex items-center justify-center px-4 xl:px-8;
+}
+
 .shadowedInput {
   box-shadow: 3px 3px 0px var(--shadow);
 }

@@ -25,23 +25,30 @@ export function ProtectedHeader() {
         </div>
         <nav>
           <ul className="flex w-full h-20 text-xs md:text-sm xl:text-base">
-            <li
-              className={`cursor-pointer text-dark font-primary h-full flex items-center justify-center px-4 xl:px-8 text-primary ${
-                isActive("/dashboard") &&
-                "bg-primary/10 border-primary border-b-4"
-              } `}
-            >
-              <Link to="/dashboard">{t("Dashboard")}</Link>
-            </li>
-            <li className="dark:text-light cursor-pointer text-dark font-primary h-full flex items-center justify-center px-4 xl:px-8">
-              {t("Messages")}
-            </li>
+            <Link to="/dashboard">
+              <li
+                className={`nav-list-item dark:text-light ${
+                  isActive("/dashboard") &&
+                  "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
+                } `}
+              >
+                {t("Dashboard")}
+              </li>
+            </Link>
+            <Link to="/messages">
+              <li
+                className={`nav-list-item dark:text-light ${
+                  isActive("/messages") &&
+                  "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
+                } `}
+              >
+                {t("Messages")}
+              </li>
+            </Link>
             {user?.role === "admin" && (
               <>
-                <li className="dark:text-light cursor-pointer text-dark font-primary h-full flex items-center justify-center px-4 xl:px-8">
-                  {t("Users")}
-                </li>
-                <li className="dark:text-light cursor-pointer text-dark font-primary h-full flex items-center justify-center px-4 xl:px-8">
+                <li className="nav-list-item dark:text-light">{t("Users")}</li>
+                <li className="nav-list-item dark:text-light">
                   {t("Reports")}
                 </li>
               </>
