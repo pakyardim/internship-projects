@@ -4,7 +4,8 @@ import { Navigate, useRoutes } from "react-router-dom";
 import { Contact } from "src/pages/Contact";
 import { NotFound } from "src/pages/NotFound";
 import { NotAuthorized } from "src/pages/NotAuthorized";
-import MainLayout from "src/components/layouts/MainLayout";
+import { MainLayout } from "src/components/layouts/MainLayout";
+import { ProtectedLayout } from "src/components/layouts/ProtectedLayout";
 import { Login } from "src/pages/Login";
 
 interface Props {
@@ -56,12 +57,18 @@ export function AppRoutes() {
       ),
     },
     {
-      path: "/dashboard",
-      element: (
-        <ProtectedRoute>
-          <NotFound />
-        </ProtectedRoute>
-      ),
+      path: "/",
+      element: <ProtectedLayout />,
+      children: [
+        {
+          path: "/dashboard",
+          element: (
+            <ProtectedRoute>
+              <NotFound />
+            </ProtectedRoute>
+          ),
+        },
+      ],
     },
   ]);
 }

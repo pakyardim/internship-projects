@@ -1,14 +1,30 @@
 import { useState } from "react";
+import { CiLogout } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
+import { DarkModeToggle } from "src/components/ui/DarkModeToggle";
+import { LoginButton } from "src/components/ui/LoginButton";
+import { useAuthContext } from "src/contexts/authContext";
 import { NavbarItemLocale } from "./NavbarItemLocale";
-import { DarkModeToggle } from "../ui/DarkModeToggle";
-import { LoginButton } from "../ui/LoginButton";
 
 export function MobileNavbar() {
+  const {
+    values: { user },
+    functions: { logout },
+  } = useAuthContext();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [navOpen, setNavOpen] = useState(false);
 
   const closeNav = (): void => {
     setNavOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
   return (
@@ -42,8 +58,31 @@ export function MobileNavbar() {
           <div className="flex justify-center mt-8">
             <DarkModeToggle />
           </div>
-          <div className="flex justify-center mt-8">
-            <LoginButton size="lg" />
+          {user?.base64Photo && (
+            <div className="flex justify-center rounded items-center">
+              <img
+                src={user.base64Photo}
+                className="p-2 border border-light w-12 h-12 rounded-full font-primary text-light"
+              />
+            </div>
+          )}
+          {user?.username && (
+            <div className="flex justify-center items-center">
+              <h2 className="font-primary text-light">{user.username}</h2>
+            </div>
+          )}
+          <div className="flex justify-center">
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className={`font-primary flex flex-row justify-center items-center p-2 border-2 text-primary border-primary font-bold hover:text-white hover:bg-primary text-sm duration-300 cursor-pointer`}
+              >
+                <CiLogout size={20} />
+                <span className="ml-2">{t("Logout")}</span>
+              </button>
+            ) : (
+              <LoginButton size="lg" />
+            )}
           </div>
         </div>
       </div>

@@ -32,5 +32,10 @@
   "password": "password",
   "Don't have an account?": "Don't have an account?",
   "Network Error": "Network Error!",
-  "403": "403"
+  "403": "403",
+  "Dashboard": "Dashboard",
+  "Messages": "Messages",
+  "Users": "Users",
+  "Reports": "Reports",
+  "Logout": "Logout"
 }

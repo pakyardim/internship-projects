@@ -32,5 +32,10 @@
   "password": "şifre",
   "Don't have an account?": "Hesabın yok mu?",
   "Network Error": "Ağ Hatası!",
-  "403": "HOP"
+  "403": "HOP",
+  "Dashboard": "Kontrol Paneli",
+  "Messages": "Mesajlar",
+  "Users": "Kullanıcılar",
+  "Reports": "Raporlar",
+  "Logout": "Çıkış Yap"
 }

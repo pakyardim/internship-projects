@@ -2,7 +2,7 @@ import { AnimatedLogo } from "src/components/ui/AnimatedLogo";
 import { LanguageDropdown } from "src/components/ui/LanguageDropdown";
 import { DarkModeToggle } from "src/components/ui/DarkModeToggle";
 import { MobileNavbar } from "src/components/mobile-nav/MobileNavbar";
-import { LoginButton } from "../ui/LoginButton";
+import { LoginButton } from "src/components/ui/LoginButton";
 
 export function Header() {
   return (
