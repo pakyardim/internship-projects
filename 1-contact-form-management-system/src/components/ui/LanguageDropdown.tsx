@@ -47,7 +47,7 @@ export function LanguageDropdown() {
         <img
           src={languages[selectedLang].flag}
           alt="Flag"
-          className="mr-1 h-5 w-8"
+          className="mr-1 h-4 w-6 sm:h-5 sm:w-8"
         />
         <FiChevronDown className="dark:text-light" />
       </div>

@@ -19,5 +19,6 @@
   "less50": "Type less than 50 characters",
   "less500": "Type less than 500 characters",
   "loading": "Loading...",
-  "successMsg": "Operation successfully completed!"
+  "successMsg": "Operation successfully completed!",
+  "Language": "Language"
 }

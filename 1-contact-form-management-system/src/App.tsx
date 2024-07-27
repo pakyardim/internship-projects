@@ -4,7 +4,7 @@ import { Contact } from "src/components/Contact";
 
 function App() {
   return (
-    <div className="container mx-auto flex flex-col min-h-screen">
+    <div className="lg:container mx-auto flex flex-col min-h-screen">
       <Header />
       <Contact />
       <Footer />

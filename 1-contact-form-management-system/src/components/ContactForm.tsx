@@ -60,10 +60,10 @@ export function ContactForm() {
   };
 
   return (
-    <div className="w-1/2 flex items-center justify-center">
-      <div className="dark:bg-dark dark:text-secondary dark:border-light relative bg-white card z-10 font-bold border border-darkBackground">
+    <div className="w-full sm:w-1/2 flex items-center justify-center">
+      <div className="dark:bg-dark w-full sm:w-11/12 lg:w-auto dark:text-secondary dark:border-light relative bg-white card z-10 font-bold border border-darkBackground">
         <div className="absolute top-0 left-0 w-full h-full bg-image -z-10"></div>
-        <h2 className="text-3xl mb-5">
+        <h2 className="text-2xl lg:text-3xl mb-5">
           <Trans i18nKey="formHeader">
             Send us a <HighlightedText>message</HighlightedText>
           </Trans>

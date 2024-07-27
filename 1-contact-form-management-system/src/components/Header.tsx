@@ -1,52 +1,30 @@
-import { useEffect, useState } from "react";
 import { CiLogin } from "react-icons/ci";
 import { useTranslation } from "react-i18next";
 
 import { AnimatedLogo } from "src/components/ui/AnimatedLogo";
 import { LanguageDropdown } from "src/components/ui/LanguageDropdown";
 import { DarkModeToggle } from "./ui/DarkModeToggle";
+import { MobileNavbar } from "./mobile-nav/MobileNavbar";
 
 export function Header() {
-  const [dark, setDark] = useState<boolean>(false);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode");
-    if (savedDarkMode !== null) {
-      const isDarkMode = JSON.parse(savedDarkMode) as boolean;
-      setDark(isDarkMode);
-      if (isDarkMode) {
-        document.body.classList.add("dark");
-        document.querySelector("body")?.setAttribute("data-theme", "dark");
-      }
-    }
-  }, []);
-
-  const darkModeHandler = () => {
-    setDark((prevDark) => {
-      const newDarkMode = !prevDark;
-      document.body.classList.toggle("dark", newDarkMode);
-      document
-        .querySelector("body")
-        ?.setAttribute("data-theme", newDarkMode ? "dark" : "light");
-      localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
-      return newDarkMode;
-    });
-  };
-
   return (
-    <header className="transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary px-10 border-collapse">
-      <AnimatedLogo />
-      <div className="flex items-center gap-5">
-        <div className="flex gap-5 items-center">
-          <DarkModeToggle onClick={darkModeHandler} isChecked={dark} />
-          <LanguageDropdown />
+    <header className="px-5 sm:px-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary border-collapse">
+      <div className="flex flex-1 justify-between items-center">
+        <AnimatedLogo />
+        <div className="hidden sm:flex items-center gap-5">
+          <div className="flex gap-3 sm:gap-5 items-center">
+            <DarkModeToggle />
+            <LanguageDropdown />
+          </div>
+          <button className="w-20 h-8 sm:w-24 sm:h-10 lg:h-12 lg:w-28 font-primary flex flex-row justify-center items-center p-3 border-2 text-primary border-primary font-bold hover:text-white hover:bg-primary text-sm duration-300 cursor-pointer group">
+            <CiLogin size={20} />
+            <span className="ml-2">{t("Login")}</span>
+          </button>
         </div>
-        <button className="w-28 font-primary flex flex-row justify-center items-center p-3 border-2 text-primary border-primary font-bold hover:text-white hover:bg-primary text-sm duration-300 cursor-pointer group">
-          <CiLogin size={20} />
-          <span className="ml-2">{t("Login")}</span>
-        </button>
       </div>
+      <MobileNavbar />
     </header>
   );
 }

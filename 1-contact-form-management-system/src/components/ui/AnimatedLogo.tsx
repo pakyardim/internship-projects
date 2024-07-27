@@ -1,9 +1,9 @@
 export function AnimatedLogo() {
   return (
-    <div className="uppercase cursor-pointer text-slide flex items-center text-primary font-primary font-bold text-3xl">
+    <div className="uppercase cursor-pointer flex items-center text-primary font-primary font-bold sm:text-2xl lg:text-3xl">
       <span>Contact</span>
-      <div className="text-wrap">
-        <div className="text-3xl text text-darkBackground dark:text-light relative">
+      <div className="text-wrap overflow-hidden text-center h-6 sm:h-8 lg:h-9">
+        <div className="sm:text-2xl lg:text-3xl text text-darkBackground dark:text-light relative">
           <span className="block">form</span>
           <span className="block">info</span>
           <span className="block">page</span>
