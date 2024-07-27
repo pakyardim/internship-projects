@@ -1,5 +1,6 @@
 {
-  "Login": "Giriş Yap",
+  "Log in": "Giriş Yap",
+  "Logging in": "Giriş Yapılıyor...",
   "en": "English",
   "tr": "Türkçe",
   "Submit": "Gönder",
@@ -24,5 +25,12 @@
   "pageNotFound": "Sayfa bulunamadı!",
   "go back": "Geri dön",
   "notAuthorized": "Dur bakalım!",
-  "notAuthorizedParagraph": "Buradan sonrasına giriş yapmadan geçiş yok."
+  "notAuthorizedParagraph": "Buradan sonrasına giriş yapmadan geçiş yok.",
+  "authTitle": "Tekrar Hoş Geldin!",
+  "authDesc": "<1>Seni</h1> görmek her zaman güzel.",
+  "username": "kullanıcı adı",
+  "password": "şifre",
+  "Don't have an account?": "Hesabın yok mu?",
+  "Network Error": "Ağ Hatası!",
+  "403": "HOP"
 }

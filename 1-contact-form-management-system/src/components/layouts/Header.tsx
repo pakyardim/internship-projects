@@ -10,7 +10,7 @@ export function Header() {
       <div className="flex flex-1 justify-between items-center">
         <AnimatedLogo />
         <div className="hidden sm:flex items-center gap-5">
-          <div className="flex gap-3 sm:gap-5 items-center">
+          <div className="flex sm:gap-5 items-center">
             <DarkModeToggle />
             <LanguageDropdown />
           </div>

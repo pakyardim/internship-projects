@@ -9,7 +9,7 @@ import { PrimaryButton } from "src/components/ui/PrimaryButton";
 import { CustomDropdown } from "src/components/ui/CustomDropdown";
 import { fetchCountries, submitContactForm } from "src/fetchers/contact";
 import { Spinner } from "./ui/Spinner";
-import { useSnackbar } from "src/contexts/SnackbarContext";
+import { useSnackbar } from "src/contexts/snackbarContext";
 
 const schema = yup.object().shape({
   name: yup.string().required("required").min(3, "more3").max(50, "less50"),
@@ -241,7 +241,7 @@ export function ContactForm() {
             )}
           </div>
           <div className="flex w-full justify-end">
-            <PrimaryButton isDisabled={isPending}>
+            <PrimaryButton isDisabled={isPending} classname="py-3 lg:py-4">
               <div className="flex items-center gap-x-2">
                 <p>{isPending ? t("Submitting") : t("Submit")}</p>
                 {isPending && <Spinner size={4} />}

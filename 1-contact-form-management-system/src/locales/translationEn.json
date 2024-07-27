@@ -1,5 +1,6 @@
 {
-  "Login": "Login",
+  "Log in": "Log in",
+  "Logging in": "Logging in...",
   "en": "English",
   "tr": "Türkçe",
   "Submit": "Submit",
@@ -23,6 +24,13 @@
   "Language": "Language",
   "pageNotFound": "Page not found!",
   "notAuthorized": "Hold on!",
+  "go back": "Go back",
   "notAuthorizedParagraph": "You can not proceed from here. You have to be logged in.",
-  "go back": "Go back"
+  "authTitle": "Welcome Back!",
+  "authDesc": "It's always good to see <1>you</1>.",
+  "username": "username",
+  "password": "password",
+  "Don't have an account?": "Don't have an account?",
+  "Network Error": "Network Error!",
+  "403": "403"
 }

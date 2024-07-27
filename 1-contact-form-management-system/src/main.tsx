@@ -4,10 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import axios from "axios";
 
+import { SnackbarProvider } from "src/contexts/snackbarContext.tsx";
+import { AuthProvider } from "src/contexts/authContext.tsx";
 import App from "./App.tsx";
 import "./index.scss";
 import "./i18n.ts";
-import { SnackbarProvider } from "src/contexts/SnackbarContext.tsx";
 
 axios.defaults.baseURL = "http://localhost:5165/api";
 
@@ -16,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={new QueryClient()}>
       <BrowserRouter>
         <SnackbarProvider>
-          <App />
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </SnackbarProvider>
       </BrowserRouter>
     </QueryClientProvider>

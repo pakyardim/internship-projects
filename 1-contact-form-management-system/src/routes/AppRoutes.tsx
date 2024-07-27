@@ -5,6 +5,7 @@ import { Contact } from "src/pages/Contact";
 import { NotFound } from "src/pages/NotFound";
 import { NotAuthorized } from "src/pages/NotAuthorized";
 import MainLayout from "src/components/layouts/MainLayout";
+import { Login } from "src/pages/Login";
 
 interface Props {
   children: ReactNode;
@@ -19,7 +20,7 @@ const ProtectedRoute = ({ children }: Props) => {
 };
 
 const GuestRoute = ({ children }: Props) => {
-  return isAuthenticated() ? <Navigate to="/home" /> : children;
+  return isAuthenticated() ? <Navigate to="/dashboard" /> : children;
 };
 
 export function AppRoutes() {
@@ -45,6 +46,22 @@ export function AppRoutes() {
           element: <NotAuthorized />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: (
+        <GuestRoute>
+          <Login />
+        </GuestRoute>
+      ),
+    },
+    {
+      path: "/dashboard",
+      element: (
+        <ProtectedRoute>
+          <NotFound />
+        </ProtectedRoute>
+      ),
     },
   ]);
 }

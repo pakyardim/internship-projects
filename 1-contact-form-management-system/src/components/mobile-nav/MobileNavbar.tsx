@@ -18,9 +18,9 @@ export function MobileNavbar() {
           className="block w-12 p-2.5 cursor-pointer rounded sm:hidden z-40 scale-75 hover:mr-0 hover:ml-1"
           onClick={() => setNavOpen(!navOpen)}
         >
-          <span className="h-0.5 bg-dark block menu__bar mb-1"></span>
-          <span className="h-0.5 bg-dark block menu__bar mb-1 mr-0 ml-1"></span>
-          <span className="h-0.5 bg-dark block menu__bar"></span>
+          <span className="h-0.5 dark:bg-light bg-dark block menu__bar mb-1"></span>
+          <span className="h-0.5 dark:bg-light bg-dark block menu__bar mb-1 mr-0 ml-1"></span>
+          <span className="h-0.5 dark:bg-light bg-dark block menu__bar"></span>
         </div>
       </div>
       <div
