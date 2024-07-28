@@ -67,7 +67,7 @@ export function Login() {
                 defaultValue={""}
                 render={({ field: { onChange, value } }) => (
                   <input
-                    className="h-12 shadowedInput dark:bg-dark w-full z-10 p-2 border-2 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                    className="h-12 shadow-custom dark:bg-dark w-full z-10 p-2 border-2 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                     type="text"
                     value={value}
                     onChange={onChange}
@@ -92,7 +92,7 @@ export function Login() {
                 <PrimaryButton
                   type="submit"
                   isDisabled={loading}
-                  classname="h-12 md:py-0"
+                  classname="h-12 md:py-0 px-6 lg:px-8 bg-primary"
                 >
                   <div className="flex items-center gap-x-2">
                     <p>{loading ? t("Logging in") : t("Log in")}</p>

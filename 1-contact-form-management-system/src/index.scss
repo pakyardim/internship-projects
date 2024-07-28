@@ -191,7 +191,7 @@ body {
   @apply cursor-pointer font-primary h-full flex items-center justify-center px-4 xl:px-8;
 }
 
-.shadowedInput {
+.shadow-custom {
   box-shadow: 3px 3px 0px var(--shadow);
 }
 
@@ -203,12 +203,6 @@ body {
   filter: invert(51%) sepia(18%) saturate(4913%) hue-rotate(326deg)
     brightness(100%) contrast(96%);
   opacity: 0.2;
-}
-
-.btn {
-  transition-property: color;
-  transition-duration: 300ms;
-  box-shadow: 3px 3px 0px var(--shadow);
 }
 
 .radio-custom {

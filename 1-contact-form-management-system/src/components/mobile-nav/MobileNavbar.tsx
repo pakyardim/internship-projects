@@ -24,9 +24,9 @@ export function MobileNavbar() {
     setNavOpen(false);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     queryClient.invalidateQueries();
-    logout();
+    await logout();
     navigate("/");
   };
 
@@ -65,7 +65,7 @@ export function MobileNavbar() {
             <div className="flex justify-center rounded items-center">
               <img
                 src={user.base64Photo}
-                className="p-2 border border-light w-12 h-12 rounded-full font-primary text-light"
+                className="object-cover border border-light w-24 h-24 rounded-full font-primary text-light"
               />
             </div>
           )}

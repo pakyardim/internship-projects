@@ -5,22 +5,28 @@ export function Breadcrumbs() {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
 
-  const newPathNames = pathnames.map((value, index) => {
+  const newPathnames = pathnames.map((value, index) => {
     const url = `/${pathnames.slice(0, index + 1).join("/")}`;
-    return { label: value.charAt(0).toUpperCase() + value.slice(1), url };
+    const splittedVal = value.split("-");
+    const capitalize = (word: string) =>
+      word.charAt(0).toUpperCase() + word.slice(1);
+
+    const label = splittedVal.map(capitalize).join(" ");
+
+    return { label: label, url };
   });
 
   const { t } = useTranslation();
 
   return (
     <nav aria-label="breadcrumb">
-      <ol className="flex items-center space-x-2 text-gray-500">
-        {newPathNames.map((item, index) => (
+      <ol className="flex items-center space-x-1 text-gray-500">
+        {newPathnames.map((item, index) => (
           <li
             key={index}
             className="font-primary text-sm lg:text-base dark:text-light text-gray-700"
           >
-            {index === newPathNames.length - 1 ? (
+            {index === newPathnames.length - 1 ? (
               <span>{t(item.label)}</span>
             ) : (
               <>

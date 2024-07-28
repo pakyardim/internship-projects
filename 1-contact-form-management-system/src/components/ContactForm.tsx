@@ -244,7 +244,7 @@ export function ContactForm() {
             <PrimaryButton
               type="submit"
               isDisabled={isPending}
-              classname="py-3 lg:py-4"
+              classname="py-3 lg:py-4 px-6 lg:px-8 bg-primary"
             >
               <div className="flex items-center gap-x-2">
                 <p>{isPending ? t("Submitting") : t("Submit")}</p>

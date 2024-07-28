@@ -8,7 +8,7 @@ interface Props {
 
 export function PasswordInput({ value, onChange }: Props) {
   const { t } = useTranslation();
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   function togglePasswordVisibility(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -18,7 +18,7 @@ export function PasswordInput({ value, onChange }: Props) {
   return (
     <div className={`h-12 relative w-full max-w-2xl`}>
       <input
-        className="h-12 shadowedInput dark:bg-dark w-full z-10 p-2 border-2 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+        className="h-12 dark:shadow-dark shadow-custom dark:bg-dark w-full z-10 p-2 border-2 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
         type={showPassword ? "text" : "password"}
         id="password"
         value={value}

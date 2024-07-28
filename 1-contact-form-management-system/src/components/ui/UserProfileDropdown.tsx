@@ -30,9 +30,9 @@ export function UserProfileDropdown() {
     }, 150);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     queryClient.invalidateQueries();
-    logout();
+    await logout();
     navigate("/");
   };
 
@@ -48,11 +48,11 @@ export function UserProfileDropdown() {
         <img
           src={user?.base64Photo}
           alt="User Profile"
-          className="w-full h-full rounded-full cursor-pointer"
+          className="object-cover w-full h-full rounded-full cursor-pointer"
         />
       </div>
       {isOpen && (
-        <div className="font-primary text-center rounded shadowedInput absolute right-0 mt-2 w-40 bg-white border border-darkBackground">
+        <div className="font-primary text-center rounded shadow-custom absolute right-0 mt-2 w-40 bg-white border border-darkBackground">
           <div className="px-4 py-2">
             <span className="block text-gray-700">{user?.username}</span>
           </div>

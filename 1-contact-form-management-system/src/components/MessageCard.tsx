@@ -49,7 +49,7 @@ export function MessageCard({ messageItem }: MessageCardProps) {
   };
 
   return (
-    <div className="overflow-y-auto transition-colors duration-300 dark:bg-dark dark:text-light/90 dark:border-light border border-darkBackground flex-1 bg-light shadowedInput p-10">
+    <div className="overflow-y-auto transition-colors duration-300 dark:bg-dark dark:text-light/90 dark:border-light sm:border border-darkBackground flex-1 bg-light shadow-custom p-10">
       {!messageItem ? (
         <div className="w-full flex justify-center">
           <Spinner size={8} />

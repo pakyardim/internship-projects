@@ -37,16 +37,16 @@ export function Users() {
   const users: UserType[] = data?.users;
 
   const onAddUser = () => {
-    navigate("/add-user");
+    navigate("/users/add-user");
   };
 
   const onEditUser = () => {
     if (!selectedUserId) return;
-    navigate(`/edit-user/${selectedUserId}`);
+    navigate(`/users/edit-user/${selectedUserId}`);
   };
 
   return (
-    <main className="flex flex-col p-1 sm:p-4 xl:gap-4 xl:p-5 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary flex-1 border-b">
+    <main className="flex flex-col p-5 sm:gap-4 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary flex-1 border-b">
       <div className="flex justify-between py-1">
         <Breadcrumbs />
         <div>
@@ -60,7 +60,7 @@ export function Users() {
             <PrimaryButton
               onClick={onEditUser}
               isDisabled={!selectedUserId}
-              classname="h-6 px-1 lg:px-1 md:py-0 bg-blue-300 dark:bg-cyan-800 text-xs flex items-center space-x-2 disabled:opacity-50"
+              classname="h-6 px-1 lg:px-1 md:py-0 dark:bg-cyan-800 text-xs flex items-center space-x-2 disabled:bg-blue-300/50 bg-blue-300"
             >
               <MdOutlineEdit />
               {t("edit")}
@@ -97,7 +97,7 @@ export function Users() {
                 <tr
                   key={index}
                   onClick={() => {
-                    setSelectedUserId(item.id);
+                    setSelectedUserId(item.id!);
                   }}
                   className={`${
                     selectedUserId === item.id
@@ -109,14 +109,14 @@ export function Users() {
                   
                   `}
                 >
-                  <td className="flex w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
-                    <span className="block font-bold sm:hidden cell-header">
+                  <td className="flex items-center w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
+                    <span className="lowercase block font-bold sm:hidden cell-header">
                       {t("photo")}:
                     </span>
                     <img
                       src={item.base64Photo}
                       alt="user image"
-                      className="w-8 h-8 rounded-full"
+                      className="object-cover w-8 h-8 rounded-full"
                     />
                   </td>
                   <td className="flex w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
@@ -132,7 +132,7 @@ export function Users() {
                     {item.password}
                   </td>
                   <td className="flex w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
-                    <span className="block font-bold sm:hidden cell-header">
+                    <span className="lowercase block font-bold sm:hidden cell-header">
                       {t("role")}:
                     </span>
                     <span>{item.role}</span>

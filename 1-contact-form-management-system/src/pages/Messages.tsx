@@ -62,7 +62,9 @@ export function Messages() {
 
   return (
     <main className="flex flex-col p-1 sm:p-4 xl:gap-4 xl:p-5 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary flex-1 border-b">
-      <Breadcrumbs />
+      <div className="py-1">
+        <Breadcrumbs />
+      </div>
 
       {status === "pending" ? (
         <div className="w-full flex justify-center">

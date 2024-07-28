@@ -21,6 +21,7 @@
   "country": "Country",
   "required": "This field is required!",
   "more3": "Type more than 3 characters",
+  "less10": "Type less than 10 characters",
   "less50": "Type less than 50 characters",
   "less500": "Type less than 500 characters",
   "loading": "Loading...",
@@ -47,5 +48,16 @@
   "submissionDate": "Submission Date",
   "photo": "Photo",
   "role": "Role",
-  "messages": "messages"
+  "messages": "messages",
+  "add": "Add",
+  "edit": "Edit",
+  "addUser": "Add a new user",
+  "newUser": "New user",
+  "Add User": "Add User",
+  "Edit User": "Edit User",
+  "editUser": "Edit the user",
+  "editUserParagraph": "Edit the <1>user</1> on the team. <1>Change</1> the form and be sure to include all the necessary <1>information</1>.",
+  "userParagraph": "Bring a new <1>user</1> to the team. <1>Fill out</1> the form and be sure to include all the necessary <1>information</1>.",
+  "editUserParagraph2": "Keep in mind that you can not change the <1>username</1>.",
+  "userParagraph2": "Keep in mind that you can not change the <1>username</1> once it is set."
 }

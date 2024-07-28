@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {
   useState,
   createContext,
@@ -15,7 +16,7 @@ interface AuthContextType {
       username: string;
       password: string;
     }) => Promise<boolean | void>;
-    logout: () => void;
+    logout: () => Promise<boolean | void>;
     autoLogin: () => Promise<string | null>;
   };
   values: {
@@ -70,7 +71,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             "error"
           );
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         showSnackbar(
           err.response?.data?.error || err.message || "Something went wrong!",
@@ -83,9 +83,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const logout = useCallback(async () => {
-    setUser({} as UserType);
-    axios.defaults.headers.token = "";
-    localStorage.removeItem("token");
+    setLoading(true);
+    try {
+      await axios.post("/user/logout");
+      setUser({} as UserType);
+      axios.defaults.headers.token = "";
+      localStorage.removeItem("token");
+      setLoading(false);
+      return true;
+    } catch (err: any) {
+      showSnackbar(
+        err.response?.data?.error || err.message || "Something went wrong!",
+        "error"
+      );
+      setLoading(false);
+    }
   }, []);
 
   const autoLogin = useCallback(async () => {

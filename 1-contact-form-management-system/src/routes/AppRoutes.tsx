@@ -10,6 +10,7 @@ import { Login } from "src/pages/Login";
 import { Messages } from "src/pages/Messages";
 import { Users } from "src/pages/Users";
 import { MessageDetail } from "src/pages/MessageDetail";
+import { AddEditUser } from "src/pages/AddEditUser";
 
 interface Props {
   children: ReactNode;
@@ -85,15 +86,19 @@ export function AppRoutes() {
           path: "users/add-user",
           element: (
             <ProtectedRoute>
-              <Users />
+              <AddEditUser isEdit={false} />
             </ProtectedRoute>
           ),
+        },
+        {
+          path: "users/edit-user",
+          element: <Navigate to="/users" />,
         },
         {
           path: "users/edit-user/:id",
           element: (
             <ProtectedRoute>
-              <Users />
+              <AddEditUser isEdit={true} />
             </ProtectedRoute>
           ),
         },
@@ -107,24 +112,5 @@ export function AppRoutes() {
         </GuestRoute>
       ),
     },
-    // {
-    //   path: "/",
-    //   element: <ProtectedLayout />,
-    //   children: [
-
-    //     {
-    //       path: "*",
-    //       element: (
-    //         <ProtectedRoute>
-    //           <NotFound />
-    //         </ProtectedRoute>
-    //       ),
-    //     },
-    //     {
-    //       path: "not-authorized",
-    //       element: <NotAuthorized />,
-    //     },
-    //   ],
-    // },
   ]);
 }

@@ -73,12 +73,12 @@ export function MessageDetail() {
   const message: MessageType = data?.message;
 
   return (
-    <main className="max-h-[calc(100vh-40px)] max-h-screen flex flex-col flex-1 p-0 sm:p-2 xl:gap-4 xl:p-5 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary border-b">
+    <main className="max-h-[calc(100vh-40px)] flex flex-col flex-1 p-0 sm:p-2 xl:gap-4 xl:p-5 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary border-b">
       <Breadcrumbs />
 
-      <section className="max-h-[calc(100vh-80px)] flex flex-1">
-        <div className="hidden sm:flex shadowedInput flex-col w-1/4">
-          <aside className="overflow-y-auto dark:bg-dark transition-colors duration-300 w-full dark:text-secondary dark:border-light bg-light font-bold border border-darkBackground">
+      <section className="max-h-[calc(100vh-120px)] flex flex-1">
+        <div className="dark:border-light transition-colors duration-300 bg-light dark:bg-dark hidden sm:flex border border-darkBackground shadow-custom flex-col w-1/4">
+          <aside className="overflow-y-auto transition-colors duration-300 w-full dark:text-secondary font-bold">
             <div className="transition-colors duration-300 border-b p-2 text-center bg-light dark:bg-dark text-dark dark:text-light">
               <p className="text-xs md:text-sm lg:text-base">
                 {messages?.length} {t("messages")}
