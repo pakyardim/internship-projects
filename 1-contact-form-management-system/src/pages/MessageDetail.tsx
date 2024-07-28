@@ -7,21 +7,20 @@ import { Breadcrumbs } from "src/components/ui/Breadcrumbs";
 import { Spinner } from "src/components/ui/Spinner";
 
 import { useSnackbar } from "src/contexts/snackbarContext";
-import {
-  fetchMessage,
-  fetchMessages,
-  readMessage,
-} from "src/fetchers/messages";
-import { MessageType } from "src/types/message";
+import { fetchMessage, fetchMessages, readMessage } from "src/fetchers";
+import { MessageType } from "src/types";
 import { formatRelativeDate } from "src/utils/dateTimeFunctions";
 
 export function MessageDetail() {
   const { id } = useParams();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const locale = i18n.language;
+
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
+
+  const { showSnackbar } = useSnackbar();
 
   const { mutate } = useMutation({
     mutationFn: readMessage,
@@ -60,8 +59,6 @@ export function MessageDetail() {
     gcTime: 1000 * 60,
   });
 
-  const { showSnackbar } = useSnackbar();
-
   if (data === 401 || messagesData === 401) {
     return <Navigate to="/not-authorized" />;
   } else if (data === 404) {
@@ -84,7 +81,7 @@ export function MessageDetail() {
           <aside className="overflow-y-auto dark:bg-dark transition-colors duration-300 w-full dark:text-secondary dark:border-light bg-light font-bold border border-darkBackground">
             <div className="transition-colors duration-300 border-b p-2 text-center bg-light dark:bg-dark text-dark dark:text-light">
               <p className="text-xs md:text-sm lg:text-base">
-                {messages?.length} messages
+                {messages?.length} {t("messages")}
               </p>
             </div>
             {!messages && messagesStatus === "pending" && (

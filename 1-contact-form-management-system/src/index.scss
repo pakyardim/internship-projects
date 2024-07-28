@@ -141,6 +141,22 @@ body {
   animation-fill-mode: backwards;
 }
 
+.snackbar {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.snackbar.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.snackbar.hide {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
 @keyframes reveal {
   0% {
     opacity: 0;
@@ -217,11 +233,6 @@ input:checked ~ .radio-custom::before {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.snackbar {
-  animation: fade-in 0.2s cubic-bezier(0.77, 0, 0.175, 1) 0.1s;
-  animation-fill-mode: backwards;
 }
 
 @keyframes fade-in {

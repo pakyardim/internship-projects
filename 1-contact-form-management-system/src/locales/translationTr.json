@@ -34,7 +34,7 @@
   "authTitle": "Tekrar Hoş Geldin!",
   "authDesc": "<1>Seni</h1> görmek her zaman güzel.",
   "username": "kullanıcı adı",
-  "password": "şifre",
+  "password": "parola",
   "Don't have an account?": "Hesabın yok mu?",
   "Network Error": "Ağ Hatası!",
   "403": "HOP",
@@ -44,5 +44,8 @@
   "Reports": "Raporlar",
   "Something went wrong": "Bir şeyler ters gitti!",
   "Logout": "Çıkış Yap",
-  "submissionDate": "Gönderim Tarihi"
+  "submissionDate": "Gönderim Tarihi",
+  "photo": "Fotoğraf",
+  "role": "Rol",
+  "messages": "mesaj"
 }

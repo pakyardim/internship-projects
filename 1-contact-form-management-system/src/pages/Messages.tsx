@@ -6,8 +6,8 @@ import { Breadcrumbs } from "src/components/ui/Breadcrumbs";
 import { Spinner } from "src/components/ui/Spinner";
 import { useSnackbar } from "src/contexts/snackbarContext";
 
-import { fetchMessages, readMessage } from "src/fetchers/messages";
-import { MessageType } from "src/types/message";
+import { fetchMessages, readMessage } from "src/fetchers";
+import { MessageType } from "src/types";
 import { transformDate } from "src/utils/dateTimeFunctions";
 
 export function Messages() {
@@ -61,7 +61,7 @@ export function Messages() {
   const messages: MessageType[] = data?.messages;
 
   return (
-    <main className="flex flex-col p-1 sm:p-4 xl:gap-4 xl:p-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary flex-1 border-b">
+    <main className="flex flex-col p-1 sm:p-4 xl:gap-4 xl:p-5 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary flex-1 border-b">
       <Breadcrumbs />
 
       {status === "pending" ? (

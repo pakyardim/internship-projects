@@ -33,3 +33,14 @@ export const readMessage = async (id: number) => {
     return err.response.status;
   }
 };
+
+export const deleteMessage = async (id: number) => {
+  try {
+    axios.defaults.headers.token = localStorage.getItem("token");
+
+    const response = await axios.post(`/message/delete/${id}`);
+    return response.data.data;
+  } catch (err: any) {
+    return err.response.status;
+  }
+};

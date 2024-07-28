@@ -29,13 +29,12 @@ export function SnackbarProvider({ children }: { children: React.ReactNode }) {
   return (
     <SnackbarContext.Provider value={{ showSnackbar }}>
       {children}
-      {snackbar.visible && (
-        <Snackbar
-          message={snackbar.message}
-          type={snackbar.type}
-          onClose={handleClose}
-        />
-      )}
+      <Snackbar
+        message={snackbar.message}
+        isVisible={snackbar.visible}
+        type={snackbar.type}
+        onClose={handleClose}
+      />
     </SnackbarContext.Provider>
   );
 }

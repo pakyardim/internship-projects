@@ -44,5 +44,8 @@
   "Reports": "Reports",
   "Something went wrong": "Something went wrong!",
   "Logout": "Logout",
-  "submissionDate": "Submission Date"
+  "submissionDate": "Submission Date",
+  "photo": "Photo",
+  "role": "Role",
+  "messages": "messages"
 }

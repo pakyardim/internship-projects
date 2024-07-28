@@ -7,7 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { HighlightedText } from "src/components/ui/HighlightedText";
 import { PrimaryButton } from "src/components/ui/PrimaryButton";
 import { CustomDropdown } from "src/components/ui/CustomDropdown";
-import { fetchCountries, submitContactForm } from "src/fetchers/contact";
+import { fetchCountries, submitContactForm } from "src/fetchers";
 import { Spinner } from "./ui/Spinner";
 import { useSnackbar } from "src/contexts/snackbarContext";
 

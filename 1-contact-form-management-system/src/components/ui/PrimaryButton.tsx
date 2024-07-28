@@ -11,9 +11,9 @@ export function PrimaryButton({ isDisabled, children, classname }: Props) {
     <button
       type="submit"
       disabled={isDisabled}
-      className={`border border-black dark:border-secondary hover:scale-105 btn bg-primary text-white px-6 lg:px-8 font-bold ${classname} ${
+      className={`border border-black dark:border-secondary hover:scale-105 btn bg-primary text-white px-6 lg:px-8 font-bold ${
         isDisabled && "bg-primary/50"
-      }`}
+      } ${classname} `}
     >
       {children}
     </button>
