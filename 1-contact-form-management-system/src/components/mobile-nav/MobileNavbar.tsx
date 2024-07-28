@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CiLogout } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { DarkModeToggle } from "src/components/ui/DarkModeToggle";
 import { LoginButton } from "src/components/ui/LoginButton";
@@ -17,12 +18,14 @@ export function MobileNavbar() {
   const { t } = useTranslation();
 
   const [navOpen, setNavOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const closeNav = (): void => {
     setNavOpen(false);
   };
 
   const handleLogout = () => {
+    queryClient.invalidateQueries();
     logout();
     navigate("/");
   };
