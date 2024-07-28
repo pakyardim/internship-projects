@@ -31,7 +31,7 @@ export function PasswordInput({ value, onChange }: Props) {
         className="absolute top-0 text-sm right-0 w-10 h-full text-gray-500 focus:outline-none"
         onClick={(e) => togglePasswordVisibility(e)}
       >
-        {showPassword ? "🐵" : "🙈"}
+        {showPassword ? "🙈" : "🐵"}
       </button>
     </div>
   );

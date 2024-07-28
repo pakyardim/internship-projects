@@ -14,7 +14,7 @@ export default {
         tertiary: "#f5f5f5",
         dark: "#262626",
         light: "#ffffff",
-        gray: "#807c7b",
+        grayish: "#807c7b",
         darkBackground: "#323136",
       },
     },

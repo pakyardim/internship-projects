@@ -43,5 +43,6 @@
   "Users": "Kullanıcılar",
   "Reports": "Raporlar",
   "Something went wrong": "Bir şeyler ters gitti!",
-  "Logout": "Çıkış Yap"
+  "Logout": "Çıkış Yap",
+  "submissionDate": "Gönderim Tarihi"
 }

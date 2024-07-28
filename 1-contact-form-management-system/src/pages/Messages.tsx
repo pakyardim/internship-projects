@@ -1,24 +1,46 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+
+import { Breadcrumbs } from "src/components/ui/Breadcrumbs";
 import { Spinner } from "src/components/ui/Spinner";
 import { useSnackbar } from "src/contexts/snackbarContext";
 
-import { fetchMessages } from "src/fetchers/messages";
+import { fetchMessages, readMessage } from "src/fetchers/messages";
+import { MessageType } from "src/types/message";
 import { transformDate } from "src/utils/dateTimeFunctions";
 
-type MessageType = {
-  id: number;
-  name: string;
-  country: string;
-  message: string;
-  gender: string;
-  read: string;
-  creationDate: string;
-};
-
 export function Messages() {
-  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: readMessage,
+    retry: 1,
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ["messages"],
+        (oldData: { messages: MessageType[] }) => {
+          const updatedMessages = oldData.messages.map(
+            (message: MessageType) => {
+              if (message.id === data.message.id) {
+                return { ...message, read: "true" };
+              }
+              return message;
+            }
+          );
+          return { messages: updatedMessages };
+        }
+      );
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (error: any) => {
+      showSnackbar(error.response.data.error, "error");
+    },
+  });
 
   const { data, status } = useQuery({
     queryKey: ["messages"],
@@ -40,14 +62,7 @@ export function Messages() {
 
   return (
     <main className="flex flex-col p-1 sm:p-4 xl:gap-4 xl:p-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary flex-1 border-b">
-      <div className="flex items-center justify-between space-x-2 text-gray-500">
-        <p className="font-primary text-sm lg:text-base dark:text-light text-gray-700">
-          {t("Messages")}
-        </p>
-        <p className="font-primary text-sm lg:text-base dark:text-light text-gray-700">
-          ContactFormHub / {t("Messages")}
-        </p>
-      </div>
+      <Breadcrumbs />
 
       {status === "pending" ? (
         <div className="w-full flex justify-center">
@@ -58,22 +73,22 @@ export function Messages() {
           <table className="w-full divide-y dark:divide-light divide-gray-200 border">
             <thead className="hidden md:table-header-group bg-slate-300 dark:bg-slate-950">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
                   {t("name")}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
                   {t("country")}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
                   {t("message")}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
                   {t("gender")}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
                   {t("read")}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
                   {t("date")}
                 </th>
               </tr>
@@ -82,6 +97,10 @@ export function Messages() {
               {messages?.map((item: MessageType, index: number) => (
                 <tr
                   key={index}
+                  onClick={() => {
+                    mutate(item.id);
+                    navigate(`/messages/${item.id}`);
+                  }}
                   className={`${
                     index % 2 === 0
                       ? "bg-white dark:bg-dark"
@@ -94,13 +113,13 @@ export function Messages() {
                     </span>
                     {item.name}
                   </td>
-                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 md:whitespace-nowrap text-xs xl:text-sm dark:text-light text-gray-500">
+                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 md:whitespace-nowrap text-xs xl:text-sm dark:text-light">
                     <span className="block font-bold md:hidden cell-header">
                       {t("country")}:
                     </span>
                     {item.country}
                   </td>
-                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 truncate md:max-w-xl md:whitespace-nowrap text-xs xl:text-sm dark:text-light text-gray-500">
+                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 truncate md:max-w-xl md:whitespace-nowrap text-xs xl:text-sm dark:text-light">
                     <span className="block font-bold md:hidden cell-header">
                       {t("message")}:
                     </span>
@@ -108,23 +127,23 @@ export function Messages() {
                       {item.message}
                     </span>
                   </td>
-                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light text-gray-500">
+                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
                     <span className="block font-bold md:hidden cell-header">
                       {t("gender")}:
                     </span>
                     {t(item.gender)}
                   </td>
-                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light text-gray-500">
+                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
                     <span className="block font-bold md:hidden cell-header">
                       {t("read")}:
                     </span>
                     {item.read === "true" ? t("yes") : t("no")}
                   </td>
-                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light text-gray-500">
+                  <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
                     <span className="block font-bold md:hidden cell-header">
                       {t("date")}:
                     </span>
-                    {transformDate(item.creationDate)}
+                    {transformDate(item.creationDate, locale)}
                   </td>
                 </tr>
               ))}

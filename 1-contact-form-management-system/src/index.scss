@@ -196,7 +196,7 @@ body {
 }
 
 .radio-custom {
-  @apply w-4 h-4 border border-gray rounded-full flex items-center justify-center cursor-pointer;
+  @apply w-4 h-4 border border-grayish rounded-full flex items-center justify-center cursor-pointer;
 }
 
 input:checked ~ .radio-custom::before {
@@ -427,4 +427,28 @@ li .dropdown-menu-item li a:hover {
   -ms-transform: translateX(0);
   -o-transform: translateX(0);
   transform: translateX(0);
+}
+
+aside::-webkit-scrollbar {
+  width: 12px;
+}
+
+aside::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+aside::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  border: 3px solid #f1f1f1;
+}
+
+aside::-webkit-scrollbar-thumb:hover {
+  background: #fa615b;
+}
+
+aside {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) #f1f1f1;
 }

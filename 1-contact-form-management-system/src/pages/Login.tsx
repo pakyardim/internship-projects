@@ -97,7 +97,7 @@ export function Login() {
                 </PrimaryButton>
               </div>
               <div className="font-primary text-xs sm:text-sm mt-2">
-                <p className="text-gray text-center">
+                <p className="text-grayish text-center">
                   {t("Don't have an account?")}{" "}
                   <Link to="/" className="text-primary">
                     <span className="text-primary cursor-pointer hover:underline">

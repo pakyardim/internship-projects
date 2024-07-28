@@ -26,6 +26,7 @@ interface AuthContextType {
   };
   values: {
     user: User;
+    token: string;
     loading: boolean;
     errorMessage: string;
   };
@@ -47,14 +48,15 @@ export const useAuthContext = () => {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User>(null);
+  const [token, setToken] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const { showSnackbar } = useSnackbar();
 
-  const injectToken = (token: string) => {
-    axios.defaults.headers.token = token;
-  };
+  // const injectToken = (token: string) => {
+  //   axios.defaults.headers.token = token;
+  // };
 
   const login = useCallback(
     async (data: { username: string; password: string }) => {
@@ -67,7 +69,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const user = response.data.data.user;
           localStorage.setItem("token", token);
           setUser(user);
-          injectToken(token);
+          setToken(token);
+          // injectToken(token);
           setLoading(false);
           return true;
         } else {
@@ -90,7 +93,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = useCallback(async () => {
     setUser(null);
-    axios.defaults.headers.Authorization = "";
+    setToken("");
+    // axios.defaults.headers.token = "";
     localStorage.removeItem("token");
   }, []);
 
@@ -101,6 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
     const values = {
       user,
+      token,
       loading,
       errorMessage,
     };
@@ -113,6 +118,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       values,
       setters,
     };
-  }, [login, logout, user, loading, errorMessage]);
+  }, [login, logout, token, user, loading, errorMessage]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
