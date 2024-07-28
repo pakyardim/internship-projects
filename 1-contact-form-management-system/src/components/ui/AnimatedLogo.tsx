@@ -1,13 +1,11 @@
-import { useNavigate } from "react-router-dom";
+interface Props {
+  handleClick: () => void;
+}
 
-export function AnimatedLogo() {
-  const navigate = useNavigate();
-
+export function AnimatedLogo({ handleClick }: Props) {
   return (
     <div
-      onClick={() => {
-        navigate("/");
-      }}
+      onClick={handleClick}
       className="uppercase cursor-pointer flex items-center text-primary font-primary font-bold sm:text-2xl lg:text-3xl"
     >
       <span>Contact</span>

@@ -26,7 +26,7 @@ export function Users() {
 
   const { showSnackbar } = useSnackbar();
 
-  if (data === 401) {
+  if (data === 401 || data === 403) {
     return <Navigate to="/not-authorized" />;
   }
 

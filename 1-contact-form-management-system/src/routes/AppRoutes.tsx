@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 
 import { MainLayout } from "src/components/layouts/MainLayout";
-import { ProtectedLayout } from "src/components/layouts/ProtectedLayout";
 
 import { Contact } from "src/pages/Contact";
 import { NotFound } from "src/pages/NotFound";
@@ -47,8 +46,56 @@ export function AppRoutes() {
           element: <NotFound />,
         },
         {
-          path: "/not-authorized",
+          path: "not-authorized",
           element: <NotAuthorized />,
+        },
+        {
+          path: "dashboard",
+          element: (
+            <ProtectedRoute>
+              <NotFound />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "messages",
+          element: (
+            <ProtectedRoute>
+              <Messages />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "messages/:id",
+          element: (
+            <ProtectedRoute>
+              <MessageDetail />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "users",
+          element: (
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "users/add-user",
+          element: (
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "users/edit-user/:id",
+          element: (
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          ),
         },
       ],
     },
@@ -60,51 +107,24 @@ export function AppRoutes() {
         </GuestRoute>
       ),
     },
-    {
-      path: "/",
-      element: <ProtectedLayout />,
-      children: [
-        {
-          path: "/dashboard",
-          element: (
-            <ProtectedRoute>
-              <NotFound />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/messages",
-          element: (
-            <ProtectedRoute>
-              <Messages />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/messages/:id",
-          element: (
-            <ProtectedRoute>
-              <MessageDetail />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "/users",
-          element: (
-            <ProtectedRoute>
-              <Users />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: "*",
-          element: <NotFound />,
-        },
-        {
-          path: "/not-authorized",
-          element: <NotAuthorized />,
-        },
-      ],
-    },
+    // {
+    //   path: "/",
+    //   element: <ProtectedLayout />,
+    //   children: [
+
+    //     {
+    //       path: "*",
+    //       element: (
+    //         <ProtectedRoute>
+    //           <NotFound />
+    //         </ProtectedRoute>
+    //       ),
+    //     },
+    //     {
+    //       path: "not-authorized",
+    //       element: <NotAuthorized />,
+    //     },
+    //   ],
+    // },
   ]);
 }

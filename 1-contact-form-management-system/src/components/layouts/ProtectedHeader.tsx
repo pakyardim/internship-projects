@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { AnimatedLogo } from "src/components/ui/AnimatedLogo";
@@ -13,15 +13,21 @@ export function ProtectedHeader() {
     values: { user },
   } = useAuthContext();
 
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+
+  const handleClick = () => {
+    navigate("/dashboard");
+  };
 
   return (
     <header className="flex-none px-2 sm:px-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary border-collapse">
       <div className="flex flex-1 justify-between items-center">
         <div className="hidden md:block">
-          <AnimatedLogo />
+          <AnimatedLogo handleClick={handleClick} />
         </div>
         <nav>
           <ul className="flex w-full h-20 text-xs md:text-sm xl:text-base">
