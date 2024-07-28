@@ -24,7 +24,7 @@ const ProtectedRoute = ({ children }: Props) => {
 };
 
 const GuestRoute = ({ children }: Props) => {
-  return isAuthenticated() ? <Navigate to="/dashboard" /> : children;
+  return isAuthenticated() ? <Navigate to="/" /> : children;
 };
 
 export function AppRoutes() {
