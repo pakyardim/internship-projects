@@ -18,7 +18,7 @@ export function ProtectedHeader() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="px-5 sm:px-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary border-collapse">
+    <header className="px-2 sm:px-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary border-collapse">
       <div className="flex flex-1 justify-between items-center">
         <div className="hidden md:block">
           <AnimatedLogo />
@@ -28,8 +28,9 @@ export function ProtectedHeader() {
             <Link to="/dashboard">
               <li
                 className={`nav-list-item dark:text-light ${
-                  isActive("/dashboard") &&
-                  "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
+                  isActive("/dashboard")
+                    ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
+                    : "hover:text-primaryDark"
                 } `}
               >
                 {t("Dashboard")}
@@ -38,8 +39,9 @@ export function ProtectedHeader() {
             <Link to="/messages">
               <li
                 className={`nav-list-item dark:text-light ${
-                  isActive("/messages") &&
-                  "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
+                  isActive("/messages")
+                    ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
+                    : "hover:text-primaryDark"
                 } `}
               >
                 {t("Messages")}

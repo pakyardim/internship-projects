@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 
+import { MainLayout } from "src/components/layouts/MainLayout";
+import { ProtectedLayout } from "src/components/layouts/ProtectedLayout";
 import { Contact } from "src/pages/Contact";
 import { NotFound } from "src/pages/NotFound";
 import { NotAuthorized } from "src/pages/NotAuthorized";
-import { MainLayout } from "src/components/layouts/MainLayout";
-import { ProtectedLayout } from "src/components/layouts/ProtectedLayout";
 import { Login } from "src/pages/Login";
+import { Messages } from "src/pages/Messages";
 
 interface Props {
   children: ReactNode;
@@ -65,6 +66,14 @@ export function AppRoutes() {
           element: (
             <ProtectedRoute>
               <NotFound />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/messages",
+          element: (
+            <ProtectedRoute>
+              <Messages />
             </ProtectedRoute>
           ),
         },

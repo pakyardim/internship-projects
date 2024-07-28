@@ -7,7 +7,7 @@ export function AuthSection() {
 
   return (
     <div
-      className={`hidden lg:flex auth-section dark:bg-dark transition-colors duration-300 bg-darkBackground relative justify-center items-center w-2/5 h-full overflow-hidden`}
+      className={`bg-primaryDark hidden lg:flex auth-section dark:bg-dark transition-colors duration-300 relative justify-center items-center w-2/5 h-full overflow-hidden`}
     >
       <div className="bg-secondary first absolute rounded-full"></div>
       <div className="bg-secondary second absolute rounded-full"></div>

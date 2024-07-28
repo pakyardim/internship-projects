@@ -10,6 +10,10 @@
   "contactParagraph": "Feel free to <1>reach out</1> to us with any questions or <1>concerns</1> you may have. <1>We</1> will get back to you as soon as <1>possible</1>.",
   "formHeader": "Send us a <1>message</1>",
   "name": "Name",
+  "read": "Read",
+  "yes": "Yes",
+  "no": "No",
+  "date": "date",
   "message": "Message",
   "gender": "Gender",
   "male": "Male",
@@ -24,6 +28,7 @@
   "Language": "Language",
   "pageNotFound": "Page not found!",
   "notAuthorized": "Hold on!",
+  "notAuthorizedErr": "You are not authorized to access this page.",
   "go back": "Go back",
   "notAuthorizedParagraph": "You can not proceed from here. You have to be logged in.",
   "authTitle": "Welcome Back!",
@@ -37,5 +42,6 @@
   "Messages": "Messages",
   "Users": "Users",
   "Reports": "Reports",
+  "Something went wrong": "Something went wrong!",
   "Logout": "Logout"
 }

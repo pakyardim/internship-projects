@@ -10,6 +10,10 @@
   "contactParagraph": "Sorularınız veya <1>endişeleriniz</1> ile ilgili olarak bizimle <1>iletişime geçmekten</1> çekinmeyin. Mümkün olan <1>en kısa sürede</1> size geri döneceğiz.",
   "formHeader": "Bize bir <1>mesaj</1> gönderin",
   "name": "İsim",
+  "read": "Okundu",
+  "yes": "Evet",
+  "no": "Hayır",
+  "date": "Tarih",
   "message": "Mesaj",
   "gender": "Cinsiyet",
   "male": "Erkek",
@@ -25,6 +29,7 @@
   "pageNotFound": "Sayfa bulunamadı!",
   "go back": "Geri dön",
   "notAuthorized": "Dur bakalım!",
+  "notAuthorizedErr": "Bu sayfaya erişim izniniz yok.",
   "notAuthorizedParagraph": "Buradan sonrasına giriş yapmadan geçiş yok.",
   "authTitle": "Tekrar Hoş Geldin!",
   "authDesc": "<1>Seni</h1> görmek her zaman güzel.",
@@ -37,5 +42,6 @@
   "Messages": "Mesajlar",
   "Users": "Kullanıcılar",
   "Reports": "Raporlar",
+  "Something went wrong": "Bir şeyler ters gitti!",
   "Logout": "Çıkış Yap"
 }
