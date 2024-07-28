@@ -16,10 +16,10 @@ interface AuthContextType {
       password: string;
     }) => Promise<boolean | void>;
     logout: () => void;
+    autoLogin: () => Promise<string | null>;
   };
   values: {
     user: UserType;
-    token: string;
     loading: boolean;
     errorMessage: string;
   };
@@ -41,15 +41,14 @@ export const useAuthContext = () => {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserType>(null!);
-  const [token, setToken] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const { showSnackbar } = useSnackbar();
 
-  // const injectToken = (token: string) => {
-  //   axios.defaults.headers.token = token;
-  // };
+  const injectToken = (token: string) => {
+    axios.defaults.headers.token = token;
+  };
 
   const login = useCallback(
     async (data: { username: string; password: string }) => {
@@ -62,8 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const user = response.data.data.user;
           localStorage.setItem("token", token);
           setUser(user);
-          setToken(token);
-          // injectToken(token);
+          injectToken(token);
           setLoading(false);
           return true;
         } else {
@@ -86,19 +84,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = useCallback(async () => {
     setUser({} as UserType);
-    setToken("");
-    // axios.defaults.headers.token = "";
+    axios.defaults.headers.token = "";
     localStorage.removeItem("token");
+  }, []);
+
+  const autoLogin = useCallback(async () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      injectToken(token);
+
+      try {
+        const response = await axios.post("/user/check-login");
+        const user = response?.data.data.user;
+
+        if (!user) {
+          logout();
+        } else {
+          setUser(user);
+        }
+      } catch (err) {
+        logout();
+      }
+    }
+    return token;
   }, []);
 
   const value = useMemo(() => {
     const functions = {
       login,
       logout,
+      autoLogin,
     };
     const values = {
       user,
-      token,
       loading,
       errorMessage,
     };
@@ -111,6 +130,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       values,
       setters,
     };
-  }, [login, logout, token, user, loading, errorMessage]);
+  }, [login, logout, autoLogin, user, loading, errorMessage]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
