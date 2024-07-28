@@ -30,8 +30,6 @@ export function MessageCard({ messageItem }: MessageCardProps) {
 
   const { showSnackbar } = useSnackbar();
 
-  // showSnackbar("successMsg", "success");
-
   const { mutate, isPending } = useMutation({
     mutationFn: deleteMessage,
     retry: 1,

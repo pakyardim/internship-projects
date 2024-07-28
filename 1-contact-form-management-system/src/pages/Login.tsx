@@ -89,7 +89,11 @@ export function Login() {
               />
 
               <div className="flex justify-center mt-2">
-                <PrimaryButton isDisabled={loading} classname="h-12 md:py-0">
+                <PrimaryButton
+                  type="submit"
+                  isDisabled={loading}
+                  classname="h-12 md:py-0"
+                >
                   <div className="flex items-center gap-x-2">
                     <p>{loading ? t("Logging in") : t("Log in")}</p>
                     {loading && <Spinner size={4} />}

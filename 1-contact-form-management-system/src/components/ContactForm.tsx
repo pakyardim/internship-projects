@@ -241,7 +241,11 @@ export function ContactForm() {
             )}
           </div>
           <div className="flex w-full justify-end">
-            <PrimaryButton isDisabled={isPending} classname="py-3 lg:py-4">
+            <PrimaryButton
+              type="submit"
+              isDisabled={isPending}
+              classname="py-3 lg:py-4"
+            >
               <div className="flex items-center gap-x-2">
                 <p>{isPending ? t("Submitting") : t("Submit")}</p>
                 {isPending && <Spinner size={4} />}

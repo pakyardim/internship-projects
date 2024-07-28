@@ -49,7 +49,17 @@ export function ProtectedHeader() {
             </Link>
             {user?.role === "admin" && (
               <>
-                <li className="nav-list-item dark:text-light">{t("Users")}</li>
+                <Link to="/users">
+                  <li
+                    className={`nav-list-item dark:text-light ${
+                      isActive("/users")
+                        ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
+                        : "hover:text-primaryDark"
+                    } `}
+                  >
+                    {t("Users")}
+                  </li>
+                </Link>
                 <li className="nav-list-item dark:text-light">
                   {t("Reports")}
                 </li>

@@ -16,6 +16,7 @@ export default {
         light: "#ffffff",
         grayish: "#807c7b",
         darkBackground: "#323136",
+        success: "#84cc16",
       },
     },
   },

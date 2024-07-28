@@ -7,14 +7,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import { useSnackbar } from "src/contexts/snackbarContext";
-
-type User = {
-  id: number;
-  username: string;
-  password: string;
-  role: string;
-  base64Photo: string;
-} | null;
+import { UserType } from "src/types";
 
 interface AuthContextType {
   functions: {
@@ -25,14 +18,14 @@ interface AuthContextType {
     logout: () => void;
   };
   values: {
-    user: User;
+    user: UserType;
     token: string;
     loading: boolean;
     errorMessage: string;
   };
   setters: {
     setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-    setUser: React.Dispatch<React.SetStateAction<User>>;
+    setUser: React.Dispatch<React.SetStateAction<UserType>>;
   };
 }
 
@@ -47,7 +40,7 @@ export const useAuthContext = () => {
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<UserType>(null!);
   const [token, setToken] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -92,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const logout = useCallback(async () => {
-    setUser(null);
+    setUser({} as UserType);
     setToken("");
     // axios.defaults.headers.token = "";
     localStorage.removeItem("token");

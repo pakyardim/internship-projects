@@ -9,6 +9,7 @@ import { NotFound } from "src/pages/NotFound";
 import { NotAuthorized } from "src/pages/NotAuthorized";
 import { Login } from "src/pages/Login";
 import { Messages } from "src/pages/Messages";
+import { Users } from "src/pages/Users";
 import { MessageDetail } from "src/pages/MessageDetail";
 
 interface Props {
@@ -86,6 +87,22 @@ export function AppRoutes() {
               <MessageDetail />
             </ProtectedRoute>
           ),
+        },
+        {
+          path: "/users",
+          element: (
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "*",
+          element: <NotFound />,
+        },
+        {
+          path: "/not-authorized",
+          element: <NotAuthorized />,
         },
       ],
     },
