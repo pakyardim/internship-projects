@@ -1,17 +1,18 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { IoAddOutline } from "react-icons/io5";
+import { MdOutlineEdit } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { Navigate, useNavigate } from "react-router-dom";
 
 import { Breadcrumbs } from "src/components/ui/Breadcrumbs";
 import { PrimaryButton } from "src/components/ui/PrimaryButton";
 import { Spinner } from "src/components/ui/Spinner";
+import { UserTable } from "src/components/UserTable";
 import { useSnackbar } from "src/contexts/snackbarContext";
 
 import { fetchUsers } from "src/fetchers";
 import { UserType } from "src/types";
-import { IoAddOutline } from "react-icons/io5";
-import { MdOutlineEdit } from "react-icons/md";
-import { useState } from "react";
 
 export function Users() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
@@ -74,74 +75,11 @@ export function Users() {
           <Spinner size={8} />
         </div>
       ) : (
-        <div className="overflow-x-auto w-full">
-          <table className="w-full divide-y dark:divide-light divide-gray-200 border">
-            <thead className="hidden sm:table-header-group bg-slate-300 dark:bg-slate-950">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
-                  {t("photo")}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
-                  {t("username")}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
-                  {t("password")}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
-                  {t("role")}
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y dark:divide-light divide-gray-200">
-              {users.map((item: UserType, index: number) => (
-                <tr
-                  key={index}
-                  onClick={() => {
-                    setSelectedUserId(item.id!);
-                  }}
-                  className={`${
-                    selectedUserId === item.id
-                      ? "bg-primary dark:bg-primaryDark text-light"
-                      : index % 2 === 0
-                      ? "bg-white dark:bg-dark"
-                      : "bg-tertiary dark:bg-[#1e1e1e]"
-                  } hover:bg-primary dark:hover:bg-primaryDark cursor-pointer hover:text-light
-                  
-                  `}
-                >
-                  <td className="flex items-center w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
-                    <span className="lowercase block font-bold sm:hidden cell-header">
-                      {t("photo")}:
-                    </span>
-                    <img
-                      src={item.base64Photo}
-                      alt="user image"
-                      className="object-cover w-8 h-8 rounded-full"
-                    />
-                  </td>
-                  <td className="flex w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
-                    <span className="block font-bold sm:hidden cell-header">
-                      {t("username")}:
-                    </span>
-                    {item.username}
-                  </td>
-                  <td className="flex w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
-                    <span className="block font-bold sm:hidden cell-header">
-                      {t("password")}:
-                    </span>
-                    {item.password}
-                  </td>
-                  <td className="flex w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
-                    <span className="lowercase block font-bold sm:hidden cell-header">
-                      {t("role")}:
-                    </span>
-                    <span>{item.role}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <UserTable
+          users={users}
+          selectedUserId={selectedUserId}
+          setSelectedUserId={setSelectedUserId}
+        />
       )}
     </main>
   );
