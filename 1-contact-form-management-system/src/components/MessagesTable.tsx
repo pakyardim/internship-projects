@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { MessageType } from "src/types";
-import { transformDate } from "src/utils/dateTimeFunctions";
+import { transformDate } from "src/utils";
 
 interface Props {
   messages: MessageType[];

@@ -1,16 +1,19 @@
 import type { ReactNode } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 
-import { MainLayout } from "src/components/layouts/MainLayout";
+import { MainLayout } from "src/components/layouts";
 
-import { Contact } from "src/pages/Contact";
-import { NotFound } from "src/pages/NotFound";
-import { NotAuthorized } from "src/pages/NotAuthorized";
-import { Login } from "src/pages/Login";
-import { Messages } from "src/pages/Messages";
-import { Users } from "src/pages/Users";
-import { MessageDetail } from "src/pages/MessageDetail";
-import { AddEditUser } from "src/pages/AddEditUser";
+import {
+  Contact,
+  AddEditUser,
+  NotAuthorized,
+  NotFound,
+  Login,
+  Messages,
+  MessageDetail,
+  Users,
+  Reports,
+} from "src/pages";
 
 interface Props {
   children: ReactNode;
@@ -99,6 +102,14 @@ export function AppRoutes() {
           element: (
             <ProtectedRoute>
               <AddEditUser isEdit={true} />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "reports",
+          element: (
+            <ProtectedRoute>
+              <Reports />
             </ProtectedRoute>
           ),
         },

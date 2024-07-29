@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { DarkModeToggle } from "src/components/ui/DarkModeToggle";
-import { LoginButton } from "src/components/ui/LoginButton";
-import { useAuthContext } from "src/contexts/authContext";
+import { DarkModeToggle, LoginButton } from "src/components/ui";
+import { useAuthContext } from "src/contexts";
 import { NavbarItemLocale } from "./NavbarItemLocale";
 
 export function MobileNavbar() {

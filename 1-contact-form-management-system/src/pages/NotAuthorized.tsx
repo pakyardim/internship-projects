@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
+
 import stopPuppyImg from "src/assets/stop-puppy.png";
-import { LoginButton } from "src/components/ui/LoginButton";
+import { LoginButton } from "src/components/ui";
 
 export function NotAuthorized() {
   const { t } = useTranslation();

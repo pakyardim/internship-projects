@@ -4,8 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import axios from "axios";
 
-import { SnackbarProvider } from "src/contexts/snackbarContext.tsx";
-import { AuthProvider } from "src/contexts/authContext.tsx";
+import { SnackbarProvider, AuthProvider } from "src/contexts";
 import App from "./App.tsx";
 import "./index.scss";
 import "./i18n.ts";

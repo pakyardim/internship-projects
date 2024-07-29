@@ -1,15 +1,14 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoFemaleOutline, IoMaleOutline } from "react-icons/io5";
+import { MdDeleteOutline } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 import { MessageType } from "src/types";
-import { Spinner } from "src/components/ui/Spinner";
-import { transformDate } from "src/utils/dateTimeFunctions";
-import { MdDeleteOutline } from "react-icons/md";
-import { useAuthContext } from "src/contexts/authContext";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Spinner } from "src/components/ui";
+import { useAuthContext, useSnackbar } from "src/contexts";
 import { deleteMessage } from "src/fetchers";
-import { useSnackbar } from "src/contexts/snackbarContext";
-import { useNavigate } from "react-router-dom";
+import { transformDate } from "src/utils";
 
 interface MessageCardProps {
   messageItem: MessageType;

@@ -4,12 +4,14 @@ import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { HighlightedText } from "src/components/ui/HighlightedText";
-import { PrimaryButton } from "src/components/ui/PrimaryButton";
-import { CustomDropdown } from "src/components/ui/CustomDropdown";
+import {
+  HighlightedText,
+  PrimaryButton,
+  CustomDropdown,
+  Spinner,
+} from "src/components/ui";
 import { fetchCountries, submitContactForm } from "src/fetchers";
-import { Spinner } from "./ui/Spinner";
-import { useSnackbar } from "src/contexts/snackbarContext";
+import { useSnackbar } from "src/contexts";
 
 const schema = yup.object().shape({
   name: yup.string().required("required").min(3, "more3").max(50, "less50"),

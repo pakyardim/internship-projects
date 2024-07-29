@@ -11,7 +11,7 @@ type Languages = {
   [key: string]: Language;
 };
 
-const languages: Languages = {
+export const languages: Languages = {
   en: {
     label: "English",
     flag: usFlag,
@@ -21,5 +21,3 @@ const languages: Languages = {
     flag: turkey,
   },
 };
-
-export default languages;

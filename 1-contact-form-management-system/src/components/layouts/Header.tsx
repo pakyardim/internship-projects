@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-import { AnimatedLogo } from "src/components/ui/AnimatedLogo";
-import { LanguageDropdown } from "src/components/ui/LanguageDropdown";
-import { DarkModeToggle } from "src/components/ui/DarkModeToggle";
-import { LoginButton } from "src/components/ui/LoginButton";
-import { MobileNavbar } from "src/components/mobile-nav/MobileNavbar";
+import {
+  AnimatedLogo,
+  LanguageDropdown,
+  DarkModeToggle,
+  LoginButton,
+} from "src/components/ui";
+import { MobileNavbar } from "src/components/mobile-nav";
 
 export function Header() {
   const navigate = useNavigate();

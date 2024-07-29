@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+
 import sadPuppyImg from "src/assets/sad-puppy.png";
 
 export function NotFound() {

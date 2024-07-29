@@ -5,10 +5,8 @@ import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 
-import { PrimaryButton } from "src/components/ui/PrimaryButton";
-import { Spinner } from "src/components/ui/Spinner";
-import { useSnackbar } from "src/contexts/snackbarContext";
-import { ImagePicker } from "src/components/ui/ImagePicker";
+import { PrimaryButton, Spinner, ImagePicker } from "src/components/ui";
+import { useSnackbar } from "src/contexts";
 import { addUser, editUser } from "src/fetchers";
 import { UserType } from "src/types";
 

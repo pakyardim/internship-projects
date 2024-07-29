@@ -1,5 +1,5 @@
 import React, { useState, createContext, useContext } from "react";
-import { Snackbar } from "src/components/ui/SnackBar";
+import { Snackbar } from "src/components/ui";
 
 interface SnackbarContextType {
   showSnackbar: (message: string, type: "success" | "error") => void;

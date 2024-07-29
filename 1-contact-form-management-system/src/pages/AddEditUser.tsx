@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Trans, useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { Breadcrumbs } from "src/components/ui/Breadcrumbs";
 
-import { HighlightedText } from "src/components/ui/HighlightedText";
-import { Spinner } from "src/components/ui/Spinner";
-import { UserForm } from "src/components/UserForm";
+import { Breadcrumbs, HighlightedText, Spinner } from "src/components/ui";
+import { UserForm } from "src/components";
 import { fetchUser } from "src/fetchers";
 import { UserType } from "src/types";
 

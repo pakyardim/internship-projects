@@ -1,16 +1,19 @@
 import { useTranslation } from "react-i18next";
-import { AuthSection } from "src/components/AuthSection";
-import { PasswordInput } from "src/components/ui/PasswordInput";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { PrimaryButton } from "src/components/ui/PrimaryButton";
-import { Spinner } from "src/components/ui/Spinner";
-import { DarkModeToggle } from "src/components/ui/DarkModeToggle";
-import { LanguageDropdown } from "src/components/ui/LanguageDropdown";
-import { MobileNavbar } from "src/components/mobile-nav/MobileNavbar";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthContext } from "src/contexts/authContext";
+
+import {
+  PrimaryButton,
+  Spinner,
+  DarkModeToggle,
+  LanguageDropdown,
+  PasswordInput,
+} from "src/components/ui";
+import { MobileNavbar } from "src/components/mobile-nav";
+import { AuthSection } from "src/components";
+import { useAuthContext } from "src/contexts";
 
 const schema = yup.object().shape({
   username: yup.string().required("required"),

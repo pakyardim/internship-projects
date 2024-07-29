@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { AppRoutes } from "src/routes/AppRoutes";
-import { useAuthContext } from "src/contexts/authContext";
+import { useAuthContext } from "src/contexts";
 
 function App() {
   const {

@@ -1,12 +1,14 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { AnimatedLogo } from "src/components/ui/AnimatedLogo";
-import { LanguageDropdown } from "src/components/ui/LanguageDropdown";
-import { DarkModeToggle } from "src/components/ui/DarkModeToggle";
-import { UserProfileDropdown } from "src/components/ui/UserProfileDropdown";
-import { MobileNavbar } from "src/components/mobile-nav/MobileNavbar";
-import { useAuthContext } from "src/contexts/authContext";
+import {
+  AnimatedLogo,
+  LanguageDropdown,
+  DarkModeToggle,
+  UserProfileDropdown,
+} from "src/components/ui";
+import { MobileNavbar } from "src/components/mobile-nav";
+import { useAuthContext } from "src/contexts";
 
 export function ProtectedHeader() {
   const {

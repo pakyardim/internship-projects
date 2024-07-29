@@ -1,10 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { Breadcrumbs } from "src/components/ui/Breadcrumbs";
+import { Breadcrumbs, Spinner } from "src/components/ui";
 import { MessagesTable } from "src/components/MessagesTable";
-import { Spinner } from "src/components/ui/Spinner";
-import { useSnackbar } from "src/contexts/snackbarContext";
+import { useSnackbar } from "src/contexts";
 
 import { fetchMessages, readMessage } from "src/fetchers";
 import { MessageType } from "src/types";

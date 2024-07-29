@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "src/contexts/authContext";
+import { useAuthContext } from "src/contexts";
 
 export function UserProfileDropdown() {
   const {

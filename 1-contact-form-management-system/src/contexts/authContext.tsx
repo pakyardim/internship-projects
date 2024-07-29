@@ -7,7 +7,8 @@ import React, {
   useCallback,
 } from "react";
 import axios from "axios";
-import { useSnackbar } from "src/contexts/snackbarContext";
+
+import { useSnackbar } from "src/contexts";
 import { UserType } from "src/types";
 
 interface AuthContextType {

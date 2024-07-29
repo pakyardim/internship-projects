@@ -5,11 +5,9 @@ import { MdOutlineEdit } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { Breadcrumbs } from "src/components/ui/Breadcrumbs";
-import { PrimaryButton } from "src/components/ui/PrimaryButton";
-import { Spinner } from "src/components/ui/Spinner";
+import { Breadcrumbs, PrimaryButton, Spinner } from "src/components/ui";
 import { UserTable } from "src/components/UserTable";
-import { useSnackbar } from "src/contexts/snackbarContext";
+import { useSnackbar } from "src/contexts";
 
 import { fetchUsers } from "src/fetchers";
 import { UserType } from "src/types";

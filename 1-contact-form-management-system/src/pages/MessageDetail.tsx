@@ -2,14 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 
-import { MessageCard } from "src/components/MessageCard";
-import { Breadcrumbs } from "src/components/ui/Breadcrumbs";
-import { Spinner } from "src/components/ui/Spinner";
+import { MessageCard } from "src/components";
+import { Breadcrumbs, Spinner } from "src/components/ui";
 
-import { useSnackbar } from "src/contexts/snackbarContext";
+import { useSnackbar } from "src/contexts";
 import { fetchMessage, fetchMessages, readMessage } from "src/fetchers";
 import { MessageType } from "src/types";
-import { formatRelativeDate } from "src/utils/dateTimeFunctions";
+import { formatRelativeDate } from "src/utils";
 
 export function MessageDetail() {
   const { id } = useParams();

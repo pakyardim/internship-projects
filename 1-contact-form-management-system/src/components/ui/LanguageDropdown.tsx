@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 
-import languages from "src/utils/languages";
+import { languages } from "src/utils";
 
 export function LanguageDropdown() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
