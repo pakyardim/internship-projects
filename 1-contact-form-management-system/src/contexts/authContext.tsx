@@ -10,6 +10,7 @@ import axios from "axios";
 
 import { useSnackbar } from "src/contexts";
 import { UserType } from "src/types";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AuthContextType {
   functions: {
@@ -46,6 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  const queryClient = useQueryClient();
   const { showSnackbar } = useSnackbar();
 
   const injectToken = (token: string) => {
@@ -87,6 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     try {
       await axios.post("/user/logout");
+      queryClient.invalidateQueries();
       setUser({} as UserType);
       axios.defaults.headers.token = "";
       localStorage.removeItem("token");

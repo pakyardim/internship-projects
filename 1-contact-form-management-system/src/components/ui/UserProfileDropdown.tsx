@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +15,6 @@ export function UserProfileDropdown() {
 
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLImageElement>(null);
-  const queryClient = useQueryClient();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -31,7 +29,6 @@ export function UserProfileDropdown() {
   };
 
   const handleLogout = async () => {
-    queryClient.invalidateQueries();
     await logout();
     navigate("/");
   };
