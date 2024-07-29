@@ -434,26 +434,56 @@ li .dropdown-menu-item li a:hover {
   transform: translateX(0);
 }
 
-aside::-webkit-scrollbar {
+.scrollbar::-webkit-scrollbar {
   width: 12px;
 }
 
-aside::-webkit-scrollbar-track {
+.scrollbar::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
 
-aside::-webkit-scrollbar-thumb {
+.scrollbar::-webkit-scrollbar-thumb {
   background-color: var(--primary-color);
   border-radius: 10px;
   border: 3px solid #f1f1f1;
 }
 
-aside::-webkit-scrollbar-thumb:hover {
+.scrollbar::-webkit-scrollbar-thumb:hover {
   background: #fa615b;
 }
 
-aside {
+.scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) #f1f1f1;
+}
+
+.bar {
+  transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
+}
+
+@keyframes grow {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--bar-width);
+  }
+}
+
+.bar-animate {
+  animation: grow 1s ease-in-out forwards;
+}
+
+@keyframes draw {
+  from {
+    stroke-dasharray: 0 1;
+  }
+  to {
+    stroke-dasharray: 1 0;
+  }
+}
+
+path {
+  animation: draw 1s ease-out forwards;
 }

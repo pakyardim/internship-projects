@@ -7,3 +7,8 @@ export type MessageType = {
   read: string;
   creationDate: string;
 };
+
+export type ChartDataType = {
+  label: string;
+  count: number;
+};
