@@ -26,7 +26,7 @@ export function ProtectedHeader() {
   };
 
   return (
-    <header className="flex-none px-2 sm:px-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary border-collapse">
+    <header className="flex-none px-0 sm:px-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary border-collapse">
       <div className="flex flex-1 justify-between items-center">
         <div className="hidden md:block">
           <AnimatedLogo handleClick={handleClick} />
@@ -68,9 +68,17 @@ export function ProtectedHeader() {
                     {t("Users")}
                   </li>
                 </Link>
-                <li className="nav-list-item dark:text-light">
-                  {t("Reports")}
-                </li>
+                <Link to="/reports">
+                  <li
+                    className={`nav-list-item dark:text-light ${
+                      isActive("/reports")
+                        ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
+                        : "hover:text-primaryDark"
+                    } `}
+                  >
+                    {t("Reports")}
+                  </li>
+                </Link>
               </>
             )}
           </ul>

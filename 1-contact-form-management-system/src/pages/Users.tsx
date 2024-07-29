@@ -45,7 +45,7 @@ export function Users() {
   };
 
   return (
-    <main className="flex flex-col p-5 sm:gap-4 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary flex-1 border-b">
+    <main className="flex flex-col p-5 xl:gap-4 transition-colors duration-300 bg-secondary dark:bg-darkBackground font-primary flex-1 border-b">
       <div className="flex justify-between py-1">
         <Breadcrumbs />
         <div>

@@ -1,14 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Breadcrumbs, Spinner } from "src/components/ui";
-import { MessagesTable } from "src/components/MessagesTable";
+import { MessagesTable } from "src/components";
 import { useSnackbar } from "src/contexts";
 
 import { fetchMessages, readMessage } from "src/fetchers";
 import { MessageType } from "src/types";
 
 export function Messages() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -71,8 +73,16 @@ export function Messages() {
         <div className="w-full flex justify-center">
           <Spinner size={8} />
         </div>
+      ) : status === "error" || !messages || messages?.length === 0 ? (
+        <div className="flex justify-center items-center h-full">
+          <p className="text-lg text-center text-gray-500 dark:text-gray-400">
+            {t("No data available")}
+          </p>
+        </div>
       ) : (
-        <MessagesTable messages={messages} handleClick={handleClick} />
+        <div>
+          <MessagesTable messages={messages} handleClick={handleClick} />
+        </div>
       )}
     </main>
   );
