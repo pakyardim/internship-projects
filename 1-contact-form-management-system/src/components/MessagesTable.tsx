@@ -12,6 +12,12 @@ export function MessagesTable({ messages, handleClick }: Props) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
 
+  const sortedMessages = messages?.sort((a, b) => {
+    return (
+      new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
+    );
+  });
+
   return (
     <div className="overflow-x-auto w-full">
       <table className="w-full divide-y dark:divide-light divide-gray-200 border">
@@ -38,7 +44,7 @@ export function MessagesTable({ messages, handleClick }: Props) {
           </tr>
         </thead>
         <tbody className="divide-y dark:divide-light divide-gray-200">
-          {messages?.map((item: MessageType, index: number) => (
+          {sortedMessages?.map((item: MessageType, index: number) => (
             <tr
               key={index}
               onClick={() => {

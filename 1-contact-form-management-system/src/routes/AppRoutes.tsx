@@ -13,6 +13,7 @@ import {
   MessageDetail,
   Users,
   Reports,
+  Dashboard,
 } from "src/pages";
 
 interface Props {
@@ -57,7 +58,7 @@ export function AppRoutes() {
           path: "dashboard",
           element: (
             <ProtectedRoute>
-              <NotFound />
+              <Dashboard />
             </ProtectedRoute>
           ),
         },

@@ -18,10 +18,11 @@ export function MessageCard({ messageItem }: MessageCardProps) {
   const {
     values: { user },
   } = useAuthContext();
+
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
 
-  const isAdmin = user.role === "admin";
+  const isAdmin = user?.role === "admin";
 
   const queryClient = useQueryClient();
 
@@ -48,7 +49,7 @@ export function MessageCard({ messageItem }: MessageCardProps) {
   };
 
   return (
-    <div className="overflow-y-auto transition-colors duration-300 dark:bg-dark dark:text-light/90 dark:border-light sm:border border-darkBackground flex-1 bg-light shadow-custom p-10">
+    <div className="scrollbar overflow-y-auto transition-colors duration-300 dark:bg-dark dark:text-light/90 dark:border-light sm:border border-darkBackground flex-1 bg-light shadow-custom p-10">
       {!messageItem ? (
         <div className="w-full flex justify-center">
           <Spinner size={8} />
@@ -58,11 +59,11 @@ export function MessageCard({ messageItem }: MessageCardProps) {
           <table className="text-lg min-w-full border-collapse">
             <tbody>
               <tr>
-                <th className="py-5 dark:text-light/90 text-dark/80 text-left">
+                <th className="w-2/5 py-5 dark:text-light/90 text-dark/80 text-left">
                   <h2 className="text-2xl sm:text-3xl">{messageItem.name}</h2>
                 </th>
                 {isAdmin && (
-                  <td className="py-5">
+                  <td className="w-3/5 py-5">
                     <button
                       onClick={handleDelete}
                       disabled={isPending}
@@ -75,42 +76,42 @@ export function MessageCard({ messageItem }: MessageCardProps) {
                 )}
               </tr>
               <tr>
-                <th className="text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
+                <th className="w-2/5 text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
                   {t("submissionDate")}:
                 </th>
-                <td className="text-sm sm:text-base py-5">
+                <td className="w-3/5 text-sm sm:text-base py-5">
                   {transformDate(messageItem.creationDate, locale)}
                 </td>
               </tr>
               <tr>
-                <th className="text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
+                <th className="w-2/5 text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
                   {t("name")}:
                 </th>
-                <td className="text-sm sm:text-base py-5">
+                <td className="w-3/5 text-sm sm:text-base py-5">
                   {messageItem.name}
                 </td>
               </tr>
               <tr>
-                <th className="text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
+                <th className="w-2/5 text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
                   {t("country")}:
                 </th>
-                <td className="text-sm sm:text-base py-5">
+                <td className="w-3/5 text-sm sm:text-base py-5">
                   {messageItem.country}
                 </td>
               </tr>
               <tr>
-                <th className="text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
+                <th className="w-2/5 text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
                   {t("message")}:
                 </th>
-                <td className="text-sm sm:text-base py-5">
+                <td className="w-3/5 text-sm sm:text-base py-5">
                   {messageItem.message}
                 </td>
               </tr>
               <tr>
-                <th className="text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
+                <th className="w-2/5 text-sm sm:text-base py-5 dark:text-light/90 text-dark/80 text-left">
                   {t("gender")}:
                 </th>
-                <td className="text-sm sm:text-base py-5">
+                <td className="w-3/5 text-sm sm:text-base py-5">
                   <div className="flex gap-x-1 items-center">
                     {t(messageItem.gender)}{" "}
                     {messageItem.gender === "male" ? (
