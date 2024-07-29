@@ -18,14 +18,15 @@ main {
   width: 100vw;
   max-width: 1000px;
   max-height: 800px;
+}
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 svg {
-  max-height: 400px;
-  max-width: 500px;
   fill: white;
 }
 
@@ -52,8 +53,8 @@ svg {
 .svg-container {
   margin-top: 20px;
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 240px;
+  height: 240px;
 }
 
 .speedometer-circle-svg {
@@ -63,14 +64,29 @@ svg {
 
 .speedometer-arrow-svg {
   position: absolute;
-  bottom: 40%;
   left: 0;
-  width: 100%;
-  height: 40%;
 }
 
 .text-container {
   position: absolute;
   left: 40%;
   bottom: 0;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+}
+
+button {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
 }
