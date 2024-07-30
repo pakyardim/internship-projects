@@ -10,3 +10,13 @@ export const fetchBlacklistedTokens = async () => {
     throw err;
   }
 };
+
+export const blacklistToken = async (token: string) => {
+  try {
+    await pool.query("INSERT INTO blacklistedtokens (token) VALUES (?)", [
+      token,
+    ]);
+  } catch (err) {
+    throw err;
+  }
+};
