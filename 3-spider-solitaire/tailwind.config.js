@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        primary: ["Gabarito", "sans-serif"],
+        primary: ["Montserrat", "sans-serif"],
       },
     },
   },
