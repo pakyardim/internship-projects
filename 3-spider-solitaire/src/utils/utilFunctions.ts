@@ -7,3 +7,10 @@ export const convertSecsToTime = (secs: number): string => {
     minutes < 10 && hours > 0 ? "0" + minutes : minutes
   }:${seconds < 10 ? "0" + seconds : seconds}`;
 };
+
+export const getImageURL = (
+  name: string,
+  folderName: string = "card-icons"
+) => {
+  return new URL(`../assets/${folderName}/${name}`, import.meta.url).href;
+};
