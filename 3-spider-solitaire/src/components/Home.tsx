@@ -1,25 +1,24 @@
 import { useState } from "react";
 import spiderImg from "../assets/spider.png";
+import { useGameContext } from "../contexts/gameContext";
+import { SettingsModal } from "./SettingsModal";
 
-interface Props {
-  onClick: () => void;
-  pressed: boolean;
-}
+export function Home() {
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
-export function Home({ onClick, pressed }: Props) {
-  const [selectedMode, setSelectedMode] = useState<"1" | "2" | "4">("1");
+  const {
+    values: { selectedMode, startGamePressed },
+    functions: { handleStartGame },
+    setters: { setSelectedMode },
+  } = useGameContext();
 
-  const handleStartGame = () => {
-    onClick();
-  };
-
-  const openSettings = () => {};
   return (
     <div
       className={`flex flex-col gap-y-10 ${
-        pressed ? "opacity-0" : "opacity-100"
+        startGamePressed ? "opacity-0" : "opacity-100"
       } transition-opacity duration-300`}
     >
+      {settingsOpen && <SettingsModal setSettingsOpen={setSettingsOpen} />}
       <div className="flex items-center gap-x-5">
         <h1 className="text-4xl font-semibold">Spider Solitaire</h1>
         <img src={spiderImg} alt="Spider Solitaire" className="w-20 h-20" />
@@ -70,7 +69,7 @@ export function Home({ onClick, pressed }: Props) {
         </button>
 
         <button
-          onClick={openSettings}
+          onClick={() => setSettingsOpen(true)}
           className="text-rose-300 hover:underline"
         >
           Settings

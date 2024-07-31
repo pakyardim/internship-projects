@@ -1,23 +1,15 @@
-import { useState } from "react";
 import { Home } from "./components/Home";
 import { Game } from "./components/Game";
+import { useGameContext } from "./contexts/gameContext";
 
 function App() {
-  const [activePage, setActivePage] = useState<"home" | "game">("home");
-  const [startGamePressed, setStartGamePressed] = useState(false);
-
-  const handleStartGame = () => {
-    setStartGamePressed(true);
-    setTimeout(() => {
-      setActivePage("game");
-    }, 300);
-  };
+  const {
+    values: { activePage },
+  } = useGameContext();
 
   return (
     <main className="font-primary flex flex-col items-center justify-center max-h-screen bg-green-900 text-white">
-      {activePage === "home" && (
-        <Home onClick={handleStartGame} pressed={startGamePressed} />
-      )}
+      {activePage === "home" && <Home />}
       {activePage === "game" && <Game />}
     </main>
   );

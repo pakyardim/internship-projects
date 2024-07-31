@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 
-import blueBg from "../assets/card-icons/card-backgrounds/classic_blue.png";
-import { createDeck, dealCards, shuffleDeck } from "../utils/deckFunctions";
 import { CardType } from "../types";
-import { convertSecsToTime } from "../utils/utilFunctions";
 import hintImg from "../assets/hint.png";
-import { FaPause, FaUndo, FaUndoAlt } from "react-icons/fa";
-import { FaRegLightbulb } from "react-icons/fa";
-
-function getImageURL(name: string) {
-  return new URL(`../assets/card-icons/${name}`, import.meta.url).href;
-}
+import { FaPause, FaUndoAlt } from "react-icons/fa";
+import { PauseModal } from "./PauseModal";
+import { useGameContext } from "../contexts/gameContext";
+import { createDeck, dealCards, shuffleDeck } from "../utils/deckFunctions";
+import { convertSecsToTime, getImageURL } from "../utils/utilFunctions";
 
 export function Game() {
+  const {
+    values: { paused, selectedCard },
+    setters: { setPaused },
+  } = useGameContext();
+
   const numSuits = 1;
 
   const deck = createDeck(numSuits);
@@ -24,7 +25,6 @@ export function Game() {
   const [layout, setLayout] = useState<CardType[][]>(initialLayout);
   const [timer, setTimer] = useState<number>(0);
   const [score, setScore] = useState<number>(500);
-  const [paused, setPaused] = useState<boolean>(false);
 
   useEffect(() => {
     if (paused) return;
@@ -40,6 +40,8 @@ export function Game() {
 
   return (
     <div className={`w-full h-full flex flex-col md:px-0 md:py-10 lg:px-32`}>
+      {paused && <PauseModal />}
+
       <div className="bg-green-900/90 flex justify-between mb-10">
         <div className="w-10">
           <p className="text-white text-2xl">{convertSecsToTime(timer)}</p>
@@ -47,7 +49,7 @@ export function Game() {
         <div className="w-30">
           <p className="text-white text-2xl">Score: {score}</p>
         </div>
-        <button>
+        <button onClick={() => setPaused(true)}>
           <FaPause />
         </button>
       </div>
@@ -72,7 +74,9 @@ export function Game() {
                       src={
                         card.isOpen
                           ? getImageURL(card.imagePath)
-                          : getImageURL("card-backgrounds/classic_blue.png")
+                          : getImageURL(
+                              `card-backgrounds/classic_${selectedCard}.png`
+                            )
                       }
                       alt="Classic Blue Background"
                       className="w-full h-full"
@@ -90,11 +94,11 @@ export function Game() {
             <img
               src={hintImg}
               alt="Hint"
-              className="hint w-12 cursor-pointer"
+              className="hint w-10 cursor-pointer"
             />
             <button>
               <FaUndoAlt
-                size={44}
+                size={36}
                 className="text-white/80 hover:text-red-400"
               />
             </button>
@@ -112,7 +116,9 @@ export function Game() {
                 }`}
               >
                 <img
-                  src={blueBg}
+                  src={getImageURL(
+                    `card-backgrounds/classic_${selectedCard}.png`
+                  )}
                   alt="Classic Blue Background"
                   className="w-full h-full"
                 />
