@@ -1,8 +1,8 @@
-import { useGameContext } from "../contexts/gameContext";
-import blueBg from "../assets/card-icons/card-backgrounds/classic_blue.png";
-import brownBg from "../assets/card-icons/card-backgrounds/classic_brown.png";
-import greenBg from "../assets/card-icons/card-backgrounds/classic_green.png";
-import redBg from "../assets/card-icons/card-backgrounds/classic_red.png";
+import { useGameContext } from "../../contexts/gameContext";
+import blueBg from "../../assets/card-icons/card-backgrounds/classic_blue.png";
+import brownBg from "../../assets/card-icons/card-backgrounds/classic_brown.png";
+import greenBg from "../../assets/card-icons/card-backgrounds/classic_green.png";
+import redBg from "../../assets/card-icons/card-backgrounds/classic_red.png";
 
 export function SettingsModal({
   setSettingsOpen,

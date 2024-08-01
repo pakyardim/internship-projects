@@ -1,6 +1,7 @@
 import { IoMdHome } from "react-icons/io";
 import { VscTriangleRight } from "react-icons/vsc";
-import { useGameContext } from "../contexts/gameContext";
+
+import { useGameContext } from "../../contexts/gameContext";
 
 export function PauseModal() {
   const {
