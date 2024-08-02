@@ -206,7 +206,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
           for (let k = 0; k < fromColumn.length; k++) {
             const card = fromColumn[k];
-            const previousCard = fromColumn[k - 1] || null;
+            const previousCard = fromColumn[k - 1]?.isOpen
+              ? fromColumn[k - 1]
+              : null || null;
 
             const mockLayout = JSON.parse(JSON.stringify(layout));
 
@@ -259,7 +261,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               }
 
               if (
-                sequence[0].rank + 1 === toColumn[toColumn.length - 1].rank &&
+                sequence[0].rank + 1 === toColumn[toColumn.length - 1]?.rank &&
                 sequence.length > 1 &&
                 isDescendingSequence(sequence)
               ) {
@@ -280,27 +282,27 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                 });
 
                 if (
-                  (previousCard &&
-                    toColumn[toColumn.length - 1].rank !== previousCard.rank) ||
+                  toColumn[toColumn.length - 1]?.rank === previousCard?.rank &&
                   !completedSuit
-                ) {
-                  const possibleMove = {
+                )
+                  continue;
+
+                const possibleMove = {
+                  from: fromColumnId,
+                  to: toColumnId,
+                  cards: sequence,
+                };
+
+                const idx = possibleMoves.findIndex(
+                  (move) => move === possibleMove
+                );
+
+                if (idx === -1)
+                  possibleMoves.push({
                     from: fromColumnId,
                     to: toColumnId,
                     cards: sequence,
-                  };
-
-                  const idx = possibleMoves.findIndex(
-                    (move) => move === possibleMove
-                  );
-
-                  if (idx === -1)
-                    possibleMoves.push({
-                      from: fromColumnId,
-                      to: toColumnId,
-                      cards: sequence,
-                    });
-                }
+                  });
               }
             }
           }
@@ -340,7 +342,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       if (
         lastDestItem &&
-        sourceItems[source.index].rank + 1 !== lastDestItem.rank
+        sourceItems[source.index].rank + 1 !== lastDestItem?.rank
       ) {
         return;
       }
@@ -359,6 +361,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               prevScore +
               (selectedMode === "1" ? 2 : selectedMode === "2" ? 3 : 4)
           );
+          flipCardSound.play();
+
           prevItem.isOpen = true;
         }
 
@@ -379,8 +383,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           JSON.parse(JSON.stringify(layout)),
         ]);
 
-        flipCardSound.play();
-
         setLayout(newColumns);
       } else {
         const [removed] = sourceItems.splice(source.index, 1);
@@ -391,6 +393,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               prevScore +
               (selectedMode === "1" ? 2 : selectedMode === "2" ? 3 : 4)
           );
+
+          flipCardSound.play();
 
           prevItem.isOpen = true;
         }
@@ -413,8 +417,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           ...prevHistory,
           JSON.parse(JSON.stringify(layout)),
         ]);
-
-        flipCardSound.play();
 
         setLayout(newColumns);
       }
