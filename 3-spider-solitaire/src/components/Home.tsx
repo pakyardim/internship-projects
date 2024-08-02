@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import spiderImg from "../assets/spider.png";
-import { useGameContext } from "../contexts/gameContext";
-import { SettingsModal } from "./modals/SettingsModal";
+import spiderImg from "src/assets/spider.png";
+import { useGameContext } from "src/contexts/gameContext";
+import { SettingsModal } from "src/components/modals/SettingsModal";
 
 export function Home() {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);

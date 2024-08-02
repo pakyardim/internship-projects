@@ -3,7 +3,11 @@ import { VscDebugRestart } from "react-icons/vsc";
 
 import { useGameContext } from "../../contexts/gameContext";
 
-export function WinModal() {
+interface Props {
+  isWin: boolean;
+}
+
+export function EndGameModal({ isWin }: Props) {
   const {
     values: { score },
     functions: { handleGoHome, handleRestart },
@@ -14,7 +18,9 @@ export function WinModal() {
       <div className="bg-white/90 flex flex-col gap-y-10 text-black font-primary p-8 rounded-xl shadow-lg max-w-md w-full">
         <div className="w-full flex justify-between">
           <div className="flex-1 text-center">
-            <h2 className="font-bold text-xl">YOU WON!</h2>
+            <h2 className="font-bold text-xl">
+              {isWin ? "YOU WON!" : "YOU LOST!"}{" "}
+            </h2>
           </div>
         </div>
         <div className="flex justify-between">

@@ -1,6 +1,6 @@
-import { Home } from "./components/Home";
-import { Game } from "./components/Game";
-import { useGameContext } from "./contexts/gameContext";
+import { Home } from "src/components/Home";
+import { Game } from "src/components/Game";
+import { useGameContext } from "src/contexts/gameContext";
 
 function App() {
   const {

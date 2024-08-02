@@ -1,4 +1,4 @@
-import { CardType } from "../types";
+import { CardType } from "src/types";
 
 const suits = ["clubs", "diamonds", "hearts", "spades"];
 
