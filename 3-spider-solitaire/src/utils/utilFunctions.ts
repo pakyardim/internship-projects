@@ -8,9 +8,6 @@ export const convertSecsToTime = (secs: number): string => {
   }:${seconds < 10 ? "0" + seconds : seconds}`;
 };
 
-export const getImageURL = (
-  name: string,
-  folderName: string = "card-icons"
-) => {
-  return new URL(`../assets/${folderName}/${name}`, import.meta.url).href;
+export const getImageURL = (name: string) => {
+  return new URL(`../assets/card-icons/${name}`, import.meta.url).href;
 };
