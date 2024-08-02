@@ -22,6 +22,10 @@ main {
   width: 100vw;
 }
 
+h1 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 .radio-custom {
   @apply w-4 h-4 border border-gray-500 rounded-full flex items-center justify-center cursor-pointer;
 }
