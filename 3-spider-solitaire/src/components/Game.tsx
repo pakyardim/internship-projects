@@ -1,49 +1,59 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { FaPause, FaUndoAlt } from "react-icons/fa";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
+import { FaUndoAlt } from "react-icons/fa";
 
 import { EndGameModal } from "src/components/modals/EndGameModal";
 import { PauseModal } from "src/components/modals/PauseModal";
-import { CardItem } from "src/components/CardItem";
 import { useGameContext } from "src/contexts/gameContext";
-import { convertSecsToTime, getImageURL } from "src/utils/utilFunctions";
+import { getImageURL } from "src/utils/utilFunctions";
 import hintImg from "src/assets/hint.png";
 import { CardType } from "src/types";
+import { GameHeader } from "./GameHeader";
+import { Column } from "./Column";
 
 export function Game() {
   const {
-    values: {
-      paused,
-      stock,
-      layout,
-      selectedCard,
-      endGame,
-      draggableGroup,
-      score,
-      timer,
-      draggableId,
-    },
-    setters: { setPaused },
-    functions: { deal10Cards, onDragEnd, onBeforeCapture },
+    values: { paused, stock, layout, selectedCard, endGame, hint },
+    functions: { deal10Cards, onDragEnd, onBeforeCapture, undo, provideHint },
   } = useGameContext();
+
+  const [translationValue, setTranslationValue] = useState({ x: 0, y: 0 });
+  const [dealAnimationStart, setDealAnimationStart] = useState(false);
+  const [dealAnimationEnd, setDealAnimationEnd] = useState(false);
+
+  const topSectionRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (topSectionRef.current) {
+      const topRect = topSectionRef.current.getBoundingClientRect();
+      const calculatedTranslationX = topRect.width;
+      const calculatedTranslationY = topRect.bottom - topRect.top;
+      setTranslationValue({
+        x: calculatedTranslationX,
+        y: calculatedTranslationY,
+      });
+    }
+
+    setTimeout(() => {
+      setDealAnimationStart(true);
+    }, 50);
+  }, []);
+
+  useEffect(() => {
+    const timeout = 4000;
+    setTimeout(() => {
+      setDealAnimationEnd(true);
+    }, timeout);
+  }, []);
 
   return (
     <div className={`w-full h-full flex flex-col md:px-0 md:py-10 lg:px-32`}>
       {paused && <PauseModal />}
       {endGame && <EndGameModal isWin={endGame === "win"} />}
 
-      <div className="bg-green-900/90 flex justify-between mb-10">
-        <div className="w-10">
-          <p className="text-white text-2xl">{convertSecsToTime(timer)}</p>
-        </div>
-        <div className="w-30">
-          <p className="text-white text-2xl">Score: {score}</p>
-        </div>
-        <button onClick={() => setPaused(true)}>
-          <FaPause />
-        </button>
-      </div>
+      <GameHeader />
 
       <DragDropContext
         onDragEnd={(result) => {
@@ -55,46 +65,22 @@ export function Game() {
       >
         <div className="flex-1 inline-flex justify-between">
           {Object.entries(layout!).map(([id, cards], i) => (
-            <Droppable key={i} droppableId={id}>
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className="min-h-32 min-w-24 flex flex-col relative"
-                >
-                  <div className="h-32 w-24 border border-gray-300 rounded-lg" />
-                  {cards.items.map((card: CardType, j: number) => {
-                    const nextCard = cards.items[j + 1];
-                    const dragDisabled = nextCard
-                      ? card.isOpen
-                        ? nextCard?.rank + 1 !== card.rank
-                        : true
-                      : false;
-
-                    return (
-                      <CardItem
-                        marginBetweenCards={cards.items.length > 9 ? 20 : 25}
-                        group={draggableGroup}
-                        draggableId={draggableId!}
-                        key={j}
-                        card={card}
-                        dragDisabled={dragDisabled}
-                        index={j}
-                      />
-                    );
-                  })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+            <Column key={i} id={id} cards={cards.items} />
           ))}
         </div>
       </DragDropContext>
 
       <section className="px-5 items-end flex justify-around">
         <div className="flex space-x-20 items-center">
-          <img src={hintImg} alt="Hint" className="hint w-10 cursor-pointer" />
-          <button>
+          <button onClick={provideHint}>
+            <img
+              src={hintImg}
+              alt="Hint"
+              className="hint w-10 cursor-pointer"
+            />
+          </button>
+
+          <button onClick={undo}>
             <FaUndoAlt size={36} className="text-white/80 hover:text-red-400" />
           </button>
         </div>
@@ -110,7 +96,12 @@ export function Game() {
                 left: i * 12,
               }}
               className={`w-24 h-32 ${
-                i === stock.length - 1 ? "hover:scale-105 cursor-pointer" : ""
+                i === stock.length - 1
+                  ? `hover:scale-105 cursor-pointer ${
+                      hint?.from === "stock" &&
+                      "outline outline-yellow-500 rounded-lg"
+                    }`
+                  : ""
               }`}
             >
               <img

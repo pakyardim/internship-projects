@@ -5,6 +5,15 @@ import { getImageURL } from "src/utils/utilFunctions";
 import { useGameContext } from "src/contexts/gameContext";
 import { CardType } from "src/types";
 
+interface Props {
+  marginBetweenCards: number;
+  draggableId: string;
+  card: CardType;
+  group: CardType[] | undefined;
+  index: number;
+  dragDisabled: boolean;
+}
+
 export function CardItem({
   marginBetweenCards,
   draggableId,
@@ -12,16 +21,9 @@ export function CardItem({
   group,
   index,
   dragDisabled,
-}: {
-  marginBetweenCards: number;
-  draggableId: string;
-  group: CardType[] | undefined;
-  card: CardType;
-  dragDisabled: boolean;
-  index: number;
-}) {
+}: Props) {
   const {
-    values: { selectedCard },
+    values: { selectedCard, hint },
   } = useGameContext();
 
   const isGroupDragging =
@@ -51,7 +53,7 @@ export function CardItem({
               : "none !important",
         };
 
-        if (isGroupDragging && index !== 0) {
+        if (isGroupDragging) {
           return (
             <div
               ref={provided.innerRef}
@@ -79,6 +81,8 @@ export function CardItem({
           );
         }
 
+        const isHinted = hint && hint.cards.some((item) => item.id === card.id);
+
         return (
           <div
             ref={provided.innerRef}
@@ -86,6 +90,8 @@ export function CardItem({
             {...provided.dragHandleProps}
             style={style}
             className={`${
+              isHinted && "shadow-xl outline outline-yellow-500 rounded-lg"
+            } ${
               dragSnapshot.isDragging
                 ? "scale-105 outline outline-blue-300 rounded"
                 : ""
