@@ -4,14 +4,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { FaUndoAlt } from "react-icons/fa";
 
-import { EndGameModal } from "src/components/modals/EndGameModal";
-import { PauseModal } from "src/components/modals/PauseModal";
+import { EndGameModal, PauseModal, GameHeader, Column } from "src/components";
+
 import { useGameContext } from "src/contexts/gameContext";
 import { getImageURL } from "src/utils/utilFunctions";
 import hintImg from "src/assets/hint.png";
 import { CardType } from "src/types";
-import { GameHeader } from "./GameHeader";
-import { Column } from "./Column";
 
 export function Game() {
   const {

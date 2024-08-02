@@ -1,7 +1,7 @@
 import { IoMdHome } from "react-icons/io";
 import { VscDebugRestart } from "react-icons/vsc";
 
-import { useGameContext } from "../../contexts/gameContext";
+import { useGameContext } from "src/contexts/gameContext";
 
 interface Props {
   isWin: boolean;

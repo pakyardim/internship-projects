@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
 import { CardType } from "src/types";
-import { CardItem } from "src/components/CardItem";
+import { CardItem } from "src/components";
 import { useGameContext } from "src/contexts/gameContext";
 
 interface Props {
