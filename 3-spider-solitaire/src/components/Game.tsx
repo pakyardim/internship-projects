@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { FaUndoAlt } from "react-icons/fa";
 
@@ -18,16 +18,19 @@ export function Game() {
   } = useGameContext();
 
   const [translationValue, setTranslationValue] = useState({ x: 0, y: 0 });
-  const [dealAnimationStart, setDealAnimationStart] = useState(false);
-  const [dealAnimationEnd, setDealAnimationEnd] = useState(false);
+  const [dealAnimation, setDealAnimation] = useState<"start" | "end" | null>(
+    null
+  );
 
   const topSectionRef = useRef<HTMLDivElement>(null);
+  const stockRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (topSectionRef.current) {
+    if (topSectionRef.current && stockRef.current) {
       const topRect = topSectionRef.current.getBoundingClientRect();
-      const calculatedTranslationX = topRect.width;
-      const calculatedTranslationY = topRect.bottom - topRect.top;
+      const stockRect = stockRef.current.getBoundingClientRect();
+      const calculatedTranslationX = stockRect.left - topRect.left;
+      const calculatedTranslationY = stockRect.top - topRect.top;
       setTranslationValue({
         x: calculatedTranslationX,
         y: calculatedTranslationY,
@@ -35,19 +38,20 @@ export function Game() {
     }
 
     setTimeout(() => {
-      setDealAnimationStart(true);
+      setDealAnimation("start");
     }, 50);
   }, []);
 
   useEffect(() => {
-    const timeout = 4000;
-    setTimeout(() => {
-      setDealAnimationEnd(true);
-    }, timeout);
+    const timeout = setTimeout(() => {
+      setDealAnimation("end");
+    }, 2300);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
-    <div className={`w-full h-full flex flex-col md:px-0 md:py-10 lg:px-32`}>
+    <div className="md:container py-10 md:px-10 lg:px-32 mx-auto w-full h-full flex flex-col">
       {paused && <PauseModal />}
       {endGame && <EndGameModal isWin={endGame === "win"} />}
 
@@ -61,10 +65,11 @@ export function Game() {
           onBeforeCapture(beforeCapture);
         }}
       >
-        <div className="flex-1 inline-flex justify-between">
-          {Object.entries(layout!).map(([id, cards], i) => (
-            <Column key={i} id={id} cards={cards.items} />
-          ))}
+        <div ref={topSectionRef} className="flex-1 inline-flex gap-x-8">
+          {dealAnimation === "end" &&
+            Object.entries(layout!).map(([id, cards], i) => (
+              <Column key={i} id={id} cards={cards.items} />
+            ))}
         </div>
       </DragDropContext>
 
@@ -82,17 +87,69 @@ export function Game() {
             <FaUndoAlt size={36} className="text-white/80 hover:text-red-400" />
           </button>
         </div>
-        <div className="flex relative">
+        <div ref={stockRef} className="flex relative h-32">
+          {dealAnimation !== "end" &&
+            Object.entries(layout!).map(([id, cards], i) => (
+              <div key={i} className="relative">
+                {cards.items.length > 0 ? (
+                  cards.items.map((card: CardType, j: number) => (
+                    <div
+                      key={j}
+                      style={
+                        {
+                          "--final-x": `${-translationValue.x + i * 128}px`,
+                          "--final-y": `${-translationValue.y + j * 25}px`,
+                          animation:
+                            dealAnimation == "start"
+                              ? `dealCard 0.5s ease-out forwards`
+                              : "none",
+                          animationDelay:
+                            dealAnimation === "start"
+                              ? `${(j * cards.items.length + i) * 0.05}s`
+                              : "none",
+                          position: "absolute",
+                        } as React.CSSProperties
+                      }
+                      className={`${
+                        card.isOpen &&
+                        "hover:outline cursor-pointer hover:rounded outline-blue-300"
+                      } w-24 h-32`}
+                    >
+                      <img
+                        src={
+                          card.isOpen
+                            ? getImageURL(card.imagePath)
+                            : getImageURL(
+                                `card-backgrounds/classic_${selectedCard}.png`
+                              )
+                        }
+                        alt="Card"
+                        className="w-full h-full"
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <div className="w-24 h-32 border-2 border-gray-300 rounded" />
+                )}
+              </div>
+            ))}
+
           {stock.map((row: CardType[], i: number) => (
             <div
               onClick={() => {
                 if (i === stock.length - 1) deal10Cards();
               }}
               key={i}
-              style={{
-                position: i > 0 ? "absolute" : "static",
-                left: i * 12,
-              }}
+              style={
+                {
+                  "--finalStock-x": `${i * 12}px`,
+                  animation:
+                    dealAnimation === "end"
+                      ? "stockCard 0.5s ease-out forwards"
+                      : "none",
+                  position: "absolute",
+                } as React.CSSProperties
+              }
               className={`w-24 h-32 ${
                 i === stock.length - 1
                   ? `hover:scale-105 cursor-pointer ${

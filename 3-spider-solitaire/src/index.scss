@@ -43,3 +43,21 @@ input:checked ~ .radio-custom::before {
   filter: invert(100%) sepia(100%) saturate(1000%) hue-rotate(-45deg)
     brightness(90%);
 }
+
+@keyframes dealCard {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(var(--final-x), var(--final-y));
+  }
+}
+
+@keyframes stockCard {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(var(--finalStock-x), 0);
+  }
+}
