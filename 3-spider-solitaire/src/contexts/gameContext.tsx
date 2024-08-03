@@ -26,6 +26,7 @@ import victorySoundFile from "src/assets/sounds/victory.mp3";
 
 interface GameContextType {
   functions: {
+    playShuffleSound: () => void;
     onBeforeCapture: (beforeCapture: { draggableId: string }) => void;
     handleStartGame: () => void;
     handleGoHome: () => void;
@@ -104,44 +105,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     cards: CardType[];
   }>({ from: "", to: "", cards: [] });
 
-  const deal10Cards = useCallback(() => {
-    let newLayoutObj = {};
-    Object.entries(layout!).map(([id, column]) => {
-      const poppedCard = stock[0].pop();
-      const newColumn = [...column.items, { ...poppedCard, isOpen: true }];
-
-      const newItems = {
-        ...column,
-        items: newColumn,
-      };
-
-      newLayoutObj = {
-        ...newLayoutObj,
-        [id]: newItems,
-      };
-    });
-
-    setHistory((prevHistory) => [
-      ...prevHistory,
-      JSON.parse(JSON.stringify(layout)),
-    ]);
-
-    stockFlipSound.play();
-
-    setLayout(newLayoutObj);
-
-    const newStock = stock.splice(1);
-    setStock(newStock);
-  }, [layout, stockFlipSound, stock]);
-
-  const undo = useCallback(() => {
-    if (history.length < 1) return;
-    undoSound.play();
-    const previousLayout = history[history.length - 1];
-    setScore((prevScore) => prevScore - 1);
-    setLayout(previousLayout);
-    setHistory((prevHistory) => prevHistory.slice(0, -1));
-  }, [history, undoSound]);
+  const playShuffleSound = useCallback(() => {
+    shuffleCardsSound.play();
+  }, [shuffleCardsSound]);
 
   const checkCompletedSuit = useCallback(
     ({
@@ -318,12 +284,56 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const checkGameLost = useCallback(
     (layout: LayoutType) => {
       const possibleMoves = findPossibleMoves(layout);
-      if (possibleMoves.length === 0 && stock[0].length === 0) {
+      if (
+        (!possibleMoves && !stock) ||
+        (possibleMoves?.length === 0 && !stock[0])
+      ) {
         setEndGame("lose");
       }
     },
     [findPossibleMoves, stock]
   );
+
+  const deal10Cards = useCallback(() => {
+    let newLayoutObj = {};
+    Object.entries(layout!).map(([id, column]) => {
+      const poppedCard = stock[0].shift();
+      const newColumn = [...column.items, { ...poppedCard, isOpen: true }];
+
+      const newItems = {
+        ...column,
+        items: newColumn,
+      };
+
+      newLayoutObj = {
+        ...newLayoutObj,
+        [id]: newItems,
+      };
+    });
+
+    setHistory((prevHistory) => [
+      ...prevHistory,
+      JSON.parse(JSON.stringify(layout)),
+    ]);
+
+    stockFlipSound.play();
+
+    checkGameLost(newLayoutObj);
+
+    setLayout(newLayoutObj);
+
+    const newStock = stock.splice(1);
+    setStock(newStock);
+  }, [layout, stockFlipSound, checkGameLost, stock]);
+
+  const undo = useCallback(() => {
+    if (history.length < 1) return;
+    undoSound.play();
+    const previousLayout = history[history.length - 1];
+    setScore((prevScore) => prevScore - 1);
+    setLayout(previousLayout);
+    setHistory((prevHistory) => prevHistory.slice(0, -1));
+  }, [history, undoSound]);
 
   const onDragEnd = useCallback(
     (result: { destination: any; source?: any }) => {
@@ -356,7 +366,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         sourceItems.splice(source.index, sourceItems.length - source.index);
 
         const prevItem = sourceItems[sourceItems.length - 1];
-        if (prevItem) {
+        if (prevItem && !prevItem.isOpen) {
           setScore(
             (prevScore) =>
               prevScore +
@@ -388,7 +398,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       } else {
         const [removed] = sourceItems.splice(source.index, 1);
         const prevItem = sourceItems[sourceItems.length - 1];
-        if (prevItem) {
+        if (prevItem && !prevItem.isOpen) {
           setScore(
             (prevScore) =>
               prevScore +
@@ -453,7 +463,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             const newColumns = { ...prevColumns };
             const items = newColumns[destination.droppableId].items;
             items.splice(-13, 13);
-            if (items[items.length - 1]) {
+            if (items[items.length - 1] && !items[items.length - 1].isOpen) {
               setScore(
                 (prevScore) =>
                   prevScore +
@@ -488,6 +498,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       flipCardSound,
       layout,
       selectedMode,
+      shuffleCardsSound,
       victorySound,
     ]
   );
@@ -581,6 +592,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       deal10Cards,
       onDragEnd,
       undo,
+      playShuffleSound,
       onBeforeCapture,
       handleRestart,
       provideHint,
@@ -627,6 +639,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     onBeforeCapture,
     provideHint,
     handleRestart,
+    playShuffleSound,
     activePage,
     endGame,
     timer,

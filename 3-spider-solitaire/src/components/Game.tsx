@@ -14,13 +14,23 @@ import { CardType } from "src/types";
 export function Game() {
   const {
     values: { paused, stock, layout, selectedCard, endGame, hint },
-    functions: { deal10Cards, onDragEnd, onBeforeCapture, undo, provideHint },
+    functions: {
+      deal10Cards,
+      onDragEnd,
+      onBeforeCapture,
+      undo,
+      provideHint,
+      playShuffleSound,
+    },
   } = useGameContext();
 
   const [translationValue, setTranslationValue] = useState({ x: 0, y: 0 });
   const [dealAnimation, setDealAnimation] = useState<"start" | "end" | null>(
     null
   );
+  const [deal10Animation, setDeal10Animation] = useState<
+    "start" | "end" | null
+  >(null);
 
   const topSectionRef = useRef<HTMLDivElement>(null);
   const stockRef = useRef<HTMLDivElement>(null);
@@ -56,6 +66,13 @@ export function Game() {
 
   const marginBetweenCards =
     maxItemsLength > 15 ? 15 : maxItemsLength > 9 ? 20 : 25;
+
+  const columnLengths: { [key: string]: number } = Object.entries(
+    layout!
+  ).reduce((acc, [id, cards]) => {
+    acc[id] = cards.items.length;
+    return acc;
+  }, {} as { [key: string]: number });
 
   return (
     <div className="md:container py-10 md:px-10 lg:px-32 mx-auto w-full h-full flex flex-col">
@@ -146,10 +163,65 @@ export function Game() {
               </div>
             ))}
 
+          {deal10Animation && deal10Animation !== "end" && (
+            <div className="relative">
+              {stock[0].length > 0 ? (
+                stock[0].map((card: CardType, i: number) => {
+                  const columnLength = card.targetColumnId
+                    ? columnLengths[card.targetColumnId]
+                    : 0;
+
+                  return (
+                    <div
+                      key={i}
+                      style={
+                        {
+                          "--final-x": `${-translationValue.x + i * 128}px`,
+                          "--final-y": `${
+                            -translationValue.y +
+                            columnLength * marginBetweenCards
+                          }px`,
+                          animation:
+                            deal10Animation == "start"
+                              ? `dealCard 0.5s ease-out forwards`
+                              : "none",
+                          animationDelay:
+                            deal10Animation === "start"
+                              ? `${i * 0.05}s`
+                              : "none",
+                          position: "absolute",
+                        } as React.CSSProperties
+                      }
+                      className={`${
+                        card.isOpen &&
+                        "hover:outline cursor-pointer hover:rounded outline-blue-300"
+                      } w-24 h-32`}
+                    >
+                      <img
+                        src={getImageURL(card.imagePath)}
+                        alt="Card"
+                        className="w-full h-full"
+                      />
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="w-24 h-32 border-2 border-gray-300 rounded" />
+              )}
+            </div>
+          )}
+
           {stock.map((row: CardType[], i: number) => (
             <div
               onClick={() => {
-                if (i === stock.length - 1) deal10Cards();
+                if (i === stock.length - 1) {
+                  setDeal10Animation("start");
+                  playShuffleSound();
+                  setTimeout(() => {
+                    setDeal10Animation("end");
+                    deal10Cards();
+                  }, 1000);
+                }
               }}
               key={i}
               style={

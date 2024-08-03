@@ -18,6 +18,7 @@ export const createDeck = (suitNum: number): CardType[] => {
           suit: i,
           imagePath: `${suits[i]}/${rank}.png`,
           isOpen: false,
+          targetColumnId: "",
         });
       }
     }
@@ -105,7 +106,10 @@ export const dealCards = (
     for (let row = 0; row < 10; row++) {
       const card = deck.pop();
       if (card) {
-        stock[i][row] = card;
+        stock[i][row] = {
+          ...card,
+          targetColumnId: Object.keys(layoutWithIds)[row],
+        };
       }
     }
   }
