@@ -8,6 +8,7 @@ import { useGameContext } from "src/contexts/gameContext";
 interface Props {
   id: string;
   cards: CardType[];
+  marginBetweenCards: number;
 }
 
 const isDescendingWithOneRankDifference = (cards: CardType[]) => {
@@ -25,7 +26,11 @@ const isDescendingWithOneRankDifference = (cards: CardType[]) => {
   return true;
 };
 
-export const Column = memo(function Column({ id, cards }: Props) {
+export const Column = memo(function Column({
+  id,
+  cards,
+  marginBetweenCards,
+}: Props) {
   const {
     values: { draggableGroup, draggableId },
   } = useGameContext();
@@ -46,7 +51,7 @@ export const Column = memo(function Column({ id, cards }: Props) {
 
             return (
               <CardItem
-                marginBetweenCards={cards.length > 9 ? 20 : 25}
+                marginBetweenCards={marginBetweenCards}
                 group={draggableGroup}
                 draggableId={draggableId!}
                 key={j}

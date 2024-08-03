@@ -50,6 +50,13 @@ export function Game() {
     return () => clearTimeout(timeout);
   }, []);
 
+  const maxItemsLength = Math.max(
+    ...Object.values(layout!).map((column) => column.items.length)
+  );
+
+  const marginBetweenCards =
+    maxItemsLength > 15 ? 15 : maxItemsLength > 9 ? 20 : 25;
+
   return (
     <div className="md:container py-10 md:px-10 lg:px-32 mx-auto w-full h-full flex flex-col">
       {paused && <PauseModal />}
@@ -68,7 +75,12 @@ export function Game() {
         <div ref={topSectionRef} className="flex-1 inline-flex gap-x-8">
           {dealAnimation === "end" &&
             Object.entries(layout!).map(([id, cards], i) => (
-              <Column key={i} id={id} cards={cards.items} />
+              <Column
+                key={i}
+                id={id}
+                cards={cards.items}
+                marginBetweenCards={marginBetweenCards}
+              />
             ))}
         </div>
       </DragDropContext>
@@ -154,7 +166,7 @@ export function Game() {
                 i === stock.length - 1
                   ? `hover:scale-105 cursor-pointer ${
                       hint?.from === "stock" &&
-                      "outline outline-yellow-500 rounded-lg"
+                      "outline outline-yellow-400 rounded-lg"
                     }`
                   : ""
               }`}

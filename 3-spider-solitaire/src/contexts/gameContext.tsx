@@ -165,10 +165,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         prevScore + selectedMode === "1" ? 50 : selectedMode === "2" ? 100 : 150
       );
 
-      shuffleCardsSound.play();
       return true;
     },
-    [selectedMode, shuffleCardsSound]
+    [selectedMode]
   );
 
   const findPossibleMoves = useCallback(
@@ -236,9 +235,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                 toColumn[toColumn.length - 1].rank === card.rank + 1
               ) {
                 if (
+                  !previousCard ||
                   (previousCard &&
-                    toColumn[toColumn.length - 1].rank !== previousCard.rank) ||
-                  !completedSuit
+                    previousCard.rank !== toColumn[toColumn.length - 1].rank) ||
+                  (previousCard &&
+                    previousCard.rank === toColumn[toColumn.length - 1].rank &&
+                    completedSuit)
                 ) {
                   possibleMoves.push({
                     from: fromColumnId,
@@ -253,11 +255,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               const sequence: CardType[] = [card];
               for (let l = k + 1; l < fromColumn.length; l++) {
                 const nextCard = fromColumn[l];
-                if (sequence[sequence.length - 1].rank === nextCard.rank + 1) {
-                  sequence.push(nextCard);
-                } else {
-                  break;
-                }
+                sequence.push(nextCard);
               }
 
               if (
@@ -282,27 +280,30 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                 });
 
                 if (
-                  toColumn[toColumn.length - 1]?.rank === previousCard?.rank &&
-                  !completedSuit
-                )
-                  continue;
-
-                const possibleMove = {
-                  from: fromColumnId,
-                  to: toColumnId,
-                  cards: sequence,
-                };
-
-                const idx = possibleMoves.findIndex(
-                  (move) => move === possibleMove
-                );
-
-                if (idx === -1)
-                  possibleMoves.push({
+                  !previousCard ||
+                  (previousCard &&
+                    previousCard.rank !== toColumn[toColumn.length - 1].rank) ||
+                  (previousCard &&
+                    previousCard.rank === toColumn[toColumn.length - 1].rank &&
+                    completedSuit)
+                ) {
+                  const possibleMove = {
                     from: fromColumnId,
                     to: toColumnId,
                     cards: sequence,
-                  });
+                  };
+
+                  const idx = possibleMoves.findIndex(
+                    (move) => move === possibleMove
+                  );
+
+                  if (idx === -1)
+                    possibleMoves.push({
+                      from: fromColumnId,
+                      to: toColumnId,
+                      cards: sequence,
+                    });
+                }
               }
             }
           }
@@ -430,6 +431,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         });
 
         if (completedSuit) {
+          shuffleCardsSound.play();
+
           if (completedSuitNum === 7) {
             victorySound.play();
             setEndGame("win");

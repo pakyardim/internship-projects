@@ -90,7 +90,7 @@ export function CardItem({
             {...provided.dragHandleProps}
             style={style}
             className={`${
-              isHinted && "shadow-xl outline outline-yellow-500 rounded-lg"
+              isHinted && "shadow-xl outline outline-yellow-400 rounded-lg"
             } ${
               dragSnapshot.isDragging
                 ? "scale-105 outline outline-blue-300 rounded"
