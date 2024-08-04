@@ -21,16 +21,13 @@ export function Game() {
       hint,
       deal10Animation,
       completedSuitNum,
+      dealAnimation,
     },
-    setters: { setSuitTranslationValue, setSuitAnimation },
+    setters: { setSuitTranslationValue, setSuitAnimation, setDealAnimation },
     functions: { deal10Cards, onDragEnd, onBeforeCapture, undo, provideHint },
   } = useGameContext();
 
   const [translationValue, setTranslationValue] = useState({ x: 0, y: 0 });
-
-  const [dealAnimation, setDealAnimation] = useState<"start" | "end" | null>(
-    null
-  );
 
   const topSectionRef = useRef<HTMLDivElement>(null);
   const stockRef = useRef<HTMLDivElement>(null);
@@ -61,9 +58,8 @@ export function Game() {
 
     setTimeout(() => {
       setDealAnimation("start");
-      setSuitAnimation("start");
     }, 50);
-  }, [setSuitAnimation, setSuitTranslationValue]);
+  }, [setDealAnimation, setSuitAnimation, setSuitTranslationValue]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -71,7 +67,7 @@ export function Game() {
     }, 2300);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [setDealAnimation]);
 
   const columnLengths: { [key: string]: number } = Object.entries(
     layout!
@@ -108,6 +104,7 @@ export function Game() {
           {completedSuitNum > 0 &&
             Array.from({ length: completedSuitNum }).map((_, i) => (
               <div
+                key={i}
                 style={{ position: "absolute", left: `${i * 20}px` }}
                 className="h-32 min-w-24"
               >
@@ -135,7 +132,8 @@ export function Game() {
         </div>
         <div ref={stockRef} className="flex relative h-32">
           {dealAnimation !== "end" &&
-            Object.entries(layout!).map(([id, cards], i) => (
+            layout &&
+            Object.entries(layout)?.map(([id, cards], i) => (
               <div key={i} className="relative">
                 {cards.items.length > 0 ? (
                   cards.items.map((card: CardType, j: number) => (

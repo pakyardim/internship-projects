@@ -36,6 +36,7 @@ interface GameContextType {
     provideHint: () => void;
   };
   values: {
+    dealAnimation: "start" | "end" | null;
     suitAnimation: "start" | "end" | null;
     suitTranslationValue: { x: number; y: number };
     deal10Animation: "start" | "end" | null;
@@ -57,6 +58,9 @@ interface GameContextType {
     paused: boolean;
   };
   setters: {
+    setDealAnimation: React.Dispatch<
+      React.SetStateAction<"start" | "end" | null>
+    >;
     setSuitAnimation: React.Dispatch<
       React.SetStateAction<"start" | "end" | null>
     >;
@@ -105,6 +109,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [history, setHistory] = useState<
     { layout: LayoutType; completedSuit: boolean }[]
   >([]);
+  const [dealAnimation, setDealAnimation] = useState<"start" | "end" | null>(
+    null
+  );
   const [completedSuitNum, setCompletedSuitNum] = useState<number>(0);
   const [score, setScore] = useState<number>(500);
   const [draggableGroup, setDraggableGroup] = useState<CardType[]>();
@@ -485,11 +492,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (completedSuit) {
-        setHistory((prevHistory) => [
-          ...prevHistory,
-          { layout: prevLayout, completedSuit: true },
-        ]);
-
         setTimeout(() => {
           setSuitAnimation("start");
           shuffleCardsSound.play();
@@ -499,7 +501,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
             setHistory((prevHistory) => [
               ...prevHistory,
-              JSON.parse(JSON.stringify(prevColumns)),
+              {
+                layout: JSON.parse(JSON.stringify(prevColumns)),
+                completedSuit: true,
+              },
             ]);
 
             const newColumns = { ...prevColumns };
@@ -546,6 +551,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           setLastCompletedSuit({ columnId: "", cards: [] });
         }, 3000);
       } else {
+        checkGameLost(newColumns);
+
         setHistory((prevHistory) => [
           ...prevHistory,
           { layout: prevLayout, completedSuit: false },
@@ -637,6 +644,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setTimer(0);
     setScore(500);
     prepareLayout();
+    setTimeout(() => {
+      setDealAnimation("start");
+    }, 50);
   }, [prepareLayout]);
 
   const handleGoHome = useCallback(() => {
@@ -663,6 +673,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       activePage,
       deal10Animation,
       endGame,
+      dealAnimation,
       timer,
       draggableGroup,
       draggableId,
@@ -687,6 +698,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setActivePage,
       setSuitAnimation,
       setTimer,
+      setDealAnimation,
       setStartGamePressed,
       setSelectedCard,
       setPaused,
@@ -708,8 +720,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     provideHint,
     activePage,
     deal10Animation,
-    setSuitAnimation,
     endGame,
+    dealAnimation,
     timer,
     draggableGroup,
     draggableId,
