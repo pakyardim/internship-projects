@@ -132,3 +132,18 @@ export const getDraggableGroup = (
   }
   return [];
 };
+
+export const isDescendingWithOneRankDifference = (cards: CardType[]) => {
+  if (cards.length < 2) return true;
+
+  for (let i = 0; i < cards.length - 1; i++) {
+    const currentRank = cards[i].rank;
+    const nextRank = cards[i + 1].rank;
+
+    if (currentRank - nextRank !== 1) {
+      return false;
+    }
+  }
+
+  return true;
+};

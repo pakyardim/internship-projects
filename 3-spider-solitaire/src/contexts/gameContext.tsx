@@ -26,7 +26,6 @@ import victorySoundFile from "src/assets/sounds/victory.mp3";
 
 interface GameContextType {
   functions: {
-    playShuffleSound: () => void;
     onBeforeCapture: (beforeCapture: { draggableId: string }) => void;
     handleStartGame: () => void;
     handleGoHome: () => void;
@@ -37,6 +36,10 @@ interface GameContextType {
     provideHint: () => void;
   };
   values: {
+    suitAnimation: "start" | "end" | null;
+    suitTranslationValue: { x: number; y: number };
+    deal10Animation: "start" | "end" | null;
+    lastCompletedSuit: { columnId: string; cards: CardType[] };
     timer: number;
     endGame: "lose" | "win" | null;
     completedSuitNum: number;
@@ -45,7 +48,7 @@ interface GameContextType {
     draggableGroup: CardType[] | undefined;
     draggableId: string | undefined;
     stock: CardType[][];
-    history: LayoutType[];
+    history: { layout: LayoutType; completedSuit: boolean }[];
     layout: LayoutType | undefined;
     selectedMode: "1" | "2" | "4";
     selectedCard: "blue" | "brown" | "green" | "red";
@@ -54,6 +57,12 @@ interface GameContextType {
     paused: boolean;
   };
   setters: {
+    setSuitAnimation: React.Dispatch<
+      React.SetStateAction<"start" | "end" | null>
+    >;
+    setSuitTranslationValue: React.Dispatch<
+      React.SetStateAction<{ x: number; y: number }>
+    >;
     setTimer: React.Dispatch<React.SetStateAction<number>>;
     setSelectedCard: React.Dispatch<
       React.SetStateAction<"blue" | "brown" | "green" | "red">
@@ -93,7 +102,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [endGame, setEndGame] = useState<"lose" | "win" | null>(null);
   const [stock, setStock] = useState<CardType[][]>([[]]);
   const [layout, setLayout] = useState<LayoutType>();
-  const [history, setHistory] = useState<LayoutType[]>([]);
+  const [history, setHistory] = useState<
+    { layout: LayoutType; completedSuit: boolean }[]
+  >([]);
   const [completedSuitNum, setCompletedSuitNum] = useState<number>(0);
   const [score, setScore] = useState<number>(500);
   const [draggableGroup, setDraggableGroup] = useState<CardType[]>();
@@ -105,9 +116,23 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     cards: CardType[];
   }>({ from: "", to: "", cards: [] });
 
-  const playShuffleSound = useCallback(() => {
-    shuffleCardsSound.play();
-  }, [shuffleCardsSound]);
+  const [deal10Animation, setDeal10Animation] = useState<
+    "start" | "end" | null
+  >(null);
+
+  const [suitAnimation, setSuitAnimation] = useState<"start" | "end" | null>(
+    null
+  );
+
+  const [suitTranslationValue, setSuitTranslationValue] = useState({
+    x: 0,
+    y: 0,
+  });
+
+  const [lastCompletedSuit, setLastCompletedSuit] = useState<{
+    columnId: string;
+    cards: CardType[];
+  }>({ columnId: "", cards: [] });
 
   const checkCompletedSuit = useCallback(
     ({
@@ -127,8 +152,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      setScore((prevScore) =>
-        prevScore + selectedMode === "1" ? 50 : selectedMode === "2" ? 100 : 150
+      setScore(
+        (prevScore) =>
+          prevScore +
+          (selectedMode === "1" ? 50 : selectedMode === "2" ? 100 : 150)
       );
 
       return true;
@@ -203,9 +230,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
                 if (
                   !previousCard ||
                   (previousCard &&
-                    previousCard.rank !== toColumn[toColumn.length - 1].rank) ||
+                    previousCard.rank !==
+                      toColumn[toColumn.length - 1]?.rank) ||
                   (previousCard &&
-                    previousCard.rank === toColumn[toColumn.length - 1].rank &&
+                    previousCard.rank === toColumn[toColumn.length - 1]?.rank &&
                     completedSuit)
                 ) {
                   possibleMoves.push({
@@ -296,42 +324,64 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const deal10Cards = useCallback(() => {
     let newLayoutObj = {};
-    Object.entries(layout!).map(([id, column]) => {
-      const poppedCard = stock[0].shift();
-      const newColumn = [...column.items, { ...poppedCard, isOpen: true }];
 
-      const newItems = {
-        ...column,
-        items: newColumn,
-      };
+    const minItemsLength = Math.min(
+      ...Object.values(layout!).map((column) => column.items.length)
+    );
 
-      newLayoutObj = {
-        ...newLayoutObj,
-        [id]: newItems,
-      };
-    });
+    if (minItemsLength < 1) return;
 
-    setHistory((prevHistory) => [
-      ...prevHistory,
-      JSON.parse(JSON.stringify(layout)),
-    ]);
+    shuffleCardsSound.play();
 
-    stockFlipSound.play();
+    setDeal10Animation("start");
 
-    checkGameLost(newLayoutObj);
+    setTimeout(() => {
+      Object.entries(layout!).map(([id, column]) => {
+        const poppedCard = stock[0].shift();
+        const newColumn = [...column.items, { ...poppedCard, isOpen: true }];
 
-    setLayout(newLayoutObj);
+        const newItems = {
+          ...column,
+          items: newColumn,
+        };
 
-    const newStock = stock.splice(1);
-    setStock(newStock);
-  }, [layout, stockFlipSound, checkGameLost, stock]);
+        newLayoutObj = {
+          ...newLayoutObj,
+          [id]: newItems,
+        };
+      });
+
+      setHistory((prevHistory) => [
+        ...prevHistory,
+        { layout: JSON.parse(JSON.stringify(layout)), completedSuit: false },
+      ]);
+
+      stockFlipSound.play();
+
+      checkGameLost(newLayoutObj);
+
+      setLayout(newLayoutObj);
+
+      const newStock = stock.splice(1);
+      setStock(newStock);
+      setDeal10Animation("end");
+    }, 1000);
+  }, [layout, shuffleCardsSound, stockFlipSound, checkGameLost, stock]);
 
   const undo = useCallback(() => {
     if (history.length < 1) return;
     undoSound.play();
-    const previousLayout = history[history.length - 1];
+
+    const previousMove = history[history.length - 1];
+
     setScore((prevScore) => prevScore - 1);
-    setLayout(previousLayout);
+
+    if (previousMove.completedSuit) {
+      setCompletedSuitNum((prevSuits) => prevSuits - 1);
+    }
+
+    setLayout(previousMove.layout);
+
     setHistory((prevHistory) => prevHistory.slice(0, -1));
   }, [history, undoSound]);
 
@@ -357,6 +407,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       ) {
         return;
       }
+
+      const prevLayout = JSON.parse(JSON.stringify(layout));
 
       if (draggableGroup && draggableGroup.length > 1) {
         for (let i = source.index; i < sourceItems.length; i++) {
@@ -389,11 +441,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           },
         };
 
-        setHistory((prevHistory) => [
-          ...prevHistory,
-          JSON.parse(JSON.stringify(layout)),
-        ]);
-
         setLayout(newColumns);
       } else {
         const [removed] = sourceItems.splice(source.index, 1);
@@ -424,33 +471,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           },
         };
 
-        setHistory((prevHistory) => [
-          ...prevHistory,
-          JSON.parse(JSON.stringify(layout)),
-        ]);
-
         setLayout(newColumns);
       }
 
       setDraggableGroup(undefined);
 
-      setTimeout(() => {
-        const completedSuit = checkCompletedSuit({
-          columnId: destination.droppableId,
-          layout: newColumns,
-        });
+      const completedSuit = checkCompletedSuit({
+        columnId: destination.droppableId,
+        layout: newColumns,
+      });
 
-        if (completedSuit) {
+      if (completedSuit) {
+        setHistory((prevHistory) => [
+          ...prevHistory,
+          { layout: prevLayout, completedSuit: true },
+        ]);
+
+        setTimeout(() => {
+          setSuitAnimation("start");
           shuffleCardsSound.play();
-
-          if (completedSuitNum === 7) {
-            victorySound.play();
-            setEndGame("win");
-          }
-
-          setCompletedSuitNum(
-            (prevCompletedSuitNum) => prevCompletedSuitNum + 1
-          );
 
           setLayout((prevColumns: LayoutType | undefined) => {
             if (!prevColumns) return undefined;
@@ -462,7 +501,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
             const newColumns = { ...prevColumns };
             const items = newColumns[destination.droppableId].items;
-            items.splice(-13, 13);
+
+            const cards = items.splice(-13, 13);
+
+            setLastCompletedSuit({ cards, columnId: destination.droppableId });
+
             if (items[items.length - 1] && !items[items.length - 1].isOpen) {
               setScore(
                 (prevScore) =>
@@ -475,7 +518,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               items[items.length - 1].isOpen = true;
             }
 
-            checkGameLost(newColumns);
+            if (completedSuitNum === 7) {
+              victorySound.play();
+              setEndGame("win");
+            } else {
+              checkGameLost(newColumns);
+            }
+
             return newColumns;
           });
 
@@ -484,10 +533,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               prevScore +
               (selectedMode === "1" ? 50 : selectedMode === "2" ? 100 : 150)
           );
-        }
+        }, 1000);
 
-        checkGameLost(newColumns);
-      }, 1000);
+        setTimeout(() => {
+          setSuitAnimation("end");
+          setCompletedSuitNum(
+            (prevCompletedSuitNum) => prevCompletedSuitNum + 1
+          );
+          setLastCompletedSuit({ columnId: "", cards: [] });
+        }, 3000);
+      } else {
+        setHistory((prevHistory) => [
+          ...prevHistory,
+          { layout: prevLayout, completedSuit: false },
+        ]);
+      }
     },
     [
       cardDropSound,
@@ -592,13 +652,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       deal10Cards,
       onDragEnd,
       undo,
-      playShuffleSound,
       onBeforeCapture,
       handleRestart,
       provideHint,
     };
     const values = {
       activePage,
+      deal10Animation,
       endGame,
       timer,
       draggableGroup,
@@ -606,6 +666,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       score,
       completedSuitNum,
       layout,
+      suitTranslationValue,
+      suitAnimation,
+      lastCompletedSuit,
       history,
       stock,
       hint,
@@ -617,7 +680,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     const setters = {
       setStock,
       setLayout,
+      setSuitTranslationValue,
       setActivePage,
+      setSuitAnimation,
       setTimer,
       setStartGamePressed,
       setSelectedCard,
@@ -633,23 +698,27 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     handleStartGame,
     handleGoHome,
     deal10Cards,
-    hint,
-    undo,
     onDragEnd,
+    undo,
     onBeforeCapture,
-    provideHint,
     handleRestart,
-    playShuffleSound,
+    provideHint,
     activePage,
+    deal10Animation,
+    setSuitAnimation,
     endGame,
     timer,
     draggableGroup,
-    history,
     draggableId,
     score,
     completedSuitNum,
     layout,
+    suitTranslationValue,
+    suitAnimation,
+    lastCompletedSuit,
+    history,
     stock,
+    hint,
     startGamePressed,
     paused,
     selectedCard,

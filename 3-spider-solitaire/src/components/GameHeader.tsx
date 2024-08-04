@@ -9,7 +9,7 @@ export function GameHeader() {
   } = useGameContext();
 
   return (
-    <div className="bg-green-900/90 flex justify-between mb-10">
+    <div className="bg-green-900/90 flex justify-between mb-5">
       <div className="w-10">
         <p className="text-white text-2xl">{convertSecsToTime(timer)}</p>
       </div>

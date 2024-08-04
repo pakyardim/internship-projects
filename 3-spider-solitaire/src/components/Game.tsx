@@ -5,7 +5,6 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { FaUndoAlt } from "react-icons/fa";
 
 import { EndGameModal, PauseModal, GameHeader, Column } from "src/components";
-
 import { useGameContext } from "src/contexts/gameContext";
 import { getImageURL } from "src/utils/utilFunctions";
 import hintImg from "src/assets/hint.png";
@@ -13,27 +12,29 @@ import { CardType } from "src/types";
 
 export function Game() {
   const {
-    values: { paused, stock, layout, selectedCard, endGame, hint },
-    functions: {
-      deal10Cards,
-      onDragEnd,
-      onBeforeCapture,
-      undo,
-      provideHint,
-      playShuffleSound,
+    values: {
+      paused,
+      stock,
+      layout,
+      selectedCard,
+      endGame,
+      hint,
+      deal10Animation,
+      completedSuitNum,
     },
+    setters: { setSuitTranslationValue, setSuitAnimation },
+    functions: { deal10Cards, onDragEnd, onBeforeCapture, undo, provideHint },
   } = useGameContext();
 
   const [translationValue, setTranslationValue] = useState({ x: 0, y: 0 });
+
   const [dealAnimation, setDealAnimation] = useState<"start" | "end" | null>(
     null
   );
-  const [deal10Animation, setDeal10Animation] = useState<
-    "start" | "end" | null
-  >(null);
 
   const topSectionRef = useRef<HTMLDivElement>(null);
   const stockRef = useRef<HTMLDivElement>(null);
+  const suitRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (topSectionRef.current && stockRef.current) {
@@ -47,10 +48,22 @@ export function Game() {
       });
     }
 
+    if (topSectionRef.current && suitRef.current) {
+      const topRect = topSectionRef.current.getBoundingClientRect();
+      const suitRect = suitRef.current.getBoundingClientRect();
+      const calculatedTranslationX = suitRect.left - topRect.left;
+      const calculatedTranslationY = suitRect.top - topRect.top;
+      setSuitTranslationValue({
+        x: calculatedTranslationX,
+        y: calculatedTranslationY,
+      });
+    }
+
     setTimeout(() => {
       setDealAnimation("start");
+      setSuitAnimation("start");
     }, 50);
-  }, []);
+  }, [setSuitAnimation, setSuitTranslationValue]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -59,13 +72,6 @@ export function Game() {
 
     return () => clearTimeout(timeout);
   }, []);
-
-  const maxItemsLength = Math.max(
-    ...Object.values(layout!).map((column) => column.items.length)
-  );
-
-  const marginBetweenCards =
-    maxItemsLength > 15 ? 15 : maxItemsLength > 9 ? 20 : 25;
 
   const columnLengths: { [key: string]: number } = Object.entries(
     layout!
@@ -92,17 +98,28 @@ export function Game() {
         <div ref={topSectionRef} className="flex-1 inline-flex gap-x-8">
           {dealAnimation === "end" &&
             Object.entries(layout!).map(([id, cards], i) => (
-              <Column
-                key={i}
-                id={id}
-                cards={cards.items}
-                marginBetweenCards={marginBetweenCards}
-              />
+              <Column key={i} index={i} id={id} cards={cards.items} />
             ))}
         </div>
       </DragDropContext>
 
       <section className="px-5 items-end flex justify-around">
+        <div ref={suitRef} className="flex relative h-32">
+          {completedSuitNum > 0 &&
+            Array.from({ length: completedSuitNum }).map((_, i) => (
+              <div
+                style={{ position: "absolute", left: `${i * 20}px` }}
+                className="h-32 min-w-24"
+              >
+                <img
+                  src={getImageURL("clubs/1.png")}
+                  alt="classic background"
+                  className="w-24 h-full"
+                />
+              </div>
+            ))}
+        </div>
+
         <div className="flex space-x-20 items-center">
           <button onClick={provideHint}>
             <img
@@ -171,6 +188,9 @@ export function Game() {
                     ? columnLengths[card.targetColumnId]
                     : 0;
 
+                  const marginBetweenCards =
+                    columnLength > 15 ? 15 : columnLength > 9 ? 20 : 25;
+
                   return (
                     <div
                       key={i}
@@ -215,12 +235,7 @@ export function Game() {
             <div
               onClick={() => {
                 if (i === stock.length - 1) {
-                  setDeal10Animation("start");
-                  playShuffleSound();
-                  setTimeout(() => {
-                    setDeal10Animation("end");
-                    deal10Cards();
-                  }, 1000);
+                  deal10Cards();
                 }
               }}
               key={i}

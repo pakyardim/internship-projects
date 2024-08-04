@@ -10,6 +10,9 @@
 
 * {
   margin: 0;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -50,6 +53,15 @@ input:checked ~ .radio-custom::before {
   }
   100% {
     transform: translate(var(--final-x), var(--final-y));
+  }
+}
+
+@keyframes completedSuit {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(var(--finalSuit-x), var(--finalSuit-y));
   }
 }
 

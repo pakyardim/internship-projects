@@ -93,7 +93,7 @@ export function CardItem({
               isHinted && "shadow-xl outline outline-yellow-400 rounded-lg"
             } ${
               dragSnapshot.isDragging
-                ? "scale-105 outline outline-blue-300 rounded"
+                ? "scale-105 outline outline-blue-300 rounded-lg"
                 : ""
             } absolute`}
           >
