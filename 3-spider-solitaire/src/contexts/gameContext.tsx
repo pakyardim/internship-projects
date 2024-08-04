@@ -390,7 +390,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (!result.destination || !layout) return;
       const { source, destination } = result;
       let newColumns = {};
-      if (source.droppableId === destination.droppableId) return;
+      if (source.droppableId === destination.droppableId) {
+        if (draggableGroup) setDraggableGroup(undefined);
+        return;
+      }
 
       cardDropSound.play();
 
