@@ -14,6 +14,7 @@ import {
   createDeck,
   dealCards,
   getDraggableGroup,
+  isDescendingWithOneRankDifference,
   shuffleDeck,
 } from "src/utils/deckFunctions";
 
@@ -175,15 +176,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const possibleMoves: { from: string; to: string; cards: CardType[] }[] =
         [];
 
-      const isDescendingSequence = (cards: CardType[]) => {
-        for (let i = 0; i < cards.length - 1; i++) {
-          if (cards[i].rank !== cards[i + 1].rank + 1) {
-            return false;
-          }
-        }
-        return true;
-      };
-
       const columns = Object.keys(layout);
 
       for (let i = 0; i < columns.length; i++) {
@@ -262,7 +254,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               if (
                 sequence[0].rank + 1 === toColumn[toColumn.length - 1]?.rank &&
                 sequence.length > 1 &&
-                isDescendingSequence(sequence)
+                isDescendingWithOneRankDifference(sequence, selectedMode)
               ) {
                 const openToItems = toColumn.filter((card) => card.isOpen);
                 const toItems = [...openToItems, ...sequence];
@@ -313,7 +305,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       return possibleMoves;
     },
-    [checkCompletedSuit]
+    [checkCompletedSuit, selectedMode]
   );
 
   const checkGameLost = useCallback(

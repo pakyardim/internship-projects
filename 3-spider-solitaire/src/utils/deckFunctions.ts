@@ -144,7 +144,7 @@ export const isDescendingWithOneRankDifference = (
     const nextCard = cards[i + 1];
 
     if (
-      (gameMode === "2" && currentCard.suit !== nextCard.suit) ||
+      (gameMode !== "1" && currentCard.suit !== nextCard.suit) ||
       currentCard.rank - nextCard.rank !== 1
     )
       return false;
