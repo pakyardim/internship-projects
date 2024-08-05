@@ -21,13 +21,17 @@ export function Home() {
     >
       {settingsOpen && <SettingsModal setSettingsOpen={setSettingsOpen} />}
       <div className="flex items-center gap-x-5">
-        <h1 className="text-4xl font-semibold">Spider Solitaire</h1>
-        <img src={spiderImg} alt="Spider Solitaire" className="w-20 h-20" />
+        <h1 className="text-2xl sm:text-4xl font-semibold">Spider Solitaire</h1>
+        <img
+          src={spiderImg}
+          alt="Spider Solitaire"
+          className="w-16 h-16 sm:w-20 sm:h-20"
+        />
       </div>
 
       <div className="flex flex-col gap-y-5">
         <div className="flex justify-between">
-          <label className="cursor-pointer flex items-center">
+          <label className="text-sm sm:text-base cursor-pointer flex items-center">
             <input
               type="radio"
               value="1"

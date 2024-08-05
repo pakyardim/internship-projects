@@ -4,6 +4,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { getImageURL } from "src/utils/utilFunctions";
 import { useGameContext } from "src/contexts/gameContext";
 import { CardType } from "src/types";
+import { useWindowSize } from "src/hooks/useWindowSize";
 
 interface Props {
   marginBetweenCards: number;
@@ -26,6 +27,19 @@ export function CardItem({
     values: { selectedCard, hint },
   } = useGameContext();
 
+  const windowWidth = useWindowSize();
+
+  const height =
+    windowWidth >= 1280
+      ? 128
+      : windowWidth >= 768
+      ? 80
+      : windowWidth >= 640
+      ? 64
+      : windowWidth >= 400
+      ? 48
+      : 40;
+
   const isGroupDragging =
     group && group.length > 1 && group.some((item) => item.id === card.id);
 
@@ -45,8 +59,10 @@ export function CardItem({
           top: `${index * marginBetweenCards}px`,
           ...provided.draggableProps.style,
           height: isGroupDragging
-            ? `calc(128px + ${(group!.length - 1) * marginBetweenCards}px)`
-            : "128px",
+            ? `calc(${height}px + ${
+                (group!.length - 1) * marginBetweenCards
+              }px)`
+            : `${height}px`,
           transform:
             isGroupDragging || card.id === draggableId
               ? provided.draggableProps.style?.transform
@@ -62,7 +78,7 @@ export function CardItem({
               style={style}
               className={`${
                 isGroupDragging || dragSnapshot.isDragging
-                  ? "scale-105 outline outline-blue-300 rounded-lg"
+                  ? "scale-105 outline outline-blue-300 rounded"
                   : ""
               } relative`}
             >
@@ -74,7 +90,7 @@ export function CardItem({
                   style={{
                     top: `${i * marginBetweenCards}px`,
                   }}
-                  className="w-24 h-32 absolute"
+                  className="h-10 w-7 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32 absolute"
                 />
               ))}
             </div>
@@ -89,11 +105,10 @@ export function CardItem({
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             style={style}
-            className={`${
-              isHinted && "shadow-xl outline outline-yellow-400 rounded-lg"
-            } ${
+            className={`
+              ${isHinted && "shadow-xl outline outline-yellow-400 rounded"} ${
               dragSnapshot.isDragging
-                ? "scale-105 outline outline-blue-300 rounded-lg"
+                ? "scale-105 outline outline-blue-300 rounded"
                 : ""
             } absolute`}
           >
@@ -103,12 +118,12 @@ export function CardItem({
                   `card-backgrounds/classic_${selectedCard}.png`
                 )}
                 alt="classic background"
-                className="w-24 h-32"
+                className="h-10 w-7 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32"
               />
               <img
                 src={getImageURL(card.imagePath)}
                 alt="classic background"
-                className="w-24 h-32"
+                className="h-10 w-7 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32"
               />
             </ReactCardFlip>
           </div>

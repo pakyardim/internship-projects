@@ -8,7 +8,7 @@ function App() {
   } = useGameContext();
 
   return (
-    <main className="font-primary flex flex-col items-center justify-center max-h-screen bg-green-900 text-white">
+    <main className="font-primary flex flex-col items-center justify-center max-h-screen text-white">
       {activePage === "home" && <Home />}
       {activePage === "game" && <Game />}
     </main>

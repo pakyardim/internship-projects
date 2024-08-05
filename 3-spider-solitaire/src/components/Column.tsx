@@ -27,9 +27,9 @@ export const Column = memo(function Column({ index, id, cards }: Props) {
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="min-h-32 min-w-24 flex flex-col relative"
+            className="h-10 w-7 xs:h-12 xs:w-8 sm:min-h-16 sm:min-w-12 md:min-h-20 md:min-w-16 xl:min-w-24 xl:min-h-32 flex flex-col relative"
           >
-            <div className="h-32 w-24 border border-gray-300 rounded-lg" />
+            <div className="h-10 w-7 xs:h-12 xs:w-8 sm:w-12 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32 border border-gray-300 rounded-lg" />
             {cards.map((card: CardType, j: number) => {
               const lastCards = cards.slice(j);
 

@@ -9,6 +9,7 @@ import { useGameContext } from "src/contexts/gameContext";
 import { getImageURL } from "src/utils/utilFunctions";
 import hintImg from "src/assets/hint.png";
 import { CardType } from "src/types";
+import { useWindowSize } from "src/hooks/useWindowSize";
 
 export function Game() {
   const {
@@ -26,6 +27,8 @@ export function Game() {
     setters: { setSuitTranslationValue, setSuitAnimation, setDealAnimation },
     functions: { deal10Cards, onDragEnd, onBeforeCapture, undo, provideHint },
   } = useGameContext();
+
+  const windowWidth = useWindowSize();
 
   const [translationValue, setTranslationValue] = useState({ x: 0, y: 0 });
 
@@ -76,8 +79,26 @@ export function Game() {
     return acc;
   }, {} as { [key: string]: number });
 
+  const xMultiplier =
+    windowWidth >= 1280
+      ? 128
+      : windowWidth >= 1024
+      ? 96
+      : windowWidth >= 768
+      ? 80
+      : windowWidth >= 640
+      ? 64
+      : windowWidth >= 400
+      ? 40
+      : 36;
+
+  const yMultiplier = 25;
+
+  const stockLeftMultiplier =
+    windowWidth >= 768 ? 20 : windowWidth >= 400 ? 14 : 6;
+
   return (
-    <div className="md:container py-10 md:px-10 lg:px-32 mx-auto w-full h-full flex flex-col">
+    <div className="px-2 sm:px-5 py-10 md:px-5 xl:px-32 w-full h-full flex flex-col">
       {paused && <PauseModal />}
       {endGame && <EndGameModal isWin={endGame === "win"} />}
 
@@ -91,7 +112,10 @@ export function Game() {
           onBeforeCapture(beforeCapture);
         }}
       >
-        <div ref={topSectionRef} className="flex-1 inline-flex gap-x-8">
+        <div
+          ref={topSectionRef}
+          className="flex-1 inline-flex gap-x-2 sm:gap-x-4 lg:gap-x-8"
+        >
           {dealAnimation === "end" &&
             Object.entries(layout!).map(([id, cards], i) => (
               <Column key={i} index={i} id={id} cards={cards.items} />
@@ -99,19 +123,25 @@ export function Game() {
         </div>
       </DragDropContext>
 
-      <section className="px-5 items-end flex justify-around">
-        <div ref={suitRef} className="flex relative h-32">
+      <section className="px-5 items-center flex justify-around">
+        <div
+          ref={suitRef}
+          className="flex relative h-10 xs:h-12 sm:h-16 md:h-20 xl:h-32"
+        >
           {completedSuitNum > 0 &&
             Array.from({ length: completedSuitNum }).map((_, i) => (
               <div
                 key={i}
-                style={{ position: "absolute", left: `${i * 20}px` }}
-                className="h-32 min-w-24"
+                style={{
+                  position: "absolute",
+                  left: `${i * stockLeftMultiplier}px`,
+                }}
+                className="h-10 min-w-7 xs:h-12 xs:min-w-8 sm:h-16 sm:min-w-12 md:h-20 md:min-w-16 xl:min-w-24 xl:h-32"
               >
                 <img
                   src={getImageURL("clubs/1.png")}
                   alt="classic background"
-                  className="w-24 h-full"
+                  className="w-7 xs:w-8 sm:w-12 md:w-16 xl:w-24 h-full"
                 />
               </div>
             ))}
@@ -122,15 +152,18 @@ export function Game() {
             <img
               src={hintImg}
               alt="Hint"
-              className="hint w-10 cursor-pointer"
+              className="hint w-6 xl:w-10 cursor-pointer"
             />
           </button>
 
           <button onClick={undo}>
-            <FaUndoAlt size={36} className="text-white/80 hover:text-red-400" />
+            <FaUndoAlt className="w-6 h-6 xl:h-10 xl:w-10 text-white/80 hover:text-red-400" />
           </button>
         </div>
-        <div ref={stockRef} className="flex relative h-32">
+        <div
+          ref={stockRef}
+          className="flex relative h-10 xs:h-12 sm:h-16 md:h-20 xl:h-32"
+        >
           {dealAnimation !== "end" &&
             layout &&
             Object.entries(layout)?.map(([id, cards], i) => (
@@ -141,8 +174,12 @@ export function Game() {
                       key={j}
                       style={
                         {
-                          "--final-x": `${-translationValue.x + i * 128}px`,
-                          "--final-y": `${-translationValue.y + j * 25}px`,
+                          "--final-x": `${
+                            -translationValue.x + i * xMultiplier
+                          }px`,
+                          "--final-y": `${
+                            -translationValue.y + j * yMultiplier
+                          }px`,
                           animation:
                             dealAnimation == "start"
                               ? `dealCard 0.5s ease-out forwards`
@@ -157,7 +194,7 @@ export function Game() {
                       className={`${
                         card.isOpen &&
                         "hover:outline cursor-pointer hover:rounded outline-blue-300"
-                      } w-24 h-32`}
+                      } h-10 w-7 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32`}
                     >
                       <img
                         src={
@@ -173,7 +210,7 @@ export function Game() {
                     </div>
                   ))
                 ) : (
-                  <div className="w-24 h-32 border-2 border-gray-300 rounded" />
+                  <div className="w-7 h-10 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32 border-2 border-gray-300 rounded" />
                 )}
               </div>
             ))}
@@ -194,7 +231,9 @@ export function Game() {
                       key={i}
                       style={
                         {
-                          "--final-x": `${-translationValue.x + i * 128}px`,
+                          "--final-x": `${
+                            -translationValue.x + i * xMultiplier
+                          }px`,
                           "--final-y": `${
                             -translationValue.y +
                             columnLength * marginBetweenCards
@@ -213,7 +252,7 @@ export function Game() {
                       className={`${
                         card.isOpen &&
                         "hover:outline cursor-pointer hover:rounded outline-blue-300"
-                      } w-24 h-32`}
+                      } h-10 w-7 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32`}
                     >
                       <img
                         src={getImageURL(card.imagePath)}
@@ -224,7 +263,7 @@ export function Game() {
                   );
                 })
               ) : (
-                <div className="w-24 h-32 border-2 border-gray-300 rounded" />
+                <div className="h-10 w-7 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32 border-2 border-gray-300 rounded" />
               )}
             </div>
           )}
@@ -239,7 +278,7 @@ export function Game() {
               key={i}
               style={
                 {
-                  "--finalStock-x": `${i * 12}px`,
+                  "--finalStock-x": `${i * stockLeftMultiplier}px`,
                   animation:
                     dealAnimation === "end"
                       ? "stockCard 0.5s ease-out forwards"
@@ -247,7 +286,7 @@ export function Game() {
                   position: "absolute",
                 } as React.CSSProperties
               }
-              className={`w-24 h-32 ${
+              className={`h-10 w-7 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32 ${
                 i === stock.length - 1
                   ? `hover:scale-105 cursor-pointer ${
                       hint?.from === "stock" &&

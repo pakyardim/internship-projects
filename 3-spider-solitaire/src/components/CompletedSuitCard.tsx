@@ -27,7 +27,7 @@ export function CompletedSuitCard({
       suitTranslationValue.x + columnIndex * -128 + completedSuitNum * 20
     }px`,
     "--finalSuit-y": `${
-      suitTranslationValue.y - (index + 1) * 20 + 20 - columnLength * moveMargin
+      suitTranslationValue.y - ((index + 1) * 20 + columnLength * moveMargin)
     }px`,
     animation:
       suitAnimation == "start"
@@ -39,11 +39,14 @@ export function CompletedSuitCard({
   } as React.CSSProperties;
 
   return (
-    <div style={style} className="h-32 min-w-24">
+    <div
+      style={style}
+      className="h-10 min-w-7 xs:h-12 xs:min-w-8 sm:h-16 sm:min-w-12 md:h-20 md:min-w-16 xl:min-w-24 xl:h-32"
+    >
       <img
         src={getImageURL(card.imagePath)}
         alt="classic background"
-        className="w-24 h-32 rounded"
+        className="h-full w-7 xs:w-8 sm:w-12 md:w-16 xl:w-24 rounded"
       />
     </div>
   );
