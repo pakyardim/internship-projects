@@ -2,6 +2,7 @@ import { IoMdHome } from "react-icons/io";
 import { VscDebugRestart } from "react-icons/vsc";
 
 import { useGameContext } from "src/contexts/gameContext";
+import { convertSecsToTime } from "src/utils/utilFunctions";
 
 interface Props {
   isWin: boolean;
@@ -9,7 +10,7 @@ interface Props {
 
 export function EndGameModal({ isWin }: Props) {
   const {
-    values: { score },
+    values: { score, timer },
     functions: { handleGoHome, handleRestart },
   } = useGameContext();
 
@@ -24,9 +25,21 @@ export function EndGameModal({ isWin }: Props) {
           </div>
         </div>
         <div className="flex justify-between">
-          <h3 className="font-semibold text-lg">Final Score:</h3>
+          <h3 className="font-semibold text-lg">Score:</h3>
           <h3 className="font-semibold text-lg">
             <span>{score}</span>
+          </h3>
+        </div>
+        <div className="flex justify-between">
+          <h3 className="font-semibold text-lg">Total Time:</h3>
+          <h3 className="font-semibold text-lg">
+            <span>{convertSecsToTime(timer)}</span>
+          </h3>
+        </div>
+        <div className="flex justify-between">
+          <h3 className="font-semibold text-lg">Final Score:</h3>
+          <h3 className="font-semibold text-lg">
+            <span>{score - timer}</span>
           </h3>
         </div>
         <div className="flex flex-col gap-y-3 w-28 mx-auto">
