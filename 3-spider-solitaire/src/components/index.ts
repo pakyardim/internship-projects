@@ -1,9 +1,11 @@
-export { CardItem } from "./CardItem";
-export { Column } from "./Column";
-export { GameHeader } from "./GameHeader";
 export { Game } from "./Game";
 export { Home } from "./Home";
-export { CompletedSuitCard } from "./CompletedSuitCard";
-export { EndGameModal } from "./modals/EndGameModal";
+export { Column } from "./Column";
+export { Buttons } from "./Buttons";
+export { CardItem } from "./CardItem";
+export { StockCard } from "./StockCard";
+export { GameHeader } from "./GameHeader";
 export { PauseModal } from "./modals/PauseModal";
+export { EndGameModal } from "./modals/EndGameModal";
 export { SettingsModal } from "./modals/SettingsModal";
+export { CompletedSuitCard } from "./CompletedSuitCard";

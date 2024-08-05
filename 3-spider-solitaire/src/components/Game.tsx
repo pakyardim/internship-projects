@@ -1,13 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import { FaUndoAlt } from "react-icons/fa";
 
-import { EndGameModal, PauseModal, GameHeader, Column } from "src/components";
+import {
+  EndGameModal,
+  PauseModal,
+  GameHeader,
+  Column,
+  Buttons,
+  StockCard,
+} from "src/components";
 import { useGameContext } from "src/contexts/gameContext";
 import { getImageURL } from "src/utils/utilFunctions";
-import hintImg from "src/assets/hint.png";
 import { CardType } from "src/types";
 import { useWindowSize } from "src/hooks/useWindowSize";
 
@@ -19,13 +22,12 @@ export function Game() {
       layout,
       selectedCard,
       endGame,
-      hint,
       deal10Animation,
       completedSuitNum,
       dealAnimation,
     },
     setters: { setSuitTranslationValue, setSuitAnimation, setDealAnimation },
-    functions: { deal10Cards, onDragEnd, onBeforeCapture, undo, provideHint },
+    functions: { onDragEnd, onBeforeCapture },
   } = useGameContext();
 
   const windowWidth = useWindowSize();
@@ -147,26 +149,15 @@ export function Game() {
             ))}
         </div>
 
-        <div className="flex space-x-20 items-center">
-          <button onClick={provideHint}>
-            <img
-              src={hintImg}
-              alt="Hint"
-              className="hint w-6 xl:w-10 cursor-pointer"
-            />
-          </button>
+        <Buttons />
 
-          <button onClick={undo}>
-            <FaUndoAlt className="w-6 h-6 xl:h-10 xl:w-10 text-white/80 hover:text-red-400" />
-          </button>
-        </div>
         <div
           ref={stockRef}
           className="flex relative h-10 xs:h-12 sm:h-16 md:h-20 xl:h-32"
         >
           {dealAnimation !== "end" &&
             layout &&
-            Object.entries(layout)?.map(([id, cards], i) => (
+            Object.entries(layout)?.map(([, cards], i) => (
               <div key={i} className="relative">
                 {cards.items.length > 0 ? (
                   cards.items.map((card: CardType, j: number) => (
@@ -268,41 +259,12 @@ export function Game() {
             </div>
           )}
 
-          {stock.map((row: CardType[], i: number) => (
-            <div
-              onClick={() => {
-                if (i === stock.length - 1) {
-                  deal10Cards();
-                }
-              }}
+          {stock.map((_row: CardType[], i: number) => (
+            <StockCard
               key={i}
-              style={
-                {
-                  "--finalStock-x": `${i * stockLeftMultiplier}px`,
-                  animation:
-                    dealAnimation === "end"
-                      ? "stockCard 0.5s ease-out forwards"
-                      : "none",
-                  position: "absolute",
-                } as React.CSSProperties
-              }
-              className={`h-10 w-7 xs:h-12 xs:w-8 sm:h-16 sm:w-12 md:h-20 md:w-16 xl:w-24 xl:h-32 ${
-                i === stock.length - 1
-                  ? `hover:scale-105 cursor-pointer ${
-                      hint?.from === "stock" &&
-                      "outline outline-yellow-400 rounded-lg"
-                    }`
-                  : ""
-              }`}
-            >
-              <img
-                src={getImageURL(
-                  `card-backgrounds/classic_${selectedCard}.png`
-                )}
-                alt="Classic Blue Background"
-                className="w-full h-full"
-              />
-            </div>
+              stockLeftMultiplier={stockLeftMultiplier}
+              index={i}
+            />
           ))}
         </div>
       </section>

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { CardType } from "src/types";
 
-const suits = ["clubs", "diamonds", "hearts", "spades"];
+const suits = ["spades", "hearts", "clubs", "diamonds"];
 
 export const createDeck = (suitNum: number): CardType[] => {
   const ranks = Array.from({ length: 13 }, (_, i) => i + 1);
@@ -133,16 +133,21 @@ export const getDraggableGroup = (
   return [];
 };
 
-export const isDescendingWithOneRankDifference = (cards: CardType[]) => {
+export const isDescendingWithOneRankDifference = (
+  cards: CardType[],
+  gameMode: "1" | "2" | "4"
+) => {
   if (cards.length < 2) return true;
 
   for (let i = 0; i < cards.length - 1; i++) {
-    const currentRank = cards[i].rank;
-    const nextRank = cards[i + 1].rank;
+    const currentCard = cards[i];
+    const nextCard = cards[i + 1];
 
-    if (currentRank - nextRank !== 1) {
+    if (
+      (gameMode === "2" && currentCard.suit !== nextCard.suit) ||
+      currentCard.rank - nextCard.rank !== 1
+    )
       return false;
-    }
   }
 
   return true;

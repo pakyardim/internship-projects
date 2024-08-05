@@ -10,7 +10,6 @@ interface Props {
   marginBetweenCards: number;
   draggableId: string;
   card: CardType;
-  group: CardType[] | undefined;
   index: number;
   dragDisabled: boolean;
 }
@@ -19,12 +18,11 @@ export function CardItem({
   marginBetweenCards,
   draggableId,
   card,
-  group,
   index,
   dragDisabled,
 }: Props) {
   const {
-    values: { selectedCard, hint },
+    values: { selectedCard, hint, draggableGroup },
   } = useGameContext();
 
   const windowWidth = useWindowSize();
@@ -41,9 +39,11 @@ export function CardItem({
       : 40;
 
   const isGroupDragging =
-    group && group.length > 1 && group.some((item) => item.id === card.id);
+    draggableGroup &&
+    draggableGroup.length > 1 &&
+    draggableGroup.some((item) => item.id === card.id);
 
-  if (isGroupDragging && group[0].id !== card.id) {
+  if (isGroupDragging && draggableGroup[0].id !== card.id) {
     return null;
   }
 
@@ -60,7 +60,7 @@ export function CardItem({
           ...provided.draggableProps.style,
           height: isGroupDragging
             ? `calc(${height}px + ${
-                (group!.length - 1) * marginBetweenCards
+                (draggableGroup!.length - 1) * marginBetweenCards
               }px)`
             : `${height}px`,
           transform:
@@ -82,7 +82,7 @@ export function CardItem({
                   : ""
               } relative`}
             >
-              {group.map((card, i) => (
+              {draggableGroup.map((card, i) => (
                 <img
                   key={card.id}
                   src={getImageURL(card.imagePath)}
