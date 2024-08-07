@@ -1,5 +1,14 @@
 import * as THREE from "three";
 
+const soundOnBtn = document.getElementById("soundOn");
+const soundOffBtn = document.getElementById("soundOff");
+const pauseBtn = document.getElementById("pause");
+const playBtn = document.getElementById("play");
+const colorPicker = document.querySelector("#palette");
+const colorModal = document.querySelector(".color-modal");
+const colorDivs = document.querySelectorAll(".color");
+const okBtn = document.querySelector(".ok-btn");
+
 const scene = new THREE.Scene();
 const aspectRatio = window.innerWidth / window.innerHeight;
 const viewSize = 5;
@@ -39,33 +48,44 @@ let ballPosition = { x: 0, y: 0 };
 let ballVelocity = { x: 0.1, y: 0 };
 const ballRadius = 0.5;
 
-document.querySelector(".colorPicker").addEventListener("input", (event) => {
-  const newColor = event.target.value;
-  material.color.set(newColor);
+colorPicker.addEventListener("click", () => {
+  colorModal.classList.remove("hidden");
 });
 
-document.getElementById("soundOn").addEventListener("click", () => {
+colorDivs.forEach((colorDiv) => {
+  colorDiv.addEventListener("click", () => {
+    const selectedColor = colorDiv.getAttribute("data-color");
+
+    material.color.set(selectedColor);
+  });
+});
+
+okBtn.addEventListener("click", () => {
+  colorModal.classList.add("hidden");
+});
+
+soundOnBtn.addEventListener("click", () => {
   isSoundEnabled = false;
-  document.getElementById("soundOn").classList.add("hidden");
-  document.getElementById("soundOff").classList.remove("hidden");
+  soundOnBtn.classList.add("hidden");
+  soundOffBtn.classList.remove("hidden");
 });
 
-document.getElementById("soundOff").addEventListener("click", () => {
+soundOffBtn.addEventListener("click", () => {
   isSoundEnabled = true;
-  document.getElementById("soundOff").classList.add("hidden");
-  document.getElementById("soundOn").classList.remove("hidden");
+  soundOffBtn.classList.add("hidden");
+  soundOnBtn.classList.remove("hidden");
 });
 
-document.getElementById("pause").addEventListener("click", () => {
+pauseBtn.addEventListener("click", () => {
   isMotionEnabled = false;
-  document.getElementById("pause").classList.add("hidden");
-  document.getElementById("play").classList.remove("hidden");
+  pauseBtn.classList.add("hidden");
+  playBtn.classList.remove("hidden");
 });
 
-document.getElementById("play").addEventListener("click", () => {
+playBtn.addEventListener("click", () => {
   isMotionEnabled = true;
-  document.getElementById("play").classList.add("hidden");
-  document.getElementById("pause").classList.remove("hidden");
+  playBtn.classList.add("hidden");
+  pauseBtn.classList.remove("hidden");
 });
 
 function animate() {
