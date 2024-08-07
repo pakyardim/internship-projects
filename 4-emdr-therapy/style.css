@@ -19,3 +19,36 @@ body {
   z-index: 10;
   gap: 16px;
 }
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.control .sound-image {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  filter: invert(100%);
+  transition: opacity 0.3s ease;
+}
+
+.control .play-image {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  transition: opacity 0.3s ease;
+}
+
+#pause {
+  filter: invert(100%);
+}
+
+#play {
+  filter: brightness(0) invert(1);
+}
+
+.hidden {
+  display: none;
+}

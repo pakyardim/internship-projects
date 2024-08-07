@@ -23,15 +23,17 @@ const material = new THREE.MeshStandardMaterial({
   color: 0x00ff00,
   flatShading: true,
 });
+
 const ball = new THREE.Mesh(geometry, material);
 scene.add(ball);
 
-const hemiLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
 scene.add(hemiLight);
 
-const bounceSound = new Audio("ball-bounce.wav");
+const bounceSound = new Audio("assets/ball-bounce.wav");
 
 let isSoundEnabled = true;
+let isMotionEnabled = true;
 
 let ballPosition = { x: 0, y: 0 };
 let ballVelocity = { x: 0.1, y: 0 };
@@ -42,31 +44,50 @@ document.querySelector(".colorPicker").addEventListener("input", (event) => {
   material.color.set(newColor);
 });
 
-document.querySelector(".soundToggle").addEventListener("click", () => {
-  isSoundEnabled = !isSoundEnabled;
-  document.getElementById("soundToggle").textContent = isSoundEnabled
-    ? "Disable Sound"
-    : "Enable Sound";
+document.getElementById("soundOn").addEventListener("click", () => {
+  isSoundEnabled = false;
+  document.getElementById("soundOn").classList.add("hidden");
+  document.getElementById("soundOff").classList.remove("hidden");
+});
+
+document.getElementById("soundOff").addEventListener("click", () => {
+  isSoundEnabled = true;
+  document.getElementById("soundOff").classList.add("hidden");
+  document.getElementById("soundOn").classList.remove("hidden");
+});
+
+document.getElementById("pause").addEventListener("click", () => {
+  isMotionEnabled = false;
+  document.getElementById("pause").classList.add("hidden");
+  document.getElementById("play").classList.remove("hidden");
+});
+
+document.getElementById("play").addEventListener("click", () => {
+  isMotionEnabled = true;
+  document.getElementById("play").classList.add("hidden");
+  document.getElementById("pause").classList.remove("hidden");
 });
 
 function animate() {
   requestAnimationFrame(animate);
 
-  ballPosition.x += ballVelocity.x;
+  if (isMotionEnabled) {
+    ballPosition.x += ballVelocity.x;
 
-  const frustumWidth = 2 * aspectRatio * viewSize;
+    const frustumWidth = 2 * aspectRatio * viewSize;
 
-  if (
-    ballPosition.x + ballRadius > frustumWidth / 2 ||
-    ballPosition.x - ballRadius < -frustumWidth / 2
-  ) {
-    ballVelocity.x *= -1;
-    if (isSoundEnabled) {
-      bounceSound.play();
+    if (
+      ballPosition.x + ballRadius > frustumWidth / 2 ||
+      ballPosition.x - ballRadius < -frustumWidth / 2
+    ) {
+      ballVelocity.x *= -1;
+      if (isSoundEnabled) {
+        bounceSound.play();
+      }
     }
-  }
 
-  ball.position.x = ballPosition.x;
+    ball.position.x = ballPosition.x;
+  }
 
   renderer.render(scene, camera);
 }

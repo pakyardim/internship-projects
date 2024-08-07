@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EMDR Therapy</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="brain.png" />
     <script type="importmap">
       {
         "imports": {
@@ -17,7 +18,29 @@
   <body>
     <div class="ui-panel">
       <input type="color" class="colorPicker" value="#00ff00" />
-      <button class="soundToggle">Disable Sound</button>
+      <div class="control">
+        <img
+          src="assets/sound-on.png"
+          id="soundOn"
+          class="sound-image"
+          alt="Sound On"
+        />
+        <img
+          src="assets/sound-off.png"
+          id="soundOff"
+          class="hidden sound-image"
+          alt="Sound Off"
+        />
+      </div>
+      <div class="control">
+        <img src="assets/pause.png" id="pause" class="play-image" alt="Pause" />
+        <img
+          src="assets/play.png"
+          id="play"
+          class="hidden play-image"
+          alt="Play"
+        />
+      </div>
     </div>
 
     <script type="module" src="index.js"></script>
