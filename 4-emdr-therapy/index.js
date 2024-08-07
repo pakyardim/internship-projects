@@ -11,6 +11,7 @@ const camera = new THREE.OrthographicCamera(
   0.1,
   1000
 );
+
 camera.position.z = 5;
 
 const renderer = new THREE.WebGLRenderer();
@@ -18,17 +19,34 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const geometry = new THREE.SphereGeometry(0.5, 32, 32);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const material = new THREE.MeshStandardMaterial({
+  color: 0x00ff00,
+  flatShading: true,
+});
 const ball = new THREE.Mesh(geometry, material);
 scene.add(ball);
 
+const hemiLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+scene.add(hemiLight);
+
+const bounceSound = new Audio("ball-bounce.wav");
+
+let isSoundEnabled = true;
+
 let ballPosition = { x: 0, y: 0 };
-let ballVelocity = { x: 0.05, y: 0 };
+let ballVelocity = { x: 0.1, y: 0 };
 const ballRadius = 0.5;
 
 document.querySelector(".colorPicker").addEventListener("input", (event) => {
   const newColor = event.target.value;
   material.color.set(newColor);
+});
+
+document.querySelector(".soundToggle").addEventListener("click", () => {
+  isSoundEnabled = !isSoundEnabled;
+  document.getElementById("soundToggle").textContent = isSoundEnabled
+    ? "Disable Sound"
+    : "Enable Sound";
 });
 
 function animate() {
@@ -43,6 +61,9 @@ function animate() {
     ballPosition.x - ballRadius < -frustumWidth / 2
   ) {
     ballVelocity.x *= -1;
+    if (isSoundEnabled) {
+      bounceSound.play();
+    }
   }
 
   ball.position.x = ballPosition.x;
