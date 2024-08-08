@@ -31,13 +31,50 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.SphereGeometry(0.5, 32, 32);
-const material = new THREE.MeshStandardMaterial({
-  color: 0x2196f3,
+const vertexShader = `
+  varying vec3 vNormal;
+  varying vec3 vPosition;
+  
+  void main() {
+    vNormal = normalize(normalMatrix * normal);
+    vPosition = vec3(modelViewMatrix * vec4(position, 1.0));
+    
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const fragmentShader = `
+  uniform vec3 uColor;
+  varying vec3 vNormal;
+  varying vec3 vPosition;
+  
+  void main() {
+    vec3 light = vec3(0.5, 0.2, 1.0);
+    light = normalize(light);
+    
+    float dProd = max(0.0, dot(vNormal, light));
+    vec3 diffuse = uColor * dProd;
+    
+    vec3 viewDir = normalize(-vPosition);
+    vec3 reflectDir = reflect(-light, vNormal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0);
+    
+    gl_FragColor = vec4(diffuse + vec3(spec), 1.0);
+  }
+`;
+
+const shaderMaterial = new THREE.ShaderMaterial({
+  vertexShader: vertexShader,
+  fragmentShader: fragmentShader,
+  uniforms: {
+    uColor: { value: new THREE.Color(0x2196f3) },
+  },
   flatShading: true,
 });
 
-const ball = new THREE.Mesh(geometry, material);
+const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+
+const ball = new THREE.Mesh(geometry, shaderMaterial);
 scene.add(ball);
 
 const hemiLight = new THREE.HemisphereLight(0xffffff, 0xc2c2cc, 1);
@@ -59,8 +96,9 @@ speedometer.addEventListener("click", () => {
 colorDivs.forEach((colorDiv) => {
   colorDiv.addEventListener("click", () => {
     const selectedColor = colorDiv.getAttribute("data-color");
+    const newColor = new THREE.Color(selectedColor);
 
-    material.color.set(selectedColor);
+    shaderMaterial.uniforms.uColor.value = newColor;
   });
 });
 
