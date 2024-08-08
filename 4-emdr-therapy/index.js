@@ -4,10 +4,14 @@ const soundOnBtn = document.getElementById("soundOn");
 const soundOffBtn = document.getElementById("soundOff");
 const pauseBtn = document.getElementById("pause");
 const playBtn = document.getElementById("play");
-const colorPicker = document.querySelector("#palette");
-const colorModal = document.querySelector(".color-modal");
+const colorPicker = document.querySelector(".palette");
+const speedometer = document.querySelector(".speedometer");
+const velocityModal = document.querySelector("#velocity-modal");
+const colorModal = document.querySelector("#color-modal");
 const colorDivs = document.querySelectorAll(".color");
-const okBtn = document.querySelector(".ok-btn");
+const okBtns = document.querySelectorAll(".ok-btn");
+const slider = document.querySelector(".slider");
+const velocityValue = document.querySelector("#velocity-value");
 
 const scene = new THREE.Scene();
 const aspectRatio = window.innerWidth / window.innerHeight;
@@ -29,14 +33,14 @@ document.body.appendChild(renderer.domElement);
 
 const geometry = new THREE.SphereGeometry(0.5, 32, 32);
 const material = new THREE.MeshStandardMaterial({
-  color: 0x00ff00,
+  color: 0x2196f3,
   flatShading: true,
 });
 
 const ball = new THREE.Mesh(geometry, material);
 scene.add(ball);
 
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0x080820, 1);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xc2c2cc, 1);
 scene.add(hemiLight);
 
 const bounceSound = new Audio("assets/ball-bounce.wav");
@@ -44,12 +48,12 @@ const bounceSound = new Audio("assets/ball-bounce.wav");
 let isSoundEnabled = true;
 let isMotionEnabled = true;
 
-let ballPosition = { x: 0, y: 0 };
-let ballVelocity = { x: 0.1, y: 0 };
-const ballRadius = 0.5;
-
 colorPicker.addEventListener("click", () => {
   colorModal.classList.remove("hidden");
+});
+
+speedometer.addEventListener("click", () => {
+  velocityModal.classList.remove("hidden");
 });
 
 colorDivs.forEach((colorDiv) => {
@@ -60,8 +64,11 @@ colorDivs.forEach((colorDiv) => {
   });
 });
 
-okBtn.addEventListener("click", () => {
-  colorModal.classList.add("hidden");
+okBtns.forEach((okBtn) => {
+  okBtn.addEventListener("click", () => {
+    colorModal.classList.add("hidden");
+    velocityModal.classList.add("hidden");
+  });
 });
 
 soundOnBtn.addEventListener("click", () => {
@@ -88,13 +95,28 @@ playBtn.addEventListener("click", () => {
   pauseBtn.classList.remove("hidden");
 });
 
+let ballPosition = { x: 0, y: 0 };
+let ballVelocity = { x: 0.1, y: 0 };
+
+const ballRadius = 0.5;
+
+const frustumWidth = 2 * aspectRatio * viewSize;
+
+slider.addEventListener("input", () => {
+  if (ballVelocity.x > 0) {
+    ballVelocity.x = slider.value / 100;
+  } else {
+    ballVelocity.x = -slider.value / 100;
+  }
+
+  velocityValue.textContent = slider.value;
+});
+
 function animate() {
   requestAnimationFrame(animate);
 
   if (isMotionEnabled) {
     ballPosition.x += ballVelocity.x;
-
-    const frustumWidth = 2 * aspectRatio * viewSize;
 
     if (
       ballPosition.x + ballRadius > frustumWidth / 2 ||

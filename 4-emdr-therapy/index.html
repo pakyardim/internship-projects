@@ -17,12 +17,8 @@
   </head>
   <body>
     <div class="ui-panel">
-      <img
-        src="assets/palette.png"
-        id="palette"
-        class="palette"
-        alt="Color Palette"
-      />
+      <img src="assets/speedometer.png" class="speedometer" alt="Speedometer" />
+      <img src="assets/palette.png" class="palette" alt="Color Palette" />
       <div class="control">
         <img
           src="assets/sound-on.png"
@@ -48,8 +44,8 @@
       </div>
     </div>
 
-    <div class="hidden color-modal">
-      <div class="color-modal-content">
+    <div class="hidden modal" id="color-modal">
+      <div class="modal-content">
         <h2>Color Settings</h2>
         <div class="color-modal-body">
           <div class="color" data-color="#f44336"></div>
@@ -60,6 +56,17 @@
           <div class="color" data-color="#FF5722"></div>
           <div class="color" data-color="#009688"></div>
           <div class="color" data-color="#E91E63"></div>
+        </div>
+        <button class="ok-btn">OK</button>
+      </div>
+    </div>
+
+    <div class="hidden modal" id="velocity-modal">
+      <div class="modal-content">
+        <h2>Velocity Modifier</h2>
+        <div class="velocity-modal-body">
+          <input type="range" min="0" max="100" value="10" class="slider" />
+          <p>Velocity: <span id="velocity-value">10</span> km/h</p>
         </div>
         <button class="ok-btn">OK</button>
       </div>
