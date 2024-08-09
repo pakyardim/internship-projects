@@ -23,7 +23,7 @@ function authenticationMiddleware(request: NextRequest) {
 
   if (isProtectedRoute && !cookie) {
     return NextResponse.redirect(
-      new URL(`/${locale}/not-authorized`, request.nextUrl.origin)
+      new URL(`/${locale}/not-authenticated`, request.nextUrl.origin)
     );
   }
 

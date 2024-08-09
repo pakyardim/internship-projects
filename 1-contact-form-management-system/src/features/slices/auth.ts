@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+
 import { UserType } from "src/types";
+import { getTokenFromCookies } from "src/utils";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -15,11 +17,6 @@ const initialState: AuthState = {
   status: "idle",
   errorMessage: null,
 };
-
-function getTokenFromCookies() {
-  const match = document.cookie.match(new RegExp("(^| )auth-token=([^;]+)"));
-  return match ? match[2] : null;
-}
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -78,6 +75,7 @@ const authSlice = createSlice({
         state.user = user;
         state.errorMessage = null;
         document.cookie = `auth-token=${token}; path=/;`;
+        state.loading = "succeeded";
       })
       .addCase(loginUser.rejected, (state: any, action) => {
         state.status = "failed";

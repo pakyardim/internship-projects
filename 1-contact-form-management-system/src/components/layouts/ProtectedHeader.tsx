@@ -18,12 +18,13 @@ import { useSelector } from "react-redux";
 export function ProtectedHeader() {
   const { user } = useSelector((state: RootState) => state.auth);
   const pathname = usePathname();
+  const strippedPath = pathname.replace(/^\/(en|tr)\//, "/");
 
   // const navigate = useNavigate();
 
   const t = useTranslations();
   // const location = useLocation();
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => strippedPath === path;
 
   const handleClick = () => {
     // navigate("/dashboard");

@@ -1,9 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { MessageType } from "src/types";
+import { getTokenFromCookies } from "src/utils";
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: "http://localhost:5166/api",
+  prepareHeaders: (headers, { endpoint }) => {
+    if (endpoint === "getUnreadMessages") {
+      const token = getTokenFromCookies();
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+    }
+    return headers;
+  },
+});
 
 export const messagesAPI = createApi({
   reducerPath: "messagesAPI",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5166/api" }),
+  baseQuery,
   endpoints: (builder) => ({
     addMessage: builder.mutation({
       query: (body) => ({
@@ -19,7 +33,10 @@ export const messagesAPI = createApi({
         arg
       ) => response.status,
     }),
+    getUnreadMessages: builder.query({
+      query: () => "messages/unread",
+    }),
   }),
 });
 
-export const { useAddMessageMutation } = messagesAPI;
+export const { useAddMessageMutation, useGetUnreadMessagesQuery } = messagesAPI;

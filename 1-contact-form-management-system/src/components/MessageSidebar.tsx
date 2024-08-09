@@ -5,7 +5,7 @@ import { MessageType } from "src/types";
 import { formatRelativeDate } from "src/utils";
 
 interface Props {
-  messages: MessageType[];
+  messages: MessageType[] | undefined;
   loading: boolean;
   onClickMessage: (id: number) => void;
   activeMessageId?: number | null;
@@ -22,12 +22,6 @@ export function MessageSidebar({
   const t = useTranslations();
   const locale = useLocale();
 
-  const sortedMessages = messages?.sort((a, b) => {
-    return (
-      new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
-    );
-  });
-
   return (
     <div
       className={`w-1/4 dark:border-light transition-colors duration-300 bg-light dark:bg-dark border border-darkBackground shadow-custom flex-col ${classname}`}
@@ -35,17 +29,17 @@ export function MessageSidebar({
       <aside className="pb-2 scrollbar overflow-y-auto transition-colors duration-300 w-full dark:text-secondary font-bold">
         <div className="transition-colors duration-300 border-b p-2 text-center bg-light dark:bg-dark text-dark dark:text-light">
           <p className="text-md sm:text-xs md:text-sm lg:text-base lowercase">
-            {sortedMessages?.length}{" "}
+            {messages?.length}{" "}
             {activeMessageId ? t("message(s)") : t("unread message(s)")}{" "}
           </p>
         </div>
-        {!sortedMessages && loading && (
+        {!messages && loading && (
           <div className="w-full flex justify-center">
             <Spinner size={8} />
           </div>
         )}
-        {sortedMessages &&
-          sortedMessages.map((message) => {
+        {messages &&
+          messages.map((message) => {
             const isActive = message.id === activeMessageId;
             return (
               <div

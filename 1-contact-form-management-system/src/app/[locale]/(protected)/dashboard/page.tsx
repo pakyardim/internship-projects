@@ -1,19 +1,39 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { useSelector } from "react-redux";
-import { MessageSidebar } from "src/components";
+import { useRouter } from "next/navigation";
 
+import { useGetUnreadMessagesQuery } from "src/features/slices";
 import { RootState } from "src/features/store";
 import { Breadcrumbs } from "src/components/ui";
 import { useSnackbar } from "src/contexts/snackbarContext";
+import { MessageSidebar } from "src/components";
 import { MessageType } from "src/types";
 
 export default function Dashboard() {
   const t = useTranslations("DashboardPage");
-  const { user, status } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
+  const router = useRouter();
   const { showSnackbar } = useSnackbar();
+
+  const { data, isLoading, error } = useGetUnreadMessagesQuery("");
+
+  useEffect(() => {
+    if (error) {
+      if ("status" in error && error.status === 401) {
+        showSnackbar("User not authenticated", "error");
+        document.cookie =
+          "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        router.replace("/not-authenticated");
+      } else {
+        showSnackbar("", "error");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   //   const { mutate } = useMutation({
   //     mutationFn: readMessage,
@@ -53,7 +73,7 @@ export default function Dashboard() {
   //     showSnackbar("Something went wrong!", "error");
   //   }
 
-  //   const messages: MessageType[] = data?.messages;
+  const messages: MessageType[] = data?.messages;
 
   //   const unreadMessages = messages?.filter(
   //     (message) => message.read === "false"
@@ -95,12 +115,12 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="w-full sm:w-1/2 flex items-center justify-center">
-          {/* <MessageSidebar
-            messages={unreadMessages}
+          <MessageSidebar
+            messages={messages}
             onClickMessage={onClickMessage}
-            loading={status === "pending"}
+            loading={isLoading}
             classname="w-full md:w-2/4 max-h-96 flex"
-          /> */}
+          />
         </div>
       </div>
     </main>
