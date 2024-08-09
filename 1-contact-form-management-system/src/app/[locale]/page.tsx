@@ -6,9 +6,9 @@ import { HighlightedText } from "src/components/ui";
 import { ContactForm } from "src/components";
 
 function Contact() {
-  let t = useTranslations();
+  let t = useTranslations("ContactPage");
 
-  const text = t("contactHeader");
+  const text = t("title");
   const textArray = text.split(/(?!$)/);
 
   return (
@@ -32,12 +32,12 @@ function Contact() {
             })}
           </h1>
           <p className="animated-text text-xl lg:text-2xl">
-            Feel free to <b>reach out</b> to us with any questions or{" "}
-            <b>concerns</b> you may have. <b>We</b> will get back to you as soon
-            as <b>possible</b>
+            {t.rich("description", {
+              b: (chunks) => <b>{chunks}</b>,
+            })}
           </p>
         </div>
-        <div className="h-40 w-56 lg:h-60 relative">
+        <div className="h-56 w-56 lg:h-60 lg:w-60 relative">
           <Image fill src={heroImg} alt="ash and pikachu" />
         </div>
       </div>

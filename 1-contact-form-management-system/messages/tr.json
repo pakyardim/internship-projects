@@ -1,14 +1,18 @@
 {
+  "ContactPage": {
+    "description": "Sorularınız veya <b>endişeleriniz</b> ile ilgili olarak bizimle <b>iletişime geçmekten</b> çekinmeyin. Mümkün olan <b>en kısa sürede</b> size geri döneceğiz.",
+    "title": "Temasa geçin"
+  },
+  "Footer": {
+    "title": "Tüm hakları saklıdır."
+  },
   "Log in": "Giriş Yap",
   "Logging in": "Giriş Yapılıyor...",
   "en": "English",
   "tr": "Türkçe",
   "Submit": "Gönder",
   "Submitting": "Gönderiliyor...",
-  "reserved": "Tüm hakları saklıdır.",
-  "contactHeader": "Temasa geçin",
-  "contactParagraph": "Sorularınız veya <1>endişeleriniz</1> ile ilgili olarak bizimle <1>iletişime geçmekten</1> çekinmeyin. Mümkün olan <1>en kısa sürede</1> size geri döneceğiz.",
-  "formHeader": "Bize bir <1>mesaj</1> gönderin",
+  "formHeader": "Bize bir <b>mesaj</b> gönderin",
   "name": "İsim",
   "read": "Okundu",
   "yes": "Evet",
@@ -36,7 +40,7 @@
   "notAuthorizedParagraph": "Buradan sonrasına giriş yapmadan geçiş yok.",
   "welcome": "Hoş geldin",
   "authTitle": "Tekrar Hoş Geldin!",
-  "authDesc": "<1>Seni</h1> görmek her zaman güzel.",
+  "authDesc": "<b>Seni</b> görmek her zaman güzel.",
   "username": "kullanıcı adı",
   "password": "parola",
   "Don't have an account?": "Hesabın yok mu?",
@@ -55,7 +59,7 @@
   "No data available": "Uygun veri yok",
   "Country Counts": "Ülke Sayıları",
   "Gender Distribution": "Cinsiyet Dağılımı",
-  "dashboardParagraph": "Bu sayfa, okunmamış <1>mesajlarınızı</1> yönetmenize olanak tanır. <1>Raporlar</1> sayfasına giderek verilerinizi inceleyebilirsiniz.",
+  "dashboardParagraph": "Bu sayfa, okunmamış <b>mesajlarınızı</b> yönetmenize olanak tanır. <b>Raporlar</b> sayfasına giderek verilerinizi inceleyebilirsiniz.",
   "add": "Ekle",
   "edit": "Düzenle",
   "addUser": "Yeni bir kullanıcı ekle",
@@ -63,8 +67,8 @@
   "Edit User": "Kullanıcıyı Düzenle",
   "newUser": "Yeni kullanıcı",
   "editUser": "Kullanıcıyı düzenle",
-  "editUserParagraph": "Ekipteki <1>kullanıcıyı</1> düzenle. Formu <1>değiştir</1> ve gerekli tüm <1>bilgileri</1> eklediğinden emin ol.",
-  "userParagraph": "Ekibe yeni bir <1>kullanıcı</1> ekle. Formu <1>doldur</1> ve gerekli tüm <1>bilgileri</1> eklediğinden emin ol.",
-  "editUserParagraph2": "<1>Kullanıcı</1> adını değiştiremediğini unutma.",
-  "userParagraph2": "<1>Kullanıcı</1> adını ayarladıktan sonra değiştiremeyeceğini unutma."
+  "editUserParagraph": "Ekipteki <b>kullanıcıyı</b> düzenle. Formu <b>değiştir</b> ve gerekli tüm <b>bilgileri</b> eklediğinden emin ol.",
+  "userParagraph": "Ekibe yeni bir <b>kullanıcı</b> ekle. Formu <b>doldur</b> ve gerekli tüm <b>bilgileri</b> eklediğinden emin ol.",
+  "editUserParagraph2": "<b>Kullanıcı</b> adını değiştiremediğini unutma.",
+  "userParagraph2": "<b>Kullanıcı</b> adını ayarladıktan sonra değiştiremeyeceğini unutma."
 }

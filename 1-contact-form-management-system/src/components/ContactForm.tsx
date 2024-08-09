@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import * as yup from "yup";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
   HighlightedText,
@@ -12,14 +11,16 @@ import {
   Spinner,
 } from "src/components/ui";
 import { useSnackbar } from "src/contexts/snackbarContext";
-// import { fetchCountries, submitContactForm } from "src/fetchers";
-// import { useSnackbar } from "src/contexts";
+import {
+  useAddMessageMutation,
+  useGetAllCountriesQuery,
+} from "src/features/slices";
 
 const schema = yup.object().shape({
   name: yup.string().required("required").min(3, "more3").max(50, "less50"),
-  country: yup.string().required("required"),
-  gender: yup.string().required("required"),
   message: yup.string().required("required").max(500, "less500"),
+  country_id: yup.number().required("required"),
+  gender_id: yup.number().required("required"),
 });
 
 type Contact = yup.InferType<typeof schema>;
@@ -33,35 +34,26 @@ export function ContactForm() {
     reset,
   } = useForm<Contact>({ resolver: yupResolver(schema) });
 
-  // const { showSnackbar } = useSnackbar();
-
-  // const { data, status } = useQuery({
-  //   queryKey: ["countries"],
-  //   queryFn: fetchCountries,
-  //   retry: 1,
-  //   gcTime: 1000 * 60,
-  // });
-
-  // const { mutate, isPending } = useMutation({
-  //   mutationFn: submitContactForm,
-  //   retry: 1,
-  //   onSuccess: () => {
-  //     showSnackbar("successMsg", "success");
-  //     reset();
-  //   },
-  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   onError: (error: any) => {
-  //     showSnackbar(error.response.data.error, "error");
-  //   },
-  // });
-
-  // const countries = data?.countries;
-
   const t = useTranslations();
 
-  // const onSubmit: SubmitHandler<Contact> = (data: Contact) => {
-  //   mutate(data);
-  // };
+  const { showSnackbar } = useSnackbar();
+
+  const { data, isLoading } = useGetAllCountriesQuery("");
+
+  const countries = data?.countries;
+
+  const [addMessage, { isLoading: isSubmitLoading }] = useAddMessageMutation();
+
+  const onSubmit: SubmitHandler<Contact> = async (data) => {
+    try {
+      const response = await addMessage(data).unwrap();
+      console.log(response);
+      showSnackbar("successMsg", "success");
+      reset();
+    } catch (error: any) {
+      showSnackbar(error.response.data.error, "error");
+    }
+  };
 
   return (
     <div className="w-full sm:w-1/2 flex items-center justify-center">
@@ -70,7 +62,7 @@ export function ContactForm() {
         <h2 className="text-2xl lg:text-3xl mb-5">
           Send us a <HighlightedText>message</HighlightedText>
         </h2>
-        {/* <form onSubmit={() => {}} className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="relative">
             <label
               htmlFor="name"
@@ -117,25 +109,30 @@ export function ContactForm() {
           </div>
           <div className="relative">
             <label
-              htmlFor="country"
+              htmlFor="country_id"
               className={`${
-                errors.country && "text-primary"
+                errors.country_id && "text-primary"
               } block text-lg font-medium`}
             >
               {t("country")}
             </label>
-            <CustomDropdown
-              isLoading={status === "pending"}
-              options={countries}
+            <Controller
               control={control}
-              isError={errors.country ? true : false}
-              setValue={(val: string) => {
-                setValue("country", val);
-              }}
+              name="country_id"
+              render={({ field: { onChange, value } }) => (
+                <CustomDropdown
+                  isLoading={isLoading}
+                  options={countries}
+                  isError={errors.country_id ? true : false}
+                  onChange={onChange}
+                  value={value}
+                  reset={() => setValue("country_id", -1)}
+                />
+              )}
             />
-            {errors.country && (
+            {errors.country_id && (
               <p className="absolute left-0 text-sm text-primary">
-                {t(errors.country?.message || "defaultError")}
+                {t(errors.country_id?.message || "defaultError")}
               </p>
             )}
           </div>
@@ -188,9 +185,9 @@ export function ContactForm() {
           </div>
           <div className="relative">
             <label
-              htmlFor="gender"
+              htmlFor="gender_id"
               className={`${
-                errors.gender && "text-primary"
+                errors.gender_id && "text-primary"
               } block text-lg font-medium mb-2`}
             >
               {t("gender")}
@@ -198,19 +195,18 @@ export function ContactForm() {
             <div className="flex gap-4">
               <Controller
                 control={control}
-                name="gender"
-                defaultValue={""}
+                name="gender_id"
                 render={({ field: { onChange } }) => (
                   <>
                     <label
                       className={`${
-                        errors.gender && "text-primary"
+                        errors.gender_id && "text-primary"
                       } cursor-pointer flex items-center`}
                     >
                       <input
                         type="radio"
                         name="gender"
-                        onChange={onChange}
+                        onChange={() => onChange(1)}
                         value="male"
                         className="hidden peer"
                       />
@@ -219,13 +215,13 @@ export function ContactForm() {
                     </label>
                     <label
                       className={`${
-                        errors.gender && "text-primary"
+                        errors.gender_id && "text-primary"
                       } cursor-pointer flex items-center`}
                     >
                       <input
                         type="radio"
                         name="gender"
-                        onChange={onChange}
+                        onChange={() => onChange(2)}
                         value="female"
                         className="hidden peer"
                       />
@@ -236,25 +232,25 @@ export function ContactForm() {
                 )}
               />
             </div>
-            {errors.gender && (
+            {errors.gender_id && (
               <p className="absolute left-0 text-sm text-primary">
-                {t(errors.gender?.message || "defaultError")}
+                {t(errors.gender_id?.message || "defaultError")}
               </p>
             )}
           </div>
           <div className="flex w-full justify-end">
             <PrimaryButton
               type="submit"
-              isDisabled={isPending}
+              isDisabled={isSubmitLoading}
               classname="py-3 lg:py-4 px-6 lg:px-8 bg-primary"
             >
               <div className="flex items-center gap-x-2">
-                <p>{isPending ? t("Submitting") : t("Submit")}</p>
-                {isPending && <Spinner size={4} />}
+                <p>{isSubmitLoading ? t("Submitting") : t("Submit")}</p>
+                {isSubmitLoading && <Spinner size={4} />}
               </div>
             </PrimaryButton>
           </div>
-        </form> */}
+        </form>
       </div>
     </div>
   );

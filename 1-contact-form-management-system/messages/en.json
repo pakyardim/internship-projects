@@ -1,14 +1,18 @@
 {
+  "ContactPage": {
+    "description": "Feel free to <b>reach out</b> to us with any questions or <b>concerns</b> you may have. <b>We</b> will get back to you as soon as <b>possible</b>.",
+    "title": "Get in touch"
+  },
+  "Footer": {
+    "title": "All rights reserved."
+  },
   "Log in": "Log in",
   "Logging in": "Logging in...",
   "en": "English",
   "tr": "Türkçe",
   "Submit": "Submit",
   "Submitting": "Submitting...",
-  "reserved": "All rights reserved.",
-  "contactHeader": "Get in touch",
-  "contactParagraph": "Feel free to <1>reach out</1> to us with any questions or <1>concerns</1> you may have. <1>We</1> will get back to you as soon as <1>possible</1>.",
-  "formHeader": "Send us a <1>message</1>",
+  "formHeader": "Send us a <b>message</b>",
   "name": "Name",
   "read": "Read",
   "yes": "Yes",
@@ -23,7 +27,7 @@
   "country": "Country",
   "required": "This field is required!",
   "more3": "Type more than 3 characters",
-  "less10": "Type less than 10 characters",
+  "lessb0": "Type less than b0 characters",
   "less50": "Type less than 50 characters",
   "less500": "Type less than 500 characters",
   "loading": "Loading...",
@@ -36,7 +40,7 @@
   "notAuthorizedParagraph": "You can not proceed from here. You have to be logged in.",
   "welcome": "Welcome",
   "authTitle": "Welcome Back!",
-  "authDesc": "It's always good to see <1>you</1>.",
+  "authDesc": "It's always good to see <b>you</b>.",
   "username": "username",
   "password": "password",
   "Don't have an account?": "Don't have an account?",
@@ -57,14 +61,14 @@
   "No data available": "No data available",
   "Country Counts": "Country Counts",
   "Gender Distribution": "Gender Distribution",
-  "dashboardParagraph": "This page allows you to manage your <1>unread messages</1>. You can go to the <1>Reports</1> page to review your data.",
+  "dashboardParagraph": "This page allows you to manage your <b>unread messages</b>. You can go to the <b>Reports</b> page to review your data.",
   "addUser": "Add a new user",
   "newUser": "New user",
   "Add User": "Add User",
   "Edit User": "Edit User",
   "editUser": "Edit the user",
-  "editUserParagraph": "Edit the <1>user</1> on the team. <1>Change</1> the form and be sure to include all the necessary <1>information</1>.",
-  "userParagraph": "Bring a new <1>user</1> to the team. <1>Fill out</1> the form and be sure to include all the necessary <1>information</1>.",
-  "editUserParagraph2": "Keep in mind that you can not change the <1>username</1>.",
-  "userParagraph2": "Keep in mind that you can not change the <1>username</1> once it is set."
+  "editUserParagraph": "Edit the <b>user</b> on the team. <b>Change</b> the form and be sure to include all the necessary <b>information</b>.",
+  "userParagraph": "Bring a new <b>user</b> to the team. <b>Fill out</b> the form and be sure to include all the necessary <b>information</b>.",
+  "editUserParagraph2": "Keep in mind that you can not change the <b>username</b>.",
+  "userParagraph2": "Keep in mind that you can not change the <b>username</b> once it is set."
 }

@@ -3,8 +3,10 @@ import { getMessages } from "next-intl/server";
 import { Gabarito } from "next/font/google";
 import type { Metadata } from "next";
 
-import "../globals.scss";
+import "./globals.scss";
 import { Footer, Header } from "src/components/layouts";
+import { ReduxProvider } from "src/features/Provider";
+import { SnackbarProvider } from "src/contexts/snackbarContext";
 
 const locales = ["en", "de"];
 
@@ -32,9 +34,13 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={gabarito.className}>
         <NextIntlClientProvider messages={messages}>
-          <Header />
-          {children}
-          <Footer />
+          <ReduxProvider>
+            <SnackbarProvider>
+              <Header />
+              {children}
+              <Footer />
+            </SnackbarProvider>
+          </ReduxProvider>
         </NextIntlClientProvider>
       </body>
     </html>

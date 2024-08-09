@@ -49,12 +49,12 @@ export function NavbarItemLocale({ closeNavbar }: Props) {
         {dropdown.map((item) => {
           return (
             <Link
-              key={item.title}
+              key={item.locale}
               href={pathname}
-              locale={item.title as "en" | "tr" | undefined}
+              locale={item.locale as "en" | "tr" | undefined}
             >
               <li onClick={changeLanguage.bind(null, item.locale)}>
-                <a className="hover:text-white hover:opacity-100 hover:pl-6 pl-5 py-2 cursor-pointer opacity-80 font-primary flex items-center space-between w-1/2 text-light gap-2">
+                <div className="hover:text-white hover:opacity-100 hover:pl-6 pl-5 py-2 cursor-pointer opacity-80 font-primary flex items-center space-between w-1/2 text-light gap-2">
                   <span style={{ all: "unset" }}>{item.title}</span>{" "}
                   <Image
                     src={item.flag}
@@ -62,7 +62,7 @@ export function NavbarItemLocale({ closeNavbar }: Props) {
                     width={25}
                     height={16}
                   />
-                </a>
+                </div>
               </li>
             </Link>
           );
