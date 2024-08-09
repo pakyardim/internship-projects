@@ -57,6 +57,22 @@ export const deleteMsg = async (id: number) => {
   }
 };
 
+export const fetchUnreadMessages = async () => {
+  try {
+    const [messages] = await pool.query(
+      `SELECT m.*, c.country
+      FROM messages m
+      LEFT JOIN countries c ON m.country_id = c.id
+      WHERE m.read = 0
+      ORDER BY m.creationDate DESC
+      `
+    );
+    return messages as MessageType[];
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const fetchAllMessages = async ({ skip, limit, sort }) => {
   try {
     await pool.execute("SET @sort = ?;", [sort]);

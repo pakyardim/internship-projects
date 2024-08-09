@@ -28,6 +28,8 @@ router
     controller.fetchAll
   );
 
+router.get("/unread", authentication, controller.fetchUnread);
+
 router
   .route("/:id")
   .put(

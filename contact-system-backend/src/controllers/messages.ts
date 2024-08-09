@@ -6,6 +6,7 @@ import {
   createMessage,
   updateReadStatus,
   deleteMsg,
+  fetchUnreadMessages,
 } from "../services/messages";
 import { checkValidationError } from "../utils/validation";
 import { MessageType } from "../types";
@@ -23,6 +24,16 @@ export const addMessage: RequestHandler = async (req, res, next) => {
     });
 
     return res.status(201).json({ message: newMessage });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const fetchUnread: RequestHandler = async (req, res, next) => {
+  try {
+    const messages: MessageType[] = await fetchUnreadMessages();
+
+    return res.status(200).json({ messages });
   } catch (error) {
     next(error);
   }

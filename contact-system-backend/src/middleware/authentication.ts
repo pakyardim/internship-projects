@@ -44,6 +44,7 @@ export default (async (
     req.user = existingUser;
     next();
   } catch (error) {
+    res.status(401).send({ error: "Invalid token" });
     next(error);
   }
 }) as RequestHandler;
