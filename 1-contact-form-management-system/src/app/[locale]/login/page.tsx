@@ -2,7 +2,7 @@
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -29,6 +29,7 @@ const schema = yup.object().shape({
 type Login = yup.InferType<typeof schema>;
 
 export default function Login() {
+  const locale = useLocale();
   const router = useRouter();
   const { showSnackbar } = useSnackbar();
   const { errorMessage, status } = useSelector(
@@ -45,7 +46,7 @@ export default function Login() {
   const onSubmit = async (data: Login) => {
     try {
       await dispatch(loginUser(data)).unwrap();
-      router.replace("/dashboard");
+      router.replace(`/${locale}/dashboard`);
     } catch (error: any) {
       showSnackbar(errorMessage || error?.message, "error");
     }

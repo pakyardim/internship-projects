@@ -29,12 +29,12 @@ router.post(
   controller.login
 );
 
-router.post("/check-login", authentication, controller.checkLogin);
+router.get("/check-login", authentication, controller.checkLogin);
 
 router.post("/logout", authentication, controller.logout);
 
 router
-  .route("/:id")
+  .route("/by-id/:id")
   .put(
     authorization,
     [

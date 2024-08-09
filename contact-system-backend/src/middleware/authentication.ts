@@ -34,7 +34,7 @@ export default (async (
       return false;
     }
 
-    const existingUser = await findById(jwtTokenPayload.id);
+    const existingUser = await findById(jwtTokenPayload.userId);
 
     if (!existingUser) {
       res.status(401).send({ error: "User is not authenticated" });

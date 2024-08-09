@@ -3,19 +3,15 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-
-// import { useNavigate } from "react-router-dom";
-
-// import { useAuthContext } from "src/contexts";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "src/features/store";
+import { logout } from "src/features/slices/auth";
 
 export function UserProfileDropdown() {
-  // const {
-  //   functions: { logout },
-  //   values: { user },
-  // } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch: AppDispatch = useDispatch();
 
   const t = useTranslations();
-  // const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLImageElement>(null);
@@ -33,7 +29,7 @@ export function UserProfileDropdown() {
   };
 
   const handleLogout = async () => {
-    // await logout();
+    dispatch(logout());
     // navigate("/");
   };
 
@@ -46,17 +42,19 @@ export function UserProfileDropdown() {
         onClick={toggleDropdown}
         className="flex cursor-pointer w-8 h-8 relative"
       >
-        {/* <Image
-          src={user?.base64Photo}
-          alt="User Profile"
-          fill
-          className="object-cover rounded-full cursor-pointer"
-        /> */}
+        {user && (
+          <Image
+            src={user.base64Photo}
+            alt="User Profile"
+            fill
+            className="object-cover rounded-full cursor-pointer"
+          />
+        )}
       </div>
       {isOpen && (
         <div className="font-primary text-center rounded shadow-custom absolute right-0 mt-2 w-40 bg-white border border-darkBackground">
           <div className="px-4 py-2">
-            {/* <span className="block text-gray-700">{user?.username}</span> */}
+            <span className="block text-gray-700">{user?.username}</span>
           </div>
           <div className="border-t border-gray-200">
             <button

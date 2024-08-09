@@ -1,6 +1,6 @@
 import { Footer, Header } from "src/components/layouts";
 
-export default async function PublicLayout({
+export default function PublicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

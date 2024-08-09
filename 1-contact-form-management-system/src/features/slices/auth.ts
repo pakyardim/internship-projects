@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { headers } from "next/headers";
 import { UserType } from "src/types";
 
 interface AuthState {
@@ -16,6 +17,11 @@ const initialState: AuthState = {
   errorMessage: null,
 };
 
+function getTokenFromCookies() {
+  const match = document.cookie.match(new RegExp("(^| )auth-token=([^;]+)"));
+  return match ? match[2] : null;
+}
+
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials: { username: string; password: string }) => {
@@ -23,6 +29,29 @@ export const loginUser = createAsyncThunk(
       "http://localhost:5166/api/users/login",
       credentials
     );
+    return response.data;
+  }
+);
+
+export const checkLoginStatus = createAsyncThunk(
+  "auth/checkLoginStatus",
+  async () => {
+    const token = getTokenFromCookies();
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.get(
+      "http://localhost:5166/api/users/check-login",
+      config
+    );
+
     return response.data;
   }
 );
@@ -46,15 +75,26 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state: any, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload;
-        state.status = "succeeded";
+        const { token, user } = action.payload;
+        state.user = user;
         state.errorMessage = null;
-        const { token } = action.payload;
         document.cookie = `auth-token=${token}; path=/;`;
       })
       .addCase(loginUser.rejected, (state: any, action) => {
         state.status = "failed";
         state.errorMessage = action.error.message || "Login failed";
+      })
+      .addCase(checkLoginStatus.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(checkLoginStatus.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.status = "succeeded";
+      })
+      .addCase(checkLoginStatus.rejected, (state) => {
+        state.isAuthenticated = false;
+        state.user = null;
       });
   },
 });

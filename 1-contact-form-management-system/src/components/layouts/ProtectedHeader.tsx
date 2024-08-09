@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import {
   AnimatedLogo,
@@ -6,19 +8,22 @@ import {
   UserProfileDropdown,
 } from "src/components/ui";
 import { MobileNavbar } from "src/components/mobile-nav";
+import { usePathname } from "next/navigation";
+
 import Link from "next/link";
+import { RootState } from "src/features/store";
+import { useSelector } from "react-redux";
 // import { useAuthContext } from "src/contexts";
 
 export function ProtectedHeader() {
-  // const {
-  //   values: { user },
-  // } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.auth);
+  const pathname = usePathname();
 
   // const navigate = useNavigate();
 
   const t = useTranslations();
   // const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => pathname === path;
 
   const handleClick = () => {
     // navigate("/dashboard");
@@ -54,7 +59,7 @@ export function ProtectedHeader() {
                 {t("Messages")}
               </li>
             </Link>
-            {/* {user?.role === "admin" && (
+            {user?.role === "admin" && (
               <>
                 <Link href="/users">
                   <li
@@ -79,7 +84,7 @@ export function ProtectedHeader() {
                   </li>
                 </Link>
               </>
-            )} */}
+            )}
           </ul>
         </nav>
         <div className="hidden sm:flex items-center gap-5">

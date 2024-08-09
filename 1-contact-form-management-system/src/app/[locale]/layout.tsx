@@ -4,7 +4,6 @@ import { Gabarito } from "next/font/google";
 import type { Metadata } from "next";
 
 import "./globals.scss";
-import { Footer, Header } from "src/components/layouts";
 import { ReduxProvider } from "src/features/Provider";
 import { SnackbarProvider } from "src/contexts/snackbarContext";
 
