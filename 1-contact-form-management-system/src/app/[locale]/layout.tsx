@@ -36,9 +36,11 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <ReduxProvider>
             <SnackbarProvider>
-              <Header />
-              {children}
-              <Footer />
+              <div className="xl:container mx-auto flex flex-col min-h-screen">
+                <Header />
+                {children}
+                <Footer />
+              </div>
             </SnackbarProvider>
           </ReduxProvider>
         </NextIntlClientProvider>

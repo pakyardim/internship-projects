@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, ChangeEvent } from "react";
-import { Controller } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { CountryType } from "src/types";
 
