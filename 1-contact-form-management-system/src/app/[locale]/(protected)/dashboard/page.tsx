@@ -10,8 +10,8 @@ import { useSnackbar } from "src/contexts/snackbarContext";
 import { MessageType } from "src/types";
 
 export default function Dashboard() {
-  const t = useTranslations();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const t = useTranslations("DashboardPage");
+  const { user, status } = useSelector((state: RootState) => state.auth);
 
   const { showSnackbar } = useSnackbar();
 
@@ -64,7 +64,7 @@ export default function Dashboard() {
     // navigate(`/messages/${id}`);
   };
 
-  const text = `${t("welcome")} ${user?.username}!`;
+  const text = `${t("title")} ${user?.username}!`;
   const textArray = text.split(/(?!$)/);
 
   return (
@@ -74,7 +74,7 @@ export default function Dashboard() {
       <div className="flex py-5 flex-col gap-8 sm:flex-row sm:gap-6 lg:gap-8 transition-colors duration-300">
         <div className="w-full sm:w-1/2 dark:text-secondary flex flex-col gap-8 items-center">
           <div className="flex flex-col gap-5">
-            <h1 className="hero-text text-3xl md:text-4xl lg:text-5xl w-[90%]">
+            <h1 className="hero-text text-3xl md:text-4xl lg:text-5xl h-14 w-[90%]">
               {textArray.map((char, index) => {
                 return (
                   <span
@@ -88,8 +88,9 @@ export default function Dashboard() {
               })}
             </h1>
             <p className="animated-text text-lg md:text-xl lg:text-2xl">
-              This page allows you to manage your <b>unread messages</b>. You
-              can go to the <b>Reports</b> page to review your data.
+              {t.rich("description", {
+                b: (chunks) => <b>{chunks}</b>,
+              })}
             </p>
           </div>
         </div>

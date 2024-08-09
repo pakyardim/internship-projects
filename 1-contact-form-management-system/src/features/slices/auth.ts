@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { headers } from "next/headers";
 import { UserType } from "src/types";
 
 interface AuthState {

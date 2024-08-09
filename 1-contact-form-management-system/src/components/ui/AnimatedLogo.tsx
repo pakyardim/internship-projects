@@ -8,7 +8,7 @@ export function AnimatedLogo() {
         <div className="text-wrap overflow-hidden text-center h-6 sm:h-8 lg:h-9">
           <div className="sm:text-2xl lg:text-3xl text text-darkBackground dark:text-light relative">
             <span className="block">form</span>
-            <span className="block">info</span>
+            <span className="block">Info</span>
             <span className="block">page</span>
           </div>
         </div>

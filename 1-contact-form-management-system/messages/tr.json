@@ -6,6 +6,10 @@
   "Footer": {
     "title": "Tüm hakları saklıdır."
   },
+  "DashboardPage": {
+    "title": "Hoş geldin",
+    "description": "Bu sayfa, okunmamış <b>mesajlarınızı</b> yönetmenize olanak tanır. <b>Raporlar</b> sayfasına giderek verilerinizi inceleyebilirsiniz."
+  },
   "Log in": "Giriş Yap",
   "Logging in": "Giriş Yapılıyor...",
   "en": "English",
@@ -38,11 +42,11 @@
   "notAuthorized": "Dur bakalım!",
   "notAuthorizedErr": "Bu sayfaya erişim izniniz yok.",
   "notAuthorizedParagraph": "Buradan sonrasına giriş yapmadan geçiş yok.",
-  "welcome": "Hoş geldin",
   "authTitle": "Tekrar Hoş Geldin!",
   "authDesc": "<b>Seni</b> görmek her zaman güzel.",
   "username": "kullanıcı adı",
   "password": "parola",
+  "defaultError": "Bir şeyler ters gitti!",
   "Don't have an account?": "Hesabın yok mu?",
   "Network Error": "Ağ Hatası!",
   "403": "HOP",
@@ -50,7 +54,6 @@
   "Messages": "Mesajlar",
   "Users": "Kullanıcılar",
   "Reports": "Raporlar",
-  "Something went wrong": "Bir şeyler ters gitti!",
   "Logout": "Çıkış Yap",
   "submissionDate": "Gönderim Tarihi",
   "photo": "Fotoğraf",
@@ -59,7 +62,6 @@
   "No data available": "Uygun veri yok",
   "Country Counts": "Ülke Sayıları",
   "Gender Distribution": "Cinsiyet Dağılımı",
-  "dashboardParagraph": "Bu sayfa, okunmamış <b>mesajlarınızı</b> yönetmenize olanak tanır. <b>Raporlar</b> sayfasına giderek verilerinizi inceleyebilirsiniz.",
   "add": "Ekle",
   "edit": "Düzenle",
   "addUser": "Yeni bir kullanıcı ekle",
