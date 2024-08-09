@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { useLocale } from "next-intl";
 
 export function AnimatedLogo() {
+  const locale = useLocale();
+
   return (
-    <Link href="/">
+    <Link href={`/${locale}`}>
       <div className="uppercase cursor-pointer flex items-center text-primary font-primary font-bold sm:text-2xl lg:text-3xl">
         <span>Contact</span>
         <div className="text-wrap overflow-hidden text-center h-6 sm:h-8 lg:h-9">

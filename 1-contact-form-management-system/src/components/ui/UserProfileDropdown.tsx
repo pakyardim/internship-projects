@@ -2,14 +2,19 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "src/features/store";
-import { logout } from "src/features/slices/auth";
+import { logoutUser } from "src/features/slices/auth";
+import { useRouter } from "next/navigation";
+import { useSnackbar } from "src/contexts/snackbarContext";
 
 export function UserProfileDropdown() {
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, errorMessage } = useSelector((state: RootState) => state.auth);
   const dispatch: AppDispatch = useDispatch();
+  const locale = useLocale();
+  const router = useRouter();
+  const { showSnackbar } = useSnackbar();
 
   const t = useTranslations();
 
@@ -29,8 +34,12 @@ export function UserProfileDropdown() {
   };
 
   const handleLogout = async () => {
-    dispatch(logout());
-    // navigate("/");
+    try {
+      await dispatch(logoutUser()).unwrap();
+      router.replace(`/${locale}`);
+    } catch (error: any) {
+      showSnackbar(errorMessage || error?.message, "error");
+    }
   };
 
   return (

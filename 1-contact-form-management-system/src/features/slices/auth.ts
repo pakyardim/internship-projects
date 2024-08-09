@@ -29,6 +29,24 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
+  const token = getTokenFromCookies();
+  if (!token) {
+    throw new Error("No token found");
+  }
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const response = await axios.request({
+    url: "http://localhost:5166/api/users/logout",
+    method: "POST",
+    headers,
+  });
+
+  return response.data;
+});
+
 export const checkLoginStatus = createAsyncThunk(
   "auth/checkLoginStatus",
   async () => {
@@ -75,11 +93,25 @@ const authSlice = createSlice({
         state.user = user;
         state.errorMessage = null;
         document.cookie = `auth-token=${token}; path=/;`;
-        state.loading = "succeeded";
       })
       .addCase(loginUser.rejected, (state: any, action) => {
         state.status = "failed";
         state.errorMessage = action.error.message || "Login failed";
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isAuthenticated = false;
+        state.user = null;
+        state.errorMessage = null;
+        document.cookie =
+          "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+        state.status = "succeeded";
+      })
+      .addCase(logoutUser.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.errorMessage = action.error.message || "Logout failed";
       })
       .addCase(checkLoginStatus.pending, (state, action) => {
         state.status = "loading";
@@ -96,5 +128,4 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
 export default authSlice.reducer;

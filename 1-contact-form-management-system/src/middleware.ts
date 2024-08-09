@@ -4,7 +4,7 @@ import createMiddleware from "next-intl/middleware";
 import { cookies } from "next/headers";
 
 const protectedRoutes = ["/dashboard"];
-const publicRoutes = ["/login", "/"];
+const publicRoutes = ["/login", "/en", "/tr"];
 
 const handleI18nRouting = createMiddleware({
   locales: ["en", "tr"],

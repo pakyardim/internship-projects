@@ -1,6 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
+import Link from "next/link";
 import {
   AnimatedLogo,
   LanguageDropdown,
@@ -8,27 +11,16 @@ import {
   UserProfileDropdown,
 } from "src/components/ui";
 import { MobileNavbar } from "src/components/mobile-nav";
-import { usePathname } from "next/navigation";
 
-import Link from "next/link";
 import { RootState } from "src/features/store";
-import { useSelector } from "react-redux";
-// import { useAuthContext } from "src/contexts";
 
 export function ProtectedHeader() {
   const { user } = useSelector((state: RootState) => state.auth);
   const pathname = usePathname();
   const strippedPath = pathname.replace(/^\/(en|tr)\//, "/");
 
-  // const navigate = useNavigate();
-
   const t = useTranslations();
-  // const location = useLocation();
   const isActive = (path: string) => strippedPath === path;
-
-  const handleClick = () => {
-    // navigate("/dashboard");
-  };
 
   return (
     <header className="flex-none px-0 sm:px-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary border-collapse">
