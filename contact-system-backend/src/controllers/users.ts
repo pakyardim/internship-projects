@@ -81,6 +81,7 @@ export const login: RequestHandler = async (
     });
 
     res.status(200).send({ data: { user, token: jwtToken } });
+    res.status(200).send({ user, token: jwtToken });
   } catch (error) {
     next(error);
   }

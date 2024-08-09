@@ -46,8 +46,7 @@ export function ContactForm() {
 
   const onSubmit: SubmitHandler<Contact> = async (data) => {
     try {
-      const response = await addMessage(data).unwrap();
-      console.log(response);
+      await addMessage(data).unwrap();
       showSnackbar("successMsg", "success");
       reset();
     } catch (error: any) {

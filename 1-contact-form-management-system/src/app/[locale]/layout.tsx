@@ -35,13 +35,7 @@ export default async function RootLayout({
       <body className={gabarito.className}>
         <NextIntlClientProvider messages={messages}>
           <ReduxProvider>
-            <SnackbarProvider>
-              <div className="xl:container mx-auto flex flex-col min-h-screen">
-                <Header />
-                {children}
-                <Footer />
-              </div>
-            </SnackbarProvider>
+            <SnackbarProvider>{children}</SnackbarProvider>
           </ReduxProvider>
         </NextIntlClientProvider>
       </body>
