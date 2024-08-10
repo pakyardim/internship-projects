@@ -1,17 +1,22 @@
 import { useTranslations, useLocale } from "next-intl";
+import Link from "next/link";
 import React from "react";
+import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
 import {
   LuArrowLeft,
   LuArrowLeftToLine,
   LuArrowRight,
   LuArrowRightToLine,
 } from "react-icons/lu";
+import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 
 import { MessageType } from "src/types";
 import { transformDate } from "src/utils";
 
 interface Props {
   page: number;
+  sort: string;
+  setSort: React.Dispatch<React.SetStateAction<string>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   limit: number;
   setLimit: React.Dispatch<React.SetStateAction<number>>;
@@ -21,6 +26,8 @@ interface Props {
 
 export function MessagesTable({
   page,
+  sort,
+  setSort,
   setPage,
   limit,
   setLimit,
@@ -38,26 +45,92 @@ export function MessagesTable({
 
   return (
     <div className="overflow-x-auto w-full">
-      <table className="w-full divide-y dark:divide-light divide-gray-200 border">
+      <table className="w-full md:table-fixed divide-y dark:divide-light divide-gray-200 border">
         <thead className="hidden md:table-header-group bg-slate-300 dark:bg-slate-950">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
-              {t("name")}
+            <th className="px-6 py-3 text-left text-xs font-medium dark:text-light tracking-wider">
+              <button
+                onClick={() => {
+                  setSort((prevSort) =>
+                    prevSort === "nameA" ? "nameD" : "nameA"
+                  );
+                }}
+                className="flex items-center uppercase"
+              >
+                {t("name")}
+                {sort === "nameA" ? (
+                  <TiArrowSortedUp />
+                ) : sort === "nameD" ? (
+                  <TiArrowSortedDown />
+                ) : (
+                  <FaSort />
+                )}
+              </button>
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
-              {t("country")}
+              <button
+                onClick={() => {
+                  setSort((prevSort) =>
+                    prevSort === "countryA" ? "countryD" : "countryA"
+                  );
+                }}
+                className="flex items-center uppercase"
+              >
+                {t("country")}
+                {sort === "countryA" ? (
+                  <TiArrowSortedUp />
+                ) : sort === "countryD" ? (
+                  <TiArrowSortedDown />
+                ) : (
+                  <FaSort />
+                )}
+              </button>
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
+            <th className="md:w-2/6 px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
               {t("message")}
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
-              {t("gender")}
+              <button
+                onClick={() => {
+                  setSort((prevSort) =>
+                    prevSort === "genderA" ? "genderD" : "genderA"
+                  );
+                }}
+                className="flex items-center uppercase"
+              >
+                {t("gender")}
+                {sort === "genderA" ? (
+                  <TiArrowSortedUp />
+                ) : sort === "genderD" ? (
+                  <TiArrowSortedDown />
+                ) : (
+                  <FaSort />
+                )}
+              </button>
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
               {t("read")}
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
-              {t("date")}
+              <button
+                onClick={() => {
+                  setSort((prevSort) =>
+                    prevSort === "creationDateA"
+                      ? "creationDateD"
+                      : "creationDateA"
+                  );
+                }}
+                className="flex items-center uppercase"
+              >
+                {t("date")}
+                {sort === "creationDateA" ? (
+                  <TiArrowSortedUp />
+                ) : sort === "creationDateD" ? (
+                  <TiArrowSortedDown />
+                ) : (
+                  <FaSort />
+                )}
+              </button>
             </th>
           </tr>
         </thead>
@@ -175,6 +248,13 @@ export function MessagesTable({
           </tr>
         </tfoot>
       </table>
+      <div className="w-full flex justify-end pt-2">
+        <Link href="/messages/reports">
+          <p className="text-primary/80 text-sm hover:underline dark:text-primaryDark">
+            {t("see in scroll view")}
+          </p>
+        </Link>
+      </div>
     </div>
   );
 }

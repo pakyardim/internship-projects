@@ -111,14 +111,22 @@ export const fetchAllMessages = async ({ skip, limit, sort }) => {
       LEFT JOIN genders g ON m.gender_id = g.id
       
       ORDER BY 
-        CASE WHEN @sort = 'name' THEN m.name
+        CASE WHEN @sort = 'nameA' THEN m.name
           END ASC,
-        CASE WHEN @sort = 'gender' THEN g.gender
-          END ASC,
-        CASE WHEN @sort = 'creationDate' THEN m.creationDate
+        CASE WHEN @sort = 'nameD' THEN m.name
           END DESC,
-        CASE WHEN @sort = 'country' THEN c.country
-          END ASC
+        CASE WHEN @sort = 'genderA' THEN g.gender
+          END ASC,
+        CASE WHEN @sort = 'genderD' THEN g.gender
+          END DESC,
+        CASE WHEN @sort = 'creationDateA' THEN m.creationDate
+          END ASC,
+        CASE WHEN @sort = 'creationDateD' THEN m.creationDate
+          END DESC,
+        CASE WHEN @sort = 'countryA' THEN c.country
+          END ASC,
+        CASE WHEN @sort = 'countryD' THEN c.country
+          END DESC
 
         LIMIT ?, ?;
         `,

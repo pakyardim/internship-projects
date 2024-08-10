@@ -44,7 +44,7 @@ export const messagesAPI = createApi({
     }),
     getAllMessages: builder.query({
       query: ({ page, limit, sort }) =>
-        `messages?page=${page}&limit=${limit}&sort=name`,
+        `messages?page=${page}&limit=${limit}&sort=${sort}`,
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },

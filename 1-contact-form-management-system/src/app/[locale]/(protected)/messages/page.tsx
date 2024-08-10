@@ -14,6 +14,7 @@ import { useGetAllMessagesQuery } from "src/features/slices";
 export default function Messages() {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(5);
+  const [sort, setSort] = useState<string>("creationDateD");
   const router = useRouter();
   const t = useTranslations();
 
@@ -21,7 +22,7 @@ export default function Messages() {
     {
       page,
       limit,
-      sort: "desc",
+      sort,
     },
     {
       refetchOnMountOrArgChange: true,
@@ -71,6 +72,8 @@ export default function Messages() {
         isSuccess && (
           <div>
             <MessagesTable
+              sort={sort}
+              setSort={setSort}
               page={page}
               setPage={setPage}
               limit={limit}
