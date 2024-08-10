@@ -1,20 +1,17 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
 import { Breadcrumbs, Spinner, BarChart, PieChart } from "src/components/ui";
 import { useSnackbar } from "src/contexts/snackbarContext";
-import { ChartDataType, MessageType } from "src/types";
-import { RootState } from "src/features/store";
+import { ChartDataType } from "src/types";
 import { useGetReportsQuery } from "src/features/slices";
 import { useEffect } from "react";
 
 export default function Reports() {
   const t = useTranslations();
   const router = useRouter();
-  const { user } = useSelector((state: RootState) => state.auth);
 
   const { data, isLoading, error } = useGetReportsQuery("");
 

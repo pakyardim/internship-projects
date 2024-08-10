@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import { UserType } from "src/types";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+
+import { UserType } from "src/types";
 
 interface Props {
   users: UserType[];
@@ -29,7 +31,7 @@ export function UserTable({ users, selectedUserId, setSelectedUserId }: Props) {
       onBlur={handleBlur}
       className="overflow-x-auto w-full"
     >
-      {/* <table className="w-full divide-y dark:divide-light divide-gray-200 border">
+      <table className="w-full divide-y dark:divide-light divide-gray-200 border">
         <thead className="hidden sm:table-header-group bg-slate-300 dark:bg-slate-950">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
@@ -66,11 +68,14 @@ export function UserTable({ users, selectedUserId, setSelectedUserId }: Props) {
                 <span className="lowercase block font-bold sm:hidden cell-header">
                   {t("photo")}:
                 </span>
-                <img
-                  src={item.base64Photo}
-                  alt="user image"
-                  className="object-cover w-8 h-8 rounded-full"
-                />
+                <div className="w-8 h-8 relative">
+                  <Image
+                    fill
+                    src={item.base64Photo}
+                    alt="user image"
+                    className="object-cover rounded-full"
+                  />
+                </div>
               </td>
               <td className="flex w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
                 <span className="block font-bold sm:hidden cell-header">
@@ -93,7 +98,7 @@ export function UserTable({ users, selectedUserId, setSelectedUserId }: Props) {
             </tr>
           ))}
         </tbody>
-      </table> */}
+      </table>
     </div>
   );
 }
