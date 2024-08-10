@@ -30,6 +30,12 @@ router
 
 router.get("/unread", authentication, controller.fetchUnread);
 
+router.get(
+  "/get-reports",
+  [authentication, authorization],
+  controller.fetchReports
+);
+
 router
   .route("/:id")
   .put(
@@ -38,7 +44,7 @@ router
     controller.readMessage
   )
   .delete(
-    authorization,
+    [authentication, authorization],
     param("id").exists().isInt().toInt(),
     controller.deleteMessage
   )

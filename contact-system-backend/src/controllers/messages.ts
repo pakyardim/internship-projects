@@ -7,6 +7,7 @@ import {
   updateReadStatus,
   deleteMsg,
   fetchUnreadMessages,
+  fetchAllReports,
 } from "../services/messages";
 import { checkValidationError } from "../utils/validation";
 import { MessageType } from "../types";
@@ -34,6 +35,16 @@ export const fetchUnread: RequestHandler = async (req, res, next) => {
     const messages: MessageType[] = await fetchUnreadMessages();
 
     return res.status(200).json({ messages });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const fetchReports: RequestHandler = async (req, res, next) => {
+  try {
+    const reports = await fetchAllReports();
+
+    return res.status(200).json(reports);
   } catch (error) {
     next(error);
   }

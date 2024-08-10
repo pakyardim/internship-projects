@@ -10,7 +10,7 @@ const router = express.Router();
 router
   .route("/")
   .post(
-    authorization,
+    [authentication, authorization],
     [
       body("username").trim().isString().isLength({ min: 1, max: 10 }),
       body("base64Photo").trim().isString().isLength({ min: 1 }),
@@ -18,7 +18,7 @@ router
     ],
     controller.addReader
   )
-  .get(authorization, controller.getAllUsers);
+  .get([authentication, authorization], controller.getAllUsers);
 
 router.post(
   "/login",
@@ -36,7 +36,7 @@ router.post("/logout", authentication, controller.logout);
 router
   .route("/by-id/:id")
   .put(
-    authorization,
+    [authentication, authorization],
     [
       param("id").exists().isInt().toInt(),
       body("username").trim().isString().isLength({ min: 1, max: 10 }),
@@ -46,7 +46,7 @@ router
     controller.update
   )
   .get(
-    authorization,
+    [authentication, authorization],
     param("id").exists().isInt().toInt(),
     controller.getUserById
   );

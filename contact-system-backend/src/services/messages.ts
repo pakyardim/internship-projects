@@ -73,6 +73,29 @@ export const fetchUnreadMessages = async () => {
   }
 };
 
+export const fetchAllReports = async () => {
+  try {
+    const [countries] = await pool.query(
+      `SELECT COUNT(c.id) AS count, c.country AS label
+       FROM messages m
+       LEFT JOIN countries c ON c.id = m.country_id
+       GROUP BY c.country;
+      `
+    );
+
+    const [genders] = await pool.query(`
+      SELECT COUNT(g.id) AS count, g.gender AS label
+      FROM messages m
+      LEFT JOIN genders g ON g.id = m.gender_id
+      GROUP BY g.gender;
+    `);
+
+    return { countries, genders };
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const fetchAllMessages = async ({ skip, limit, sort }) => {
   try {
     await pool.execute("SET @sort = ?;", [sort]);
