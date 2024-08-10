@@ -39,8 +39,6 @@ router
     [authentication, authorization],
     [
       param("id").exists().isInt().toInt(),
-      body("username").trim().isString().isLength({ min: 1, max: 10 }),
-      body("base64Photo").trim().isString().isLength({ min: 1 }),
       body("password").trim().isString().isLength({ min: 1, max: 10 }),
     ],
     controller.update

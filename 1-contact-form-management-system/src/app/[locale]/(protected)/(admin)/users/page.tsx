@@ -42,12 +42,12 @@ export default function Users() {
   const users: UserType[] = data?.users;
 
   const onAddUser = () => {
-    router.push("/users/user");
+    router.push("/users/add-user");
   };
 
   const onEditUser = () => {
     if (!selectedUserId) return;
-    router.push(`/users/user/${selectedUserId}`);
+    router.push(`/users/edit-user/${selectedUserId}`);
   };
 
   return (

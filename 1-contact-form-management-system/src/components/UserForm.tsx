@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 import * as yup from "yup";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { useMutation } from "@tanstack/react-query";
 
 import { PrimaryButton, Spinner, ImagePicker } from "src/components/ui";
-// import { useSnackbar } from "src/contexts";
-// import { addUser, editUser } from "src/fetchers";
 import { UserType } from "src/types";
+import { useSnackbar } from "src/contexts/snackbarContext";
+import {
+  useAddReaderMutation,
+  useEditReaderMutation,
+} from "src/features/slices";
 
 const schema = yup.object().shape({
   id: yup.string(),
@@ -26,75 +29,80 @@ interface Props {
 }
 
 export function UserForm({ isEdit, user }: Props) {
-  // const [showPassword, setShowPassword] = useState<boolean>(false);
+  console.log(user);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const router = useRouter();
 
-  // function togglePasswordVisibility(e: React.MouseEvent<HTMLButtonElement>) {
-  //   e.preventDefault();
-  //   setShowPassword(!showPassword);
-  // }
+  function togglePasswordVisibility(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  }
 
-  // const {
-  //   handleSubmit,
-  //   formState: { errors },
-  //   control,
-  //   reset,
-  // } = useForm<User>({
-  //   resolver: yupResolver(schema),
-  //   defaultValues: {
-  //     username: user?.username,
-  //     password: user?.password,
-  //     base64Photo: user?.base64Photo,
-  //   },
-  // });
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+  } = useForm<User>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      username: user?.username,
+      password: user?.password,
+      base64Photo: user?.base64Photo,
+    },
+  });
 
-  // const { showSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
-  // const { mutate: addMutate, isPending: isAddPending } = useMutation({
-  //   mutationFn: addUser,
-  //   retry: 1,
-  //   onSuccess: () => {
-  //     showSnackbar("successMsg", "success");
-  //     reset();
-  //   },
-  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   onError: (error: any) => {
-  //     showSnackbar(
-  //       error.response.data.error || error.response.statusText,
-  //       "error"
-  //     );
-  //   },
-  // });
-
-  // const { mutate: editMutate, isPending: isEditPending } = useMutation({
-  //   mutationFn: editUser,
-  //   retry: 1,
-  //   onSuccess: () => {
-  //     showSnackbar("successMsg", "success");
-  //     reset();
-  //   },
-  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   onError: (error: any) => {
-  //     showSnackbar(
-  //       error.response.data.error || error.response.statusText,
-  //       "error"
-  //     );
-  //   },
-  // });
+  const [addReader, { isLoading: isAddLoading }] = useAddReaderMutation();
+  const [editReader, { isLoading: isEditLoading }] = useEditReaderMutation();
 
   const t = useTranslations();
 
-  // const onSubmit: SubmitHandler<User> = (data: User) => {
-  //   if (isEdit) {
-  //     data.id = user?.id;
-  //     return editMutate(data);
-  //   }
+  const onSubmit: SubmitHandler<User> = async (data: User) => {
+    if (isEdit) {
+      data.id = user?.id;
+      try {
+        await editReader(data).unwrap();
+        showSnackbar("successMsg", "success");
+      } catch (error: any) {
+        if ("status" in error && error.status === 401) {
+          showSnackbar("User not authenticated", "error");
+          document.cookie =
+            "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          router.replace("/not-authenticated");
+        } else if ("status" in error && error.status === 403) {
+          showSnackbar("User not authorized", "error");
+          router.replace("/not-authorized");
+        } else {
+          showSnackbar(error.response.data.error, "error");
+        }
+      }
+      return;
+    }
 
-  //   addMutate(data);
-  // };
+    try {
+      await addReader(data).unwrap();
+      showSnackbar("successMsg", "success");
+      reset();
+    } catch (error: any) {
+      if ("status" in error && error.status === 401) {
+        showSnackbar("User not authenticated", "error");
+        document.cookie =
+          "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        router.replace("/not-authenticated");
+      } else if ("status" in error && error.status === 403) {
+        showSnackbar("User not authorized", "error");
+        router.replace("/not-authorized");
+      } else {
+        showSnackbar(error.response.data.error, "error");
+      }
+    }
+  };
 
   return (
     <div className="w-full sm:w-1/2 flex items-center justify-center">
-      {/* <div className="dark:bg-dark w-full sm:w-11/12 lg:w-auto dark:text-secondary dark:border-light relative bg-white card z-10 font-bold border border-darkBackground">
+      <div className="dark:bg-dark w-full sm:w-11/12 lg:w-auto dark:text-secondary dark:border-light relative bg-white card z-10 font-bold border border-darkBackground">
         <div className="absolute top-0 left-0 w-full h-full bg-image -z-10"></div>
         <h2 className="text-2xl lg:text-3xl mb-5 font-semibold">
           {isEdit ? t("editUser") : t("newUser")}
@@ -244,21 +252,21 @@ export function UserForm({ isEdit, user }: Props) {
           <div className="flex w-full justify-end">
             <PrimaryButton
               type="submit"
-              isDisabled={isEditPending || isAddPending}
+              isDisabled={isEditLoading || isAddLoading}
               classname="py-3 lg:py-4 px-6 lg:px-8 bg-primary"
             >
               <div className="flex items-center gap-x-2">
                 <p>
-                  {isEditPending || isAddPending
+                  {isEditLoading || isAddLoading
                     ? t("Submitting")
                     : t("Submit")}
                 </p>
-                {(isEditPending || isAddPending) && <Spinner size={4} />}
+                {(isEditLoading || isAddLoading) && <Spinner size={4} />}
               </div>
             </PrimaryButton>
           </div>
         </form>
-      </div> */}
+      </div>
     </div>
   );
 }
