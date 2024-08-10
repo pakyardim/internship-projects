@@ -5,7 +5,7 @@ import { getTokenFromCookies } from "src/utils";
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5166/api",
   prepareHeaders: (headers, { endpoint }) => {
-    if (endpoint === "getUnreadMessages") {
+    if (endpoint !== "addMessage") {
       const token = getTokenFromCookies();
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -33,10 +33,24 @@ export const messagesAPI = createApi({
         arg
       ) => response.status,
     }),
+    readMessage: builder.mutation({
+      query: (id) => ({
+        url: `messages/${id}`,
+        method: "PUT",
+      }),
+    }),
     getUnreadMessages: builder.query({
       query: () => "messages/unread",
+    }),
+    getReports: builder.query({
+      query: () => "messages/get-reports",
     }),
   }),
 });
 
-export const { useAddMessageMutation, useGetUnreadMessagesQuery } = messagesAPI;
+export const {
+  useAddMessageMutation,
+  useReadMessageMutation,
+  useGetUnreadMessagesQuery,
+  useGetReportsQuery,
+} = messagesAPI;

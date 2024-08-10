@@ -93,6 +93,7 @@ const authSlice = createSlice({
         state.user = user;
         state.errorMessage = null;
         document.cookie = `auth-token=${token}; path=/;`;
+        state.status = "succeeded";
       })
       .addCase(loginUser.rejected, (state: any, action) => {
         state.status = "failed";
