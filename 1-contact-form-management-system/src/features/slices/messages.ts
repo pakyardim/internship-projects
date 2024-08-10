@@ -42,6 +42,18 @@ export const messagesAPI = createApi({
     getUnreadMessages: builder.query({
       query: () => "messages/unread",
     }),
+    getAllMessages: builder.query({
+      query: ({ page, limit, sort }) =>
+        `messages?page=${page}&limit=${limit}&sort=name`,
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems) => {
+        return newItems;
+      },
+      forceRefetch: ({ currentArg, previousArg }) =>
+        currentArg.page !== previousArg?.page,
+    }),
     getReports: builder.query({
       query: () => "messages/get-reports",
     }),
@@ -52,5 +64,6 @@ export const {
   useAddMessageMutation,
   useReadMessageMutation,
   useGetUnreadMessagesQuery,
+  useGetAllMessagesQuery,
   useGetReportsQuery,
 } = messagesAPI;

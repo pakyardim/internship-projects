@@ -13,7 +13,7 @@ export default function Reports() {
   const t = useTranslations();
   const router = useRouter();
 
-  const { data, isLoading, error } = useGetReportsQuery("");
+  const { data, isLoading, error, isSuccess } = useGetReportsQuery("");
 
   const { showSnackbar } = useSnackbar();
 
@@ -51,11 +51,13 @@ export default function Reports() {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col md:flex-row space-y-20 md:space-y-0 p-5 md:p-0">
-          <BarChart label="Country Counts" data={barchartData} />
+        isSuccess && (
+          <div className="flex flex-col md:flex-row space-y-20 md:space-y-0 p-5 md:p-0">
+            <BarChart label="Country Counts" data={barchartData} />
 
-          <PieChart label="Gender Distribution" data={piechartData} />
-        </div>
+            <PieChart label="Gender Distribution" data={piechartData} />
+          </div>
+        )
       )}
     </main>
   );

@@ -18,7 +18,7 @@ export default function Users() {
   const router = useRouter();
   const t = useTranslations();
 
-  const { data, isLoading, error } = useGetAllUsersQuery("");
+  const { data, isLoading, error, isSuccess } = useGetAllUsersQuery("");
 
   const { showSnackbar } = useSnackbar();
 
@@ -79,11 +79,14 @@ export default function Users() {
           <Spinner size={8} />
         </div>
       ) : (
-        <UserTable
-          users={users}
-          selectedUserId={selectedUserId}
-          setSelectedUserId={setSelectedUserId}
-        />
+        isSuccess &&
+        users.length > 0 && (
+          <UserTable
+            users={users}
+            selectedUserId={selectedUserId}
+            setSelectedUserId={setSelectedUserId}
+          />
+        )
       )}
     </main>
   );

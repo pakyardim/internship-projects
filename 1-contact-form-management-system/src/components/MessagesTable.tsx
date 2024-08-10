@@ -1,26 +1,44 @@
 import { useTranslations, useLocale } from "next-intl";
+import React from "react";
+import {
+  LuArrowLeft,
+  LuArrowLeftToLine,
+  LuArrowRight,
+  LuArrowRightToLine,
+} from "react-icons/lu";
 
 import { MessageType } from "src/types";
 import { transformDate } from "src/utils";
 
 interface Props {
-  messages: MessageType[];
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  limit: number;
+  setLimit: React.Dispatch<React.SetStateAction<number>>;
+  data: { messages: MessageType[]; count: number };
   handleClick: (id: number) => void;
 }
 
-export function MessagesTable({ messages, handleClick }: Props) {
+export function MessagesTable({
+  page,
+  setPage,
+  limit,
+  setLimit,
+  data,
+  handleClick,
+}: Props) {
+  const { messages, count } = data;
   const t = useTranslations();
   const locale = useLocale();
 
-  const sortedMessages = messages?.sort((a, b) => {
-    return (
-      new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
-    );
-  });
+  const isNextPage = count > page * limit;
+  const isPreviousPage = page > 1;
+
+  const last = count < page * limit ? count : page * limit;
 
   return (
     <div className="overflow-x-auto w-full">
-      {/* <table className="w-full divide-y dark:divide-light divide-gray-200 border">
+      <table className="w-full divide-y dark:divide-light divide-gray-200 border">
         <thead className="hidden md:table-header-group bg-slate-300 dark:bg-slate-950">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium dark:text-light uppercase tracking-wider">
@@ -44,7 +62,7 @@ export function MessagesTable({ messages, handleClick }: Props) {
           </tr>
         </thead>
         <tbody className="divide-y dark:divide-light divide-gray-200">
-          {sortedMessages?.map((item: MessageType, index: number) => (
+          {messages?.map((item: MessageType, index: number) => (
             <tr
               key={index}
               onClick={() => {
@@ -97,7 +115,66 @@ export function MessagesTable({ messages, handleClick }: Props) {
             </tr>
           ))}
         </tbody>
-      </table> */}
+        <tfoot>
+          <tr className="bg-tertiary text-dark/70 dark:bg-[#1e1e1e]">
+            <td colSpan={4} className="px-6 py-3">
+              <span className="text-sm dark:text-light">
+                {t("Rows per page:")}
+              </span>
+              <select
+                className="ml-2 border rounded-md dark:bg-dark dark:text-light"
+                onChange={(e) => {
+                  const selectedRowsPerPage = parseInt(e.target.value);
+                  setLimit(selectedRowsPerPage);
+                  setPage(1);
+                }}
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="100">100</option>
+              </select>
+            </td>
+            <td colSpan={2} className="px-6 py-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm dark:text-light">
+                  {(page - 1) * limit + 1} - {last} of {count}
+                </span>
+                <button
+                  disabled={!isPreviousPage}
+                  onClick={() => setPage(1)}
+                  className="disabled:border-primary/60 disabled:text-primary/60 p-1 rounded-full border border-primary text-primary hover:border-primaryDark hover:text-primaryDark"
+                >
+                  <LuArrowLeftToLine size={12} />
+                </button>
+                <button
+                  disabled={!isPreviousPage}
+                  onClick={() => setPage((prevPage: number) => prevPage - 1)}
+                  className="disabled:border-primary/60 disabled:text-primary/60 p-1 rounded-full border border-primary text-primary hover:border-primaryDark hover:text-primaryDark"
+                >
+                  <LuArrowLeft size={12} />
+                </button>
+                <button
+                  disabled={!isNextPage}
+                  onClick={() => setPage((prevPage: number) => prevPage + 1)}
+                  className="disabled:border-primary/60 disabled:text-primary/60 p-1 rounded-full border border-primary text-primary hover:border-primaryDark hover:text-primaryDark"
+                >
+                  <LuArrowRight size={12} />
+                </button>
+                <button
+                  disabled={!isNextPage}
+                  onClick={() => {
+                    setPage(Math.ceil(count / limit));
+                  }}
+                  className="disabled:border-primary/60 disabled:text-primary/60 p-1 rounded-full border border-primary text-primary hover:border-primaryDark hover:text-primaryDark"
+                >
+                  <LuArrowRightToLine size={12} />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   );
 }

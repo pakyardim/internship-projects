@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -29,7 +31,6 @@ interface Props {
 }
 
 export function UserForm({ isEdit, user }: Props) {
-  console.log(user);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
 

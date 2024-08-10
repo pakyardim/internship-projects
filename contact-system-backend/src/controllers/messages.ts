@@ -53,17 +53,18 @@ export const fetchReports: RequestHandler = async (req, res, next) => {
 export const fetchAll: RequestHandler = async (req, res, next) => {
   try {
     checkValidationError(req);
-    const { skip, limit, sort } = req.query;
+    const { page, limit, sort } = req.query;
 
-    const messages: MessageType[] = await fetchAllMessages({
+    const skip = (+page - 1) * +limit;
+    const data = await fetchAllMessages({
       skip,
       limit,
       sort,
     });
 
-    const hasMore = messages.length === parseInt(String(limit));
+    const messages = Array.isArray(data.messages) ? data.messages : [];
 
-    return res.status(200).json({ data: messages, hasMore });
+    return res.status(200).json({ messages, count: data.count });
   } catch (error) {
     next(error);
   }

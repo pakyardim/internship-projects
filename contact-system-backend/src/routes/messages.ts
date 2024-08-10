@@ -21,7 +21,7 @@ router
   .get(
     authentication,
     [
-      (query("skip").exists().isInt().toInt(),
+      (query("page").exists().isInt().toInt(),
       query("limit").exists().isInt().toInt(),
       query("sort").trim().not().isEmpty()),
     ],

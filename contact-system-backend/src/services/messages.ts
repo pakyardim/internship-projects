@@ -100,8 +100,12 @@ export const fetchAllMessages = async ({ skip, limit, sort }) => {
   try {
     await pool.execute("SET @sort = ?;", [sort]);
 
+    const [messageCount] = await pool.query(
+      "SELECT COUNT(*) AS count FROM messages"
+    );
+
     const [messages] = await pool.query(
-      `SELECT m.*
+      `SELECT m.*, c.country, g.gender
       FROM messages m
       LEFT JOIN countries c ON m.country_id = c.id
       LEFT JOIN genders g ON m.gender_id = g.id
@@ -116,11 +120,12 @@ export const fetchAllMessages = async ({ skip, limit, sort }) => {
         CASE WHEN @sort = 'country' THEN c.country
           END ASC
 
-        LIMIT ?, ?`,
+        LIMIT ?, ?;
+        `,
 
-      [skip, limit]
+      [Number(skip), Number(limit)]
     );
-    return messages as MessageType[];
+    return { messages, count: messageCount[0].count };
   } catch (err) {
     throw err;
   }
