@@ -1,7 +1,21 @@
-import { MessageType } from "src/types";
-import { baseApi } from "./baseApi";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const messagesAPI = baseApi.injectEndpoints({
+import { MessageType } from "src/types";
+import { getTokenFromCookies } from "src/utils";
+
+export const messagesAPI = createApi({
+  reducerPath: "messagesAPI",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:5166/api",
+    prepareHeaders: (headers) => {
+      const token = getTokenFromCookies();
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
+  tagTypes: ["AllMessages", "AllMessagesScroll", "Reports"],
   endpoints: (builder) => ({
     addMessage: builder.mutation({
       query: (body) => ({
