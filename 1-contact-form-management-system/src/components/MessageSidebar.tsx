@@ -39,7 +39,7 @@ export function MessageSidebar({
           </div>
         )}
         {messages &&
-          messages.map((message) => {
+          messages?.map((message) => {
             const isActive = message.id === activeMessageId;
             return (
               <div
@@ -60,7 +60,7 @@ export function MessageSidebar({
                   <p className="text-sm md:text-xs pb-1">
                     {formatRelativeDate(message.creationDate, locale)}
                   </p>
-                  {message.read === "false" && !isActive && (
+                  {!message.read && !isActive && (
                     <div className="absolute -bottom-1 right-0 w-2 h-2 rounded-full bg-primary" />
                   )}
                 </div>

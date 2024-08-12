@@ -20,6 +20,7 @@ import { MobileNavbar } from "src/components/mobile-nav";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import { RootState, AppDispatch } from "src/features/store";
 import { loginUser } from "src/features/slices/auth";
+import { baseApi } from "src/features/slices";
 
 const schema = yup.object().shape({
   username: yup.string().required("required"),
@@ -46,6 +47,7 @@ export default function Login() {
   const onSubmit = async (data: Login) => {
     try {
       await dispatch(loginUser(data)).unwrap();
+      dispatch(baseApi.util.resetApiState());
       router.replace(`/${locale}/dashboard`);
     } catch (error: any) {
       showSnackbar(errorMessage || error?.message, "error");

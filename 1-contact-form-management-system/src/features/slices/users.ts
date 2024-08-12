@@ -1,23 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getTokenFromCookies } from "src/utils";
+import { baseApi } from "./baseApi";
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5166/api",
-  prepareHeaders: (headers) => {
-    const token = getTokenFromCookies();
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
-    }
-    return headers;
-  },
-});
-
-export const usersAPI = createApi({
-  reducerPath: "usersAPI",
-  baseQuery,
+export const usersAPI = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllUsers: builder.query({
-      query: () => "users",
+      query: () => ({ url: "users", providesTags: () => ["AllUsers"] }),
     }),
     getUserById: builder.query({
       query: (id: string) => `users/by-id/${id}`,

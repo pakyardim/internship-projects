@@ -9,7 +9,10 @@ import { MessagesTable } from "src/components";
 
 import { MessageType } from "src/types";
 import { useSnackbar } from "src/contexts/snackbarContext";
-import { useGetAllMessagesQuery } from "src/features/slices";
+import {
+  useGetAllMessagesQuery,
+  useReadMessageMutation,
+} from "src/features/slices";
 
 export default function Messages() {
   const [page, setPage] = useState<number>(1);
@@ -29,6 +32,8 @@ export default function Messages() {
     }
   );
 
+  const { showSnackbar } = useSnackbar();
+
   useEffect(() => {
     if (error) {
       if ("status" in error && error.status === 401) {
@@ -43,13 +48,17 @@ export default function Messages() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
-  const { showSnackbar } = useSnackbar();
+  const [readMessage] = useReadMessageMutation();
 
   const messages: MessageType[] = data?.messages;
 
-  const handleClick = (id: number) => {
-    // mutate(id);
-    // navigate(`/messages/${id}`);
+  const handleClick = async (id: number) => {
+    try {
+      await readMessage(id).unwrap();
+      router.push(`/messages/${id}`);
+    } catch (err: any) {
+      showSnackbar(err.response.data.error, "error");
+    }
   };
 
   return (

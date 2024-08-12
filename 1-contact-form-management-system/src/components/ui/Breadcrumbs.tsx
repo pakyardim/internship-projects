@@ -31,7 +31,9 @@ export function Breadcrumbs() {
             className="font-primary text-sm lg:text-base dark:text-light text-gray-700"
           >
             {index === newPathnames.length - 1 ? (
-              <span>{t(item.label)}</span>
+              <span>
+                {typeof +item.label === "number" ? item.label : t(item.label)}
+              </span>
             ) : (
               <>
                 <Link href={item.url} className="hover:underline">

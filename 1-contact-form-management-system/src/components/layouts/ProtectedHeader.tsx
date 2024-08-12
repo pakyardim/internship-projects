@@ -32,7 +32,7 @@ export function ProtectedHeader() {
           <ul className="flex w-full h-20 text-xs md:text-sm xl:text-base">
             <Link href="/dashboard">
               <li
-                className={`nav-list-item dark:text-light ${
+                className={`cursor-pointer h-full flex items-center justify-center px-2 sm:px-4 xl:px-8 dark:text-light ${
                   isActive("/dashboard")
                     ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
                     : "hover:text-primaryDark"
@@ -43,7 +43,7 @@ export function ProtectedHeader() {
             </Link>
             <Link href="/messages">
               <li
-                className={`nav-list-item dark:text-light ${
+                className={`cursor-pointer h-full flex items-center justify-center px-2 sm:px-4 xl:px-8 dark:text-light ${
                   isActive("/messages")
                     ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
                     : "hover:text-primaryDark"
@@ -56,7 +56,7 @@ export function ProtectedHeader() {
               <>
                 <Link href="/users">
                   <li
-                    className={`nav-list-item dark:text-light ${
+                    className={`cursor-pointer h-full flex items-center justify-center px-2 sm:px-4 xl:px-8 dark:text-light ${
                       isActive("/users")
                         ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
                         : "hover:text-primaryDark"
@@ -67,7 +67,7 @@ export function ProtectedHeader() {
                 </Link>
                 <Link href="/reports">
                   <li
-                    className={`nav-list-item dark:text-light ${
+                    className={`cursor-pointer h-full flex items-center justify-center px-2 sm:px-4 xl:px-8 dark:text-light ${
                       isActive("/reports")
                         ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
                         : "hover:text-primaryDark"

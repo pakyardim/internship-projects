@@ -1,23 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { MessageType } from "src/types";
-import { getTokenFromCookies } from "src/utils";
+import { baseApi } from "./baseApi";
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5166/api",
-  prepareHeaders: (headers, { endpoint }) => {
-    if (endpoint !== "addMessage") {
-      const token = getTokenFromCookies();
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-    }
-    return headers;
-  },
-});
-
-export const messagesAPI = createApi({
-  reducerPath: "messagesAPI",
-  baseQuery,
+export const messagesAPI = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addMessage: builder.mutation({
       query: (body) => ({
@@ -33,18 +17,17 @@ export const messagesAPI = createApi({
         arg
       ) => response.status,
     }),
-    readMessage: builder.mutation({
-      query: (id) => ({
-        url: `messages/${id}`,
-        method: "PUT",
-      }),
-    }),
     getUnreadMessages: builder.query({
       query: () => "messages/unread",
     }),
+    getMessage: builder.query({
+      query: (id: number) => `messages/${id}`,
+    }),
     getAllMessages: builder.query({
-      query: ({ page, limit, sort }) =>
-        `messages?page=${page}&limit=${limit}&sort=${sort}`,
+      query: ({ page, limit, sort }) => ({
+        url: `messages?page=${page}&limit=${limit}&sort=${sort}`,
+        providesTags: () => ["AllMessages"],
+      }),
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
@@ -55,15 +38,47 @@ export const messagesAPI = createApi({
         currentArg.page !== previousArg?.page,
     }),
     getReports: builder.query({
-      query: () => "messages/get-reports",
+      query: () => ({
+        url: "messages/get-reports",
+        providesTags: () => ["Reports"],
+      }),
+    }),
+    readMessage: builder.mutation({
+      query: (id) => ({
+        url: `messages/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["AllMessages"],
+    }),
+    deleteMessage: builder.mutation({
+      query: (id) => ({
+        url: `messages/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AllMessages"],
     }),
   }),
 });
 
+export const readMessageUpdate = (id: number) =>
+  messagesAPI.util.updateQueryData("getAllMessages", undefined, (draft) => {
+    const messageToUpdateIdx = draft?.messages?.findIndex(
+      (msg: MessageType) => msg.id === id
+    );
+
+    if (messageToUpdateIdx === -1) return draft;
+
+    draft.messages[messageToUpdateIdx].read = 1;
+
+    return draft;
+  });
+
 export const {
   useAddMessageMutation,
   useReadMessageMutation,
+  useGetMessageQuery,
   useGetUnreadMessagesQuery,
   useGetAllMessagesQuery,
   useGetReportsQuery,
+  useDeleteMessageMutation,
 } = messagesAPI;

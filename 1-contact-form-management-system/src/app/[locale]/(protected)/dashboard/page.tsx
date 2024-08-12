@@ -5,7 +5,10 @@ import { useTranslations } from "next-intl";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
-import { useGetUnreadMessagesQuery } from "src/features/slices";
+import {
+  useGetUnreadMessagesQuery,
+  useReadMessageMutation,
+} from "src/features/slices";
 import { RootState } from "src/features/store";
 import { Breadcrumbs } from "src/components/ui";
 import { useSnackbar } from "src/contexts/snackbarContext";
@@ -35,53 +38,17 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
-  //   const { mutate } = useMutation({
-  //     mutationFn: readMessage,
-  //     retry: 1,
-  //     onSuccess: (data) => {
-  //       queryClient.setQueryData(
-  //         ["messages"],
-  //         (oldData: { messages: MessageType[] }) => {
-  //           const updatedMessages = oldData.messages.map(
-  //             (message: MessageType) => {
-  //               if (message.id === data.message.id) {
-  //                 return { ...message, read: "true" };
-  //               }
-  //               return message;
-  //             }
-  //           );
-  //           return { messages: updatedMessages };
-  //         }
-  //       );
-  //     },
-  //     onError: (error: any) => {
-  //       showSnackbar(error.response.data.error, "error");
-  //     },
-  //   });
-
-  //   const { data, status } = useQuery({
-  //     queryKey: ["messages"],
-  //     queryFn: fetchMessages,
-  //     gcTime: 1000 * 60,
-  //   });
-
-  //   if (data === 401) {
-  //     return <Navigate to="/not-authorized" />;
-  //   }
-
-  //   if (status === "error") {
-  //     showSnackbar("Something went wrong!", "error");
-  //   }
+  const [readMessage] = useReadMessageMutation();
 
   const messages: MessageType[] = data?.messages;
 
-  //   const unreadMessages = messages?.filter(
-  //     (message) => message.read === "false"
-  //   );
-
-  const onClickMessage = (id: number) => {
-    // mutate(id);
-    // navigate(`/messages/${id}`);
+  const onClickMessage = async (id: number) => {
+    try {
+      await readMessage(id).unwrap();
+      router.push(`/messages/${id}`);
+    } catch (error: any) {
+      showSnackbar(error.response.data.error, "error");
+    }
   };
 
   const text = `${t("title")} ${user?.username}!`;

@@ -1,7 +1,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import React from "react";
-import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
+import { FaSort } from "react-icons/fa";
 import {
   LuArrowLeft,
   LuArrowLeftToLine,
@@ -147,19 +147,19 @@ export function MessagesTable({
                   : "bg-tertiary dark:bg-[#1e1e1e]"
               } hover:bg-primary dark:hover:bg-primaryDark cursor-pointer hover:text-light`}
             >
-              <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 md:whitespace-nowrap text-xs xl:text-sm font-medium dark:text-white text-gray-900">
+              <td className="flex w-full justify-between md:table-cell px-1 sm:px-6 py-2 md:py-4 md:whitespace-nowrap text-xs xl:text-sm font-medium dark:text-white">
                 <span className="block font-bold md:hidden cell-header">
                   {t("name")}:
                 </span>
                 {item.name}
               </td>
-              <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 md:whitespace-nowrap text-xs xl:text-sm dark:text-light">
+              <td className="flex w-full justify-between md:table-cell px-1 sm:px-6 py-2 md:py-4 md:whitespace-nowrap text-xs xl:text-sm dark:text-light">
                 <span className="block font-bold md:hidden cell-header">
                   {t("country")}:
                 </span>
                 {item.country}
               </td>
-              <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 truncate md:max-w-xl md:whitespace-nowrap text-xs xl:text-sm dark:text-light">
+              <td className="flex w-full justify-between md:table-cell px-1 sm:px-6 py-2 md:py-4 truncate md:max-w-xl md:whitespace-nowrap text-xs xl:text-sm dark:text-light">
                 <span className="block font-bold md:hidden cell-header">
                   {t("message")}:
                 </span>
@@ -167,19 +167,19 @@ export function MessagesTable({
                   {item.message}
                 </span>
               </td>
-              <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
+              <td className="flex w-full justify-between md:table-cell px-1 sm:px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
                 <span className="block font-bold md:hidden cell-header">
                   {t("gender")}:
                 </span>
                 {t(item.gender)}
               </td>
-              <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
+              <td className="flex w-full justify-between md:table-cell px-1 sm:px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
                 <span className="block font-bold md:hidden cell-header">
                   {t("read")}:
                 </span>
-                {item.read === "true" ? t("yes") : t("no")}
+                {item.read ? t("yes") : t("no")}
               </td>
-              <td className="flex w-full justify-between md:table-cell px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
+              <td className="flex w-full justify-between md:table-cell px-1 sm:px-6 py-2 md:py-4 whitespace-nowrap text-xs xl:text-sm dark:text-light">
                 <span className="block font-bold md:hidden cell-header">
                   {t("date")}:
                 </span>
@@ -190,12 +190,12 @@ export function MessagesTable({
         </tbody>
         <tfoot>
           <tr className="bg-tertiary text-dark/70 dark:bg-[#1e1e1e]">
-            <td colSpan={4} className="px-6 py-3">
-              <span className="text-sm dark:text-light">
+            <td colSpan={4} className="px-6 py-3 flex w-full  md:table-cell">
+              <span className="text-xs xl:text-sm dark:text-light">
                 {t("Rows per page:")}
               </span>
               <select
-                className="ml-2 border rounded-md dark:bg-dark dark:text-light"
+                className="ml-2 text-xs xl:text-sm border rounded-md dark:bg-dark dark:text-light"
                 onChange={(e) => {
                   const selectedRowsPerPage = parseInt(e.target.value);
                   setLimit(selectedRowsPerPage);
@@ -208,9 +208,9 @@ export function MessagesTable({
                 <option value="100">100</option>
               </select>
             </td>
-            <td colSpan={2} className="px-6 py-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm dark:text-light">
+            <td colSpan={2} className="px-6 py-3 flex w-full md:table-cell">
+              <div className="flex items-center gap-4 md:gap-0 justify-between">
+                <span className="text-xs xl:text-sm dark:text-light">
                   {(page - 1) * limit + 1} - {last} of {count}
                 </span>
                 <button
