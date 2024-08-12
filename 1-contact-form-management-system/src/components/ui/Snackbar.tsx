@@ -31,7 +31,7 @@ export function Snackbar({ message, isVisible, type, onClose }: Props) {
         isVisible ? "show" : "hide"
       }`}
     >
-      {message ? t(message) : t("defaultError")}
+      {message ? message : t("defaultError")}
     </div>
   );
 }

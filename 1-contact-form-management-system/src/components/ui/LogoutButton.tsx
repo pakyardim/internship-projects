@@ -37,7 +37,7 @@ export function LogoutButton() {
     >
       <CiLogout size={20} />
       <span className="ml-2">
-        {status === "loading" ? t("Logging Out...") : t("Logout")}
+        {status === "loading" ? t("Logging Out") : t("Logout")}
       </span>
     </button>
   );

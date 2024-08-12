@@ -52,9 +52,7 @@ export default function Messages() {
   }, [error]);
 
   useEffect(() => {
-    console.log("here1");
     if (tableRef.current) {
-      console.log("here");
       const table = tableRef.current;
 
       const observer = new IntersectionObserver(

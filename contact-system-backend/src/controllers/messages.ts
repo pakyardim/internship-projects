@@ -10,6 +10,7 @@ import {
   fetchAllReports,
 } from "../services/messages";
 import { checkValidationError } from "../utils/validation";
+import { broadcast } from "../app";
 import { MessageType } from "../types";
 
 export const addMessage: RequestHandler = async (req, res, next) => {
@@ -23,6 +24,8 @@ export const addMessage: RequestHandler = async (req, res, next) => {
       gender_id,
       country_id,
     });
+
+    broadcast({ type: "NEW_MESSAGE", content: newMessage });
 
     return res.status(201).json({ message: newMessage });
   } catch (error) {

@@ -36,7 +36,7 @@ export const createMessage = async ({
 export const updateReadStatus = async (id: number) => {
   try {
     const [rows] = await pool.execute(
-      "UPDATE messages SET read = 1 WHERE id = ?;",
+      "UPDATE messages SET `read` = 1 WHERE id = ?",
       [id]
     );
     return rows;
@@ -63,7 +63,7 @@ export const fetchUnreadMessages = async () => {
       `SELECT m.*, c.country
       FROM messages m
       LEFT JOIN countries c ON m.country_id = c.id
-      WHERE m.read = 0
+      WHERE m.read = 0 AND status = 1
       ORDER BY m.creationDate DESC
       `
     );
@@ -79,7 +79,8 @@ export const fetchAllReports = async () => {
       `SELECT COUNT(c.id) AS count, c.country AS label
        FROM messages m
        LEFT JOIN countries c ON c.id = m.country_id
-       GROUP BY c.country;
+       WHERE status = 1
+       GROUP BY c.country
       `
     );
 
@@ -87,7 +88,8 @@ export const fetchAllReports = async () => {
       SELECT COUNT(g.id) AS count, g.gender AS label
       FROM messages m
       LEFT JOIN genders g ON g.id = m.gender_id
-      GROUP BY g.gender;
+      WHERE status = 1
+      GROUP BY g.gender
     `);
 
     return { countries, genders };
@@ -101,7 +103,7 @@ export const fetchAllMessages = async ({ skip, limit, sort }) => {
     await pool.execute("SET @sort = ?;", [sort]);
 
     const [messageCount] = await pool.query(
-      "SELECT COUNT(*) AS count FROM messages"
+      "SELECT COUNT(*) AS count FROM messages WHERE status = 1;"
     );
 
     const [messages] = await pool.query(
@@ -109,6 +111,7 @@ export const fetchAllMessages = async ({ skip, limit, sort }) => {
       FROM messages m
       LEFT JOIN countries c ON m.country_id = c.id
       LEFT JOIN genders g ON m.gender_id = g.id
+      WHERE m.status = 1
       
       ORDER BY 
         CASE WHEN @sort = 'nameA' THEN m.name
@@ -127,7 +130,7 @@ export const fetchAllMessages = async ({ skip, limit, sort }) => {
           END ASC,
         CASE WHEN @sort = 'countryD' THEN c.country
           END DESC
-
+          
         LIMIT ?, ?;
         `,
 
@@ -146,7 +149,7 @@ export const fetchMessageById = async (id: number) => {
        FROM messages m
        LEFT JOIN countries c ON m.country_id = c.id
        LEFT JOIN genders g ON m.gender_id = g.id
-       WHERE m.id = ?
+       WHERE m.id = ? AND m.status = 1
        `,
       [id]
     );
