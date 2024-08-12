@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import usFlag from "src/assets/us.jpg";
 import turkey from "src/assets/turkey.jpg";
 

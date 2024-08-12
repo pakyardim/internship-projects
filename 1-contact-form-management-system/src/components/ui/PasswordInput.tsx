@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 
 interface Props {
   value: string;
@@ -7,7 +9,7 @@ interface Props {
 }
 
 export function PasswordInput({ value, onChange }: Props) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   function togglePasswordVisibility(e: React.MouseEvent<HTMLButtonElement>) {

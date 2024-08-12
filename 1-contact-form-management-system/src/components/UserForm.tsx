@@ -1,14 +1,20 @@
+"use client";
+
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+
 import * as yup from "yup";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
 
 import { PrimaryButton, Spinner, ImagePicker } from "src/components/ui";
-import { useSnackbar } from "src/contexts";
-import { addUser, editUser } from "src/fetchers";
 import { UserType } from "src/types";
+import { useSnackbar } from "src/contexts/snackbarContext";
+import {
+  useAddReaderMutation,
+  useEditReaderMutation,
+} from "src/features/slices";
 
 const schema = yup.object().shape({
   id: yup.string(),
@@ -26,6 +32,7 @@ interface Props {
 
 export function UserForm({ isEdit, user }: Props) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const router = useRouter();
 
   function togglePasswordVisibility(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -48,47 +55,50 @@ export function UserForm({ isEdit, user }: Props) {
 
   const { showSnackbar } = useSnackbar();
 
-  const { mutate: addMutate, isPending: isAddPending } = useMutation({
-    mutationFn: addUser,
-    retry: 1,
-    onSuccess: () => {
-      showSnackbar("successMsg", "success");
-      reset();
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError: (error: any) => {
-      showSnackbar(
-        error.response.data.error || error.response.statusText,
-        "error"
-      );
-    },
-  });
+  const [addReader, { isLoading: isAddLoading }] = useAddReaderMutation();
+  const [editReader, { isLoading: isEditLoading }] = useEditReaderMutation();
 
-  const { mutate: editMutate, isPending: isEditPending } = useMutation({
-    mutationFn: editUser,
-    retry: 1,
-    onSuccess: () => {
-      showSnackbar("successMsg", "success");
-      reset();
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError: (error: any) => {
-      showSnackbar(
-        error.response.data.error || error.response.statusText,
-        "error"
-      );
-    },
-  });
+  const t = useTranslations();
 
-  const { t } = useTranslation();
-
-  const onSubmit: SubmitHandler<User> = (data: User) => {
+  const onSubmit: SubmitHandler<User> = async (data: User) => {
     if (isEdit) {
       data.id = user?.id;
-      return editMutate(data);
+      try {
+        await editReader(data).unwrap();
+        showSnackbar("successMsg", "success");
+      } catch (error: any) {
+        if ("status" in error && error.status === 401) {
+          showSnackbar("User not authenticated", "error");
+          document.cookie =
+            "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          router.replace("/not-authenticated");
+        } else if ("status" in error && error.status === 403) {
+          showSnackbar("User not authorized", "error");
+          router.replace("/not-authorized");
+        } else {
+          showSnackbar(error.response.data.error, "error");
+        }
+      }
+      return;
     }
 
-    addMutate(data);
+    try {
+      await addReader(data).unwrap();
+      showSnackbar("successMsg", "success");
+      reset();
+    } catch (error: any) {
+      if ("status" in error && error.status === 401) {
+        showSnackbar("User not authenticated", "error");
+        document.cookie =
+          "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        router.replace("/not-authenticated");
+      } else if ("status" in error && error.status === 403) {
+        showSnackbar("User not authorized", "error");
+        router.replace("/not-authorized");
+      } else {
+        showSnackbar(error.response.data.error, "error");
+      }
+    }
   };
 
   return (
@@ -243,16 +253,16 @@ export function UserForm({ isEdit, user }: Props) {
           <div className="flex w-full justify-end">
             <PrimaryButton
               type="submit"
-              isDisabled={isEditPending || isAddPending}
+              isDisabled={isEditLoading || isAddLoading}
               classname="py-3 lg:py-4 px-6 lg:px-8 bg-primary"
             >
               <div className="flex items-center gap-x-2">
                 <p>
-                  {isEditPending || isAddPending
+                  {isEditLoading || isAddLoading
                     ? t("Submitting")
                     : t("Submit")}
                 </p>
-                {(isEditPending || isAddPending) && <Spinner size={4} />}
+                {(isEditLoading || isAddLoading) && <Spinner size={4} />}
               </div>
             </PrimaryButton>
           </div>

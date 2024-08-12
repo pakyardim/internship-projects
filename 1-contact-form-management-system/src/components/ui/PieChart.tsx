@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import { ChartDataType } from "src/types";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function PieChart({ label, data }: Props) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const total = data?.reduce(
     (sum: number, item: ChartDataType) => sum + item.count,
     0

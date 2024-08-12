@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useRef } from "react";
 import { FaUpload } from "react-icons/fa";
+import Image from "next/image";
 
 import userIcon from "src/assets/user-icon.png";
 
@@ -30,10 +33,11 @@ export function ImagePicker({ onChange, value }: Props) {
   return (
     <div className="w-20 h-20 flex flex-col items-center">
       <div className="relative group w-full h-full">
-        <img
+        <Image
+          fill
           src={value || userIcon}
           alt="Profile"
-          className="rounded-full w-full h-full object-cover"
+          className="rounded-full object-cover"
         />
         <div
           onClick={handleImageClick}

@@ -6,8 +6,11 @@ import {
   createMessage,
   updateReadStatus,
   deleteMsg,
+  fetchUnreadMessages,
+  fetchAllReports,
 } from "../services/messages";
 import { checkValidationError } from "../utils/validation";
+import { broadcast } from "../app";
 import { MessageType } from "../types";
 
 export const addMessage: RequestHandler = async (req, res, next) => {
@@ -22,7 +25,29 @@ export const addMessage: RequestHandler = async (req, res, next) => {
       country_id,
     });
 
+    broadcast({ type: "NEW_MESSAGE", content: newMessage });
+
     return res.status(201).json({ message: newMessage });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const fetchUnread: RequestHandler = async (req, res, next) => {
+  try {
+    const messages: MessageType[] = await fetchUnreadMessages();
+
+    return res.status(200).json({ messages });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const fetchReports: RequestHandler = async (req, res, next) => {
+  try {
+    const reports = await fetchAllReports();
+
+    return res.status(200).json(reports);
   } catch (error) {
     next(error);
   }
@@ -31,17 +56,18 @@ export const addMessage: RequestHandler = async (req, res, next) => {
 export const fetchAll: RequestHandler = async (req, res, next) => {
   try {
     checkValidationError(req);
-    const { skip, limit, sort } = req.query;
+    const { page, limit, sort } = req.query;
 
-    const messages: MessageType[] = await fetchAllMessages({
+    const skip = (+page - 1) * +limit;
+    const data = await fetchAllMessages({
       skip,
       limit,
       sort,
     });
 
-    const hasMore = messages.length === parseInt(String(limit));
+    const messages = Array.isArray(data.messages) ? data.messages : [];
 
-    return res.status(200).json({ data: messages, hasMore });
+    return res.status(200).json({ messages, count: data.count });
   } catch (error) {
     next(error);
   }

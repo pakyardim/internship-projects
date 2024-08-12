@@ -80,7 +80,7 @@ export const login: RequestHandler = async (
       expiresIn: "1h",
     });
 
-    res.status(200).send({ data: { user, token: jwtToken } });
+    res.status(200).send({ user, token: jwtToken });
   } catch (error) {
     next(error);
   }
@@ -93,7 +93,7 @@ export const checkLogin: RequestHandler = async (
 ) => {
   try {
     const user = req.user as UserType;
-    res.status(200).send({ data: user });
+    res.status(200).send({ user });
   } catch (error) {
     next(error);
   }

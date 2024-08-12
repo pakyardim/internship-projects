@@ -1,29 +1,22 @@
+"use client";
+
 import { useState } from "react";
-import { CiLogout } from "react-icons/ci";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import Image from "next/image";
+
+import { RootState } from "src/features/store";
 
 import { DarkModeToggle, LoginButton } from "src/components/ui";
-import { useAuthContext } from "src/contexts";
 import { NavbarItemLocale } from "./NavbarItemLocale";
+import { LogoutButton } from "../ui/LogoutButton";
 
 export function MobileNavbar() {
-  const {
-    values: { user },
-    functions: { logout },
-  } = useAuthContext();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const [navOpen, setNavOpen] = useState(false);
 
   const closeNav = (): void => {
     setNavOpen(false);
-  };
-
-  const handleLogout = async () => {
-    await logout();
-    navigate("/");
   };
 
   return (
@@ -59,10 +52,14 @@ export function MobileNavbar() {
           </div>
           {user?.base64Photo && (
             <div className="flex justify-center rounded items-center">
-              <img
-                src={user.base64Photo}
-                className="object-cover border border-light w-24 h-24 rounded-full font-primary text-light"
-              />
+              <div className="w-24 h-24 relative">
+                <Image
+                  fill
+                  alt="User Profile"
+                  src={user.base64Photo}
+                  className="object-cover border border-light rounded-full font-primary text-light"
+                />
+              </div>
             </div>
           )}
           {user?.username && (
@@ -71,17 +68,7 @@ export function MobileNavbar() {
             </div>
           )}
           <div className="flex justify-center">
-            {user ? (
-              <button
-                onClick={handleLogout}
-                className={`font-primary flex flex-row justify-center items-center p-2 border-2 text-primary border-primary font-bold hover:text-white hover:bg-primary text-sm duration-300 cursor-pointer`}
-              >
-                <CiLogout size={20} />
-                <span className="ml-2">{t("Logout")}</span>
-              </button>
-            ) : (
-              <LoginButton size="lg" />
-            )}
+            {user ? <LogoutButton /> : <LoginButton size="lg" />}
           </div>
         </div>
       </div>

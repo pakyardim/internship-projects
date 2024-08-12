@@ -1,16 +1,21 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 import { FiChevronDown } from "react-icons/fi";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 
 import { languages } from "src/utils";
+import { Link, usePathname } from "src/navigation";
 
 export function LanguageDropdown() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedLang, setSelectedLang] = useState<string>("en");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { t, i18n } = useTranslation();
+  const t = useTranslations();
+  const pathname = usePathname();
 
   useEffect(() => {
     const currentLanguage = localStorage.getItem("I18N_LANGUAGE") || "en";
@@ -18,7 +23,6 @@ export function LanguageDropdown() {
   }, []);
 
   const changeLanguageAction = (lang: string) => {
-    i18n.changeLanguage(lang);
     localStorage.setItem("I18N_LANGUAGE", lang);
     setSelectedLang(lang);
   };
@@ -44,7 +48,7 @@ export function LanguageDropdown() {
         onBlur={handleBlur}
         className="flex cursor-pointer items-center"
       >
-        <img
+        <Image
           src={languages[selectedLang].flag}
           alt="Flag"
           className="mr-1 h-4 w-6 sm:h-5 sm:w-8"
@@ -54,18 +58,25 @@ export function LanguageDropdown() {
       {isOpen && (
         <ul className="dark:bg-darkBackground dark:text-light w-32 absolute right-0 z-20 mt-1 bg-light border border-primary/30 shadow-lg max-h-60 ">
           {Object.keys(languages).map((option, index) => (
-            <li
+            <Link
               key={index}
-              onClick={() => changeLanguageAction(option)}
-              className="flex items-center font-primary px-4 py-2 cursor-pointer hover:bg-primary/10"
+              href={pathname}
+              locale={option as "en" | "tr" | undefined}
             >
-              <img
-                src={languages[option].flag}
-                alt="Flag"
-                className="mr-1 h-4 w-6"
-              />
-              <p>{t(option)}</p>
-            </li>
+              <li
+                onClick={() => changeLanguageAction(option)}
+                className="flex items-center font-primary px-4 py-2 cursor-pointer hover:bg-primary/10"
+              >
+                <Image
+                  height={16}
+                  width={24}
+                  src={languages[option].flag}
+                  alt="Flag"
+                  className="mr-1"
+                />
+                <p>{t(option)}</p>
+              </li>
+            </Link>
           ))}
         </ul>
       )}

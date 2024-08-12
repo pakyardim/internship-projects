@@ -1,6 +1,9 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+"use client";
 
+import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
+import Link from "next/link";
 import {
   AnimatedLogo,
   LanguageDropdown,
@@ -8,34 +11,28 @@ import {
   UserProfileDropdown,
 } from "src/components/ui";
 import { MobileNavbar } from "src/components/mobile-nav";
-import { useAuthContext } from "src/contexts";
+
+import { RootState } from "src/features/store";
 
 export function ProtectedHeader() {
-  const {
-    values: { user },
-  } = useAuthContext();
+  const { user } = useSelector((state: RootState) => state.auth);
+  const pathname = usePathname();
+  const strippedPath = pathname.replace(/^\/(en|tr)\//, "/");
 
-  const navigate = useNavigate();
-
-  const { t } = useTranslation();
-  const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
-
-  const handleClick = () => {
-    navigate("/dashboard");
-  };
+  const t = useTranslations();
+  const isActive = (path: string) => strippedPath === path;
 
   return (
     <header className="flex-none px-0 sm:px-10 transition-colors duration-300 bg-secondary dark:bg-darkBackground h-20 flex justify-between items-center border-b border-darkBackground dark:border-secondary border-collapse">
       <div className="flex flex-1 justify-between items-center">
         <div className="hidden md:block">
-          <AnimatedLogo handleClick={handleClick} />
+          <AnimatedLogo />
         </div>
         <nav>
           <ul className="flex w-full h-20 text-xs md:text-sm xl:text-base">
-            <Link to="/dashboard">
+            <Link href="/dashboard">
               <li
-                className={`nav-list-item dark:text-light ${
+                className={`cursor-pointer h-full flex items-center justify-center px-2 sm:px-4 xl:px-8 dark:text-light ${
                   isActive("/dashboard")
                     ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
                     : "hover:text-primaryDark"
@@ -44,9 +41,9 @@ export function ProtectedHeader() {
                 {t("Dashboard")}
               </li>
             </Link>
-            <Link to="/messages">
+            <Link href="/messages">
               <li
-                className={`nav-list-item dark:text-light ${
+                className={`cursor-pointer h-full flex items-center justify-center px-2 sm:px-4 xl:px-8 dark:text-light ${
                   isActive("/messages")
                     ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
                     : "hover:text-primaryDark"
@@ -57,9 +54,9 @@ export function ProtectedHeader() {
             </Link>
             {user?.role === "admin" && (
               <>
-                <Link to="/users">
+                <Link href="/users">
                   <li
-                    className={`nav-list-item dark:text-light ${
+                    className={`cursor-pointer h-full flex items-center justify-center px-2 sm:px-4 xl:px-8 dark:text-light ${
                       isActive("/users")
                         ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
                         : "hover:text-primaryDark"
@@ -68,9 +65,9 @@ export function ProtectedHeader() {
                     {t("Users")}
                   </li>
                 </Link>
-                <Link to="/reports">
+                <Link href="/reports">
                   <li
-                    className={`nav-list-item dark:text-light ${
+                    className={`cursor-pointer h-full flex items-center justify-center px-2 sm:px-4 xl:px-8 dark:text-light ${
                       isActive("/reports")
                         ? "dark:text-primary bg-primary/10 border-primary border-b-4 text-primary"
                         : "hover:text-primaryDark"

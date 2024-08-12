@@ -1,9 +1,9 @@
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 
 export function AuthSection() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const text = t("authTitle");
-  const textArray = text.split(/(?!$)/u);
+  const textArray = text.split(/(?!$)/);
 
   return (
     <div
@@ -28,9 +28,7 @@ export function AuthSection() {
           })}
         </h2>
         <p className="animated-text text-xl text-light mb-8">
-          <Trans i18nKey="authDesc">
-            It's always good to see <b>you</b>.
-          </Trans>
+          It&apos;s always good to see <b>you</b>.
         </p>
       </div>
     </div>

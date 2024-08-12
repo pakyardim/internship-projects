@@ -21,12 +21,20 @@ router
   .get(
     authentication,
     [
-      (query("skip").exists().isInt().toInt(),
+      (query("page").exists().isInt().toInt(),
       query("limit").exists().isInt().toInt(),
       query("sort").trim().not().isEmpty()),
     ],
     controller.fetchAll
   );
+
+router.get("/unread", authentication, controller.fetchUnread);
+
+router.get(
+  "/get-reports",
+  [authentication, authorization],
+  controller.fetchReports
+);
 
 router
   .route("/:id")
@@ -36,7 +44,7 @@ router
     controller.readMessage
   )
   .delete(
-    authorization,
+    [authentication, authorization],
     param("id").exists().isInt().toInt(),
     controller.deleteMessage
   )

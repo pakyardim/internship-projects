@@ -1,51 +1,42 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoFemaleOutline, IoMaleOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
+import { useDeleteMessageMutation } from "src/features/slices";
+import { useSnackbar } from "src/contexts/snackbarContext";
+import { RootState } from "src/features/store";
 import { MessageType } from "src/types";
-import { Spinner } from "src/components/ui";
-import { useAuthContext, useSnackbar } from "src/contexts";
-import { deleteMessage } from "src/fetchers";
 import { transformDate } from "src/utils";
+import { Spinner } from "./ui";
 
-interface MessageCardProps {
+interface Props {
   messageItem: MessageType;
 }
 
-export function MessageCard({ messageItem }: MessageCardProps) {
-  const {
-    values: { user },
-  } = useAuthContext();
+export function MessageCard({ messageItem }: Props) {
+  const { user } = useSelector((state: RootState) => state.auth);
 
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
+  const router = useRouter();
+  const t = useTranslations();
+  const locale = useLocale();
 
   const isAdmin = user?.role === "admin";
 
-  const queryClient = useQueryClient();
-
-  const navigate = useNavigate();
-
   const { showSnackbar } = useSnackbar();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: deleteMessage,
-    retry: 1,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["messages"] });
-      showSnackbar("successMsg", "success");
-      navigate("/messages");
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError: (error: any) => {
-      showSnackbar(error.response.data.error, "error");
-    },
-  });
+  const [deleteMessage, { isLoading: isDeleteLoading }] =
+    useDeleteMessageMutation();
 
-  const handleDelete = () => {
-    mutate(messageItem.id);
+  const handleDelete = async () => {
+    try {
+      await deleteMessage(messageItem.id).unwrap();
+      showSnackbar("successMsg", "success");
+      router.replace("/messages");
+    } catch (err: any) {
+      showSnackbar(err.response.data.error, "error");
+    }
   };
 
   return (
@@ -66,7 +57,7 @@ export function MessageCard({ messageItem }: MessageCardProps) {
                   <td className="w-3/5 py-5">
                     <button
                       onClick={handleDelete}
-                      disabled={isPending}
+                      disabled={isDeleteLoading}
                       className="font-primary flex flex-row justify-center items-center text-xs sm:text-sm p-0.5 sm:p-1 border-2 text-primary border-primary font-semibold hover:text-white hover:bg-primary duration-300 cursor-pointer disabled:opacity-50"
                     >
                       <MdDeleteOutline size={18} />

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import env from "dotenv";
 import bodyParser from "body-parser";
+import { WebSocketServer, WebSocket } from "ws";
 
 env.config();
 
@@ -25,7 +26,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", routes);
 
-(async () => {
+const server = app.listen(port, async () => {
   try {
     const connection = await pool.getConnection();
     console.log("Connected to the MySQL database pool!");
@@ -34,8 +35,29 @@ app.use("/api", routes);
     console.error("Error connecting to the database pool", err);
     process.exit(1);
   }
+  console.log("Server is up on port " + port);
+});
 
-  app.listen(port, () => {
-    console.log("Server is up on port " + port);
+const wss = new WebSocketServer({ server });
+
+const clients: Set<WebSocket> = new Set();
+
+wss.on("connection", (ws) => {
+  console.log("New WebSocket connection");
+  clients.add(ws);
+
+  ws.on("close", () => {
+    console.log("WebSocket connection closed");
+    clients.delete(ws);
   });
-})();
+});
+
+const broadcast = (data: any) => {
+  clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
+};
+
+export { broadcast };

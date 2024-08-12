@@ -1,35 +1,12 @@
-import i18n from "i18next";
-import detector from "i18next-browser-languagedetector";
-import { initReactI18next } from "react-i18next";
+import { notFound } from "next/navigation";
+import { getRequestConfig } from "next-intl/server";
 
-import translationEN from "./locales/translationEn.json";
-import translationTR from "./locales/translationTr.json";
+const locales = ["en", "tr"];
 
-const resources = {
-  en: {
-    translation: translationEN,
-  },
-  tr: {
-    translation: translationTR,
-  },
-};
+export default getRequestConfig(async ({ locale }) => {
+  if (!locales.includes(locale as any)) notFound();
 
-const language = localStorage.getItem("I18N_LANGUAGE");
-if (!language) {
-  localStorage.setItem("I18N_LANGUAGE", "tr");
-}
-
-i18n
-  .use(detector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: localStorage.getItem("I18N_LANGUAGE") || "tr",
-    fallbackLng: "tr",
-    keySeparator: false,
-    interpolation: {
-      escapeValue: false,
-    },
-  });
-
-export default i18n;
+  return {
+    messages: (await import(`../messages/${locale}.json`)).default,
+  };
+});

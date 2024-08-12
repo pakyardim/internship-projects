@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import { ChartDataType } from "src/types";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function BarChart({ label, data }: Props) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const maxCount = data && Math.max(...data.map((d: ChartDataType) => d.count));
 
   return (

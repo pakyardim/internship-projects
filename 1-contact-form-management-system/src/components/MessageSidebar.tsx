@@ -1,11 +1,11 @@
-import { useTranslation } from "react-i18next";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Spinner } from "src/components/ui";
 import { MessageType } from "src/types";
 import { formatRelativeDate } from "src/utils";
 
 interface Props {
-  messages: MessageType[];
+  messages: MessageType[] | undefined;
   loading: boolean;
   onClickMessage: (id: number) => void;
   activeMessageId?: number | null;
@@ -19,15 +19,8 @@ export function MessageSidebar({
   onClickMessage,
   classname,
 }: Props) {
-  const { t, i18n } = useTranslation();
-
-  const sortedMessages = messages?.sort((a, b) => {
-    return (
-      new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
-    );
-  });
-
-  const locale = i18n.language;
+  const t = useTranslations();
+  const locale = useLocale();
 
   return (
     <div
@@ -36,17 +29,17 @@ export function MessageSidebar({
       <aside className="pb-2 scrollbar overflow-y-auto transition-colors duration-300 w-full dark:text-secondary font-bold">
         <div className="transition-colors duration-300 border-b p-2 text-center bg-light dark:bg-dark text-dark dark:text-light">
           <p className="text-md sm:text-xs md:text-sm lg:text-base lowercase">
-            {sortedMessages?.length}{" "}
+            {messages?.length}{" "}
             {activeMessageId ? t("message(s)") : t("unread message(s)")}{" "}
           </p>
         </div>
-        {!sortedMessages && loading && (
+        {!messages && loading && (
           <div className="w-full flex justify-center">
             <Spinner size={8} />
           </div>
         )}
-        {sortedMessages &&
-          sortedMessages.map((message) => {
+        {messages &&
+          messages?.map((message) => {
             const isActive = message.id === activeMessageId;
             return (
               <div
@@ -67,7 +60,7 @@ export function MessageSidebar({
                   <p className="text-sm md:text-xs pb-1">
                     {formatRelativeDate(message.creationDate, locale)}
                   </p>
-                  {message.read === "false" && !isActive && (
+                  {!message.read && !isActive && (
                     <div className="absolute -bottom-1 right-0 w-2 h-2 rounded-full bg-primary" />
                   )}
                 </div>

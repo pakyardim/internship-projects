@@ -1,17 +1,22 @@
-import { useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+"use client";
 
-import { useAuthContext } from "src/contexts";
+import Image from "next/image";
+import { useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "src/features/store";
+import { logoutUser } from "src/features/slices/auth";
+import { useRouter } from "next/navigation";
+import { useSnackbar } from "src/contexts/snackbarContext";
 
 export function UserProfileDropdown() {
-  const {
-    functions: { logout },
-    values: { user },
-  } = useAuthContext();
+  const { user, errorMessage } = useSelector((state: RootState) => state.auth);
+  const dispatch: AppDispatch = useDispatch();
+  const locale = useLocale();
+  const router = useRouter();
+  const { showSnackbar } = useSnackbar();
 
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+  const t = useTranslations();
 
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLImageElement>(null);
@@ -29,8 +34,12 @@ export function UserProfileDropdown() {
   };
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/");
+    try {
+      await dispatch(logoutUser()).unwrap();
+      router.replace(`/${locale}`);
+    } catch (error: any) {
+      showSnackbar(errorMessage || error?.message, "error");
+    }
   };
 
   return (
@@ -40,18 +49,23 @@ export function UserProfileDropdown() {
         tabIndex={0}
         onBlur={handleBlur}
         onClick={toggleDropdown}
-        className="flex cursor-pointer w-8 h-8"
+        className="flex cursor-pointer w-8 h-8 relative"
       >
-        <img
-          src={user?.base64Photo}
-          alt="User Profile"
-          className="object-cover w-full h-full rounded-full cursor-pointer"
-        />
+        {user && (
+          <Image
+            src={user.base64Photo}
+            alt="User Profile"
+            fill
+            className="object-cover rounded-full cursor-pointer"
+          />
+        )}
       </div>
       {isOpen && (
-        <div className="font-primary text-center rounded shadow-custom absolute right-0 mt-2 w-40 bg-white border border-darkBackground">
+        <div className="dark:bg-dark font-primary text-center rounded shadow-custom absolute right-0 mt-2 w-40 bg-white border border-darkBackground">
           <div className="px-4 py-2">
-            <span className="block text-gray-700">{user?.username}</span>
+            <span className="block text-gray-700 dark:text-light">
+              {user?.username}
+            </span>
           </div>
           <div className="border-t border-gray-200">
             <button

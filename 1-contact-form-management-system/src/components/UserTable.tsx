@@ -1,5 +1,9 @@
+"use client";
+
 import { useRef } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+
 import { UserType } from "src/types";
 
 interface Props {
@@ -9,7 +13,7 @@ interface Props {
 }
 
 export function UserTable({ users, selectedUserId, setSelectedUserId }: Props) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const tableRef = useRef<HTMLDivElement>(null);
 
   const handleBlur = () => {
@@ -64,11 +68,14 @@ export function UserTable({ users, selectedUserId, setSelectedUserId }: Props) {
                 <span className="lowercase block font-bold sm:hidden cell-header">
                   {t("photo")}:
                 </span>
-                <img
-                  src={item.base64Photo}
-                  alt="user image"
-                  className="object-cover w-8 h-8 rounded-full"
-                />
+                <div className="w-8 h-8 relative">
+                  <Image
+                    fill
+                    src={item.base64Photo}
+                    alt="user image"
+                    className="object-cover rounded-full"
+                  />
+                </div>
               </td>
               <td className="flex w-full justify-between sm:table-cell sm:w-auto px-6 py-2 sm:py-4 text-xs xl:text-sm dark:text-light">
                 <span className="block font-bold sm:hidden cell-header">
