@@ -61,9 +61,11 @@ export function UserProfileDropdown() {
         )}
       </div>
       {isOpen && (
-        <div className="font-primary text-center rounded shadow-custom absolute right-0 mt-2 w-40 bg-white border border-darkBackground">
+        <div className="dark:bg-dark font-primary text-center rounded shadow-custom absolute right-0 mt-2 w-40 bg-white border border-darkBackground">
           <div className="px-4 py-2">
-            <span className="block text-gray-700">{user?.username}</span>
+            <span className="block text-gray-700 dark:text-light">
+              {user?.username}
+            </span>
           </div>
           <div className="border-t border-gray-200">
             <button

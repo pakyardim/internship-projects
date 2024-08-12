@@ -37,6 +37,21 @@ export const messagesAPI = baseApi.injectEndpoints({
       forceRefetch: ({ currentArg, previousArg }) =>
         currentArg.page !== previousArg?.page,
     }),
+    getAllMessagesScroll: builder.query({
+      query: ({ page, limit, sort }) => ({
+        url: `messages?page=${page}&limit=${limit}&sort=${sort}`,
+        providesTags: () => ["AllMessagesScroll"],
+      }),
+      serializeQueryArgs: ({ endpointName }) => endpointName,
+      merge: (currentCache, newItems) => {
+        if (!currentCache) return newItems;
+        return {
+          messages: [...currentCache.messages, ...newItems.messages],
+        };
+      },
+      forceRefetch: ({ currentArg, previousArg }) =>
+        currentArg.page !== previousArg?.page,
+    }),
     getReports: builder.query({
       query: () => ({
         url: "messages/get-reports",
@@ -48,14 +63,14 @@ export const messagesAPI = baseApi.injectEndpoints({
         url: `messages/${id}`,
         method: "PUT",
       }),
-      invalidatesTags: ["AllMessages"],
+      invalidatesTags: ["AllMessages", "AllMessagesScroll"],
     }),
     deleteMessage: builder.mutation({
       query: (id) => ({
         url: `messages/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["AllMessages"],
+      invalidatesTags: ["AllMessages", "AllMessagesScroll"],
     }),
   }),
 });
@@ -79,6 +94,7 @@ export const {
   useGetMessageQuery,
   useGetUnreadMessagesQuery,
   useGetAllMessagesQuery,
+  useGetAllMessagesScrollQuery,
   useGetReportsQuery,
   useDeleteMessageMutation,
 } = messagesAPI;

@@ -12,6 +12,6 @@ export const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["AllMessages", "Reports", "AllUsers"],
+  tagTypes: ["AllMessages", "AllMessagesScroll", "Reports", "AllUsers"],
   endpoints: () => ({}),
 });

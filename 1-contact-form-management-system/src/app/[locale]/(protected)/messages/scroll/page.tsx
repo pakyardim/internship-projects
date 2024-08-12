@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -10,28 +10,30 @@ import { MessagesTable } from "src/components";
 import { MessageType } from "src/types";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import {
-  useGetAllMessagesQuery,
+  useGetAllMessagesScrollQuery,
   useReadMessageMutation,
 } from "src/features/slices";
-import Link from "next/link";
 
 export default function Messages() {
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(10);
   const [sort, setSort] = useState<string>("creationDateD");
+  const tableRef = useRef<HTMLDivElement | null>(null);
+
   const router = useRouter();
   const t = useTranslations();
 
-  const { data, isLoading, error, isSuccess } = useGetAllMessagesQuery(
-    {
-      page,
-      limit,
-      sort,
-    },
-    {
-      refetchOnMountOrArgChange: true,
-    }
-  );
+  const { data, isLoading, isFetching, error, isSuccess } =
+    useGetAllMessagesScrollQuery(
+      {
+        page,
+        limit,
+        sort,
+      },
+      {
+        refetchOnMountOrArgChange: true,
+      }
+    );
 
   const { showSnackbar } = useSnackbar();
 
@@ -48,6 +50,29 @@ export default function Messages() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
+
+  useEffect(() => {
+    console.log("here1");
+    if (tableRef.current) {
+      console.log("here");
+      const table = tableRef.current;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && !isFetching) {
+            setPage((prevPage) => prevPage + 1);
+          }
+        },
+        { root: null, rootMargin: "12px", threshold: 1.0 }
+      );
+
+      observer.observe(table);
+
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [isFetching]);
 
   const [readMessage] = useReadMessageMutation();
 
@@ -80,7 +105,7 @@ export default function Messages() {
         </div>
       ) : (
         isSuccess && (
-          <div>
+          <div ref={tableRef}>
             <MessagesTable
               sort={sort}
               setSort={setSort}
@@ -90,15 +115,8 @@ export default function Messages() {
               setLimit={setLimit}
               data={data}
               handleClick={handleClick}
-              pagination
+              pagination={false}
             />
-            <div className="w-full flex justify-end pt-2">
-              <Link href="/messages/scroll">
-                <p className="text-primary/80 text-sm hover:underline dark:text-primaryDark">
-                  {t("see in scroll view")}
-                </p>
-              </Link>
-            </div>
           </div>
         )
       )}

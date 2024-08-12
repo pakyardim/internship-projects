@@ -32,7 +32,12 @@ export function ContactForm() {
     control,
     setValue,
     reset,
-  } = useForm<Contact>({ resolver: yupResolver(schema) });
+  } = useForm<Contact>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      gender_id: 1,
+    },
+  });
 
   const t = useTranslations();
 
@@ -49,6 +54,7 @@ export function ContactForm() {
       await addMessage(data).unwrap();
       showSnackbar("successMsg", "success");
       reset();
+      reset({ gender_id: 1 });
     } catch (error: any) {
       showSnackbar(error.response.data.error, "error");
     }
@@ -195,7 +201,7 @@ export function ContactForm() {
               <Controller
                 control={control}
                 name="gender_id"
-                render={({ field: { onChange } }) => (
+                render={({ field: { onChange, value } }) => (
                   <>
                     <label
                       className={`${
@@ -206,6 +212,7 @@ export function ContactForm() {
                         type="radio"
                         name="gender"
                         onChange={() => onChange(1)}
+                        checked={value === 1}
                         value="male"
                         className="hidden peer"
                       />
@@ -221,6 +228,7 @@ export function ContactForm() {
                         type="radio"
                         name="gender"
                         onChange={() => onChange(2)}
+                        checked={value === 2}
                         value="female"
                         className="hidden peer"
                       />
