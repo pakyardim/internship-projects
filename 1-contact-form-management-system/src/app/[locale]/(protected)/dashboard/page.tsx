@@ -75,9 +75,13 @@ export default function Dashboard() {
               })}
             </h1>
             <p className="animated-text text-lg md:text-xl lg:text-2xl">
-              {t.rich("description", {
-                b: (chunks) => <b>{chunks}</b>,
-              })}
+              {user && user.role === "admin"
+                ? t.rich("descriptionAdmin", {
+                    b: (chunks) => <b>{chunks}</b>,
+                  })
+                : t.rich("descriptionReader", {
+                    b: (chunks) => <b>{chunks}</b>,
+                  })}
             </p>
           </div>
         </div>

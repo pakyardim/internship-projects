@@ -8,7 +8,8 @@
   },
   "DashboardPage": {
     "title": "Welcome",
-    "description": "This page allows you to manage your <b>unread messages</b>. You can go to the <b>Reports</b> page to review your data."
+    "descriptionAdmin": "This page allows you to manage your <b>unread messages</b>. You can go to the <b>Reports</b> page to review your data.",
+    "descriptionReader": "This page allows you to manage your <b>unread messages</b>."
   },
   "Log in": "Log in",
   "Logging in": "Logging in...",

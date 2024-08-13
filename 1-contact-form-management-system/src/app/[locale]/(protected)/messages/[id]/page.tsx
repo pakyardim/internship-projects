@@ -50,6 +50,9 @@ export default function MessageDetail({ params }: { params: { id: string } }) {
   const messages: MessageType[] = data?.messages;
 
   const onClickMessage = async (id: number) => {
+    const isRead = messages?.find((message) => message.id === id)?.read;
+    if (isRead) return router.push(`/messages/${id}`);
+
     try {
       await readMessage(id).unwrap();
       dispatch(readMessageUpdate(id) as any);

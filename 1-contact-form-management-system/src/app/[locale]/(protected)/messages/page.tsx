@@ -14,7 +14,9 @@ import { useSnackbar } from "src/contexts/snackbarContext";
 import {
   readMessageUpdate,
   useGetAllMessagesQuery,
+  useGetAllUsersQuery,
   useReadMessageMutation,
+  userUpdate,
 } from "src/features/slices";
 import { AppDispatch } from "src/features/store";
 
@@ -58,6 +60,8 @@ export default function Messages() {
   const messages: MessageType[] = data?.messages;
 
   const handleClick = async (id: number) => {
+    const isRead = messages?.find((message) => message.id === id)?.read;
+    if (isRead) return router.push(`/messages/${id}`);
     try {
       await readMessage(id).unwrap();
       dispatch(readMessageUpdate(id) as any);

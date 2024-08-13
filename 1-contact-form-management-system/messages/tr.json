@@ -8,7 +8,8 @@
   },
   "DashboardPage": {
     "title": "Hoş geldin",
-    "description": "Bu sayfa, okunmamış <b>mesajlarınızı</b> yönetmenize olanak tanır. <b>Raporlar</b> sayfasına giderek verilerinizi inceleyebilirsiniz."
+    "descriptionAdmin": "Bu sayfa, okunmamış <b>mesajlarınızı</b> yönetmenize olanak tanır. <b>Raporlar</b> sayfasına giderek verilerinizi inceleyebilirsiniz.",
+    "descriptionReader": "Bu sayfa, okunmamış <b>mesajlarınızı</b> yönetmenize olanak tanır."
   },
   "Log in": "Giriş Yap",
   "Logging in": "Giriş Yapılıyor...",
