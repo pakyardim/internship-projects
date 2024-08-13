@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { cookies } from "next/headers";
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = ["/dashboard", "/users", "/messages", "/reports"];
 const publicRoutes = ["/login", "/en", "/tr"];
 
 const handleI18nRouting = createMiddleware({

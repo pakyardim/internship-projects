@@ -65,7 +65,9 @@ export function ContactForm() {
       <div className="dark:bg-dark transition-colors duration-300 w-full sm:w-11/12 lg:w-auto dark:text-secondary dark:border-light relative bg-white card z-10 font-bold border border-darkBackground">
         <div className="absolute top-0 left-0 w-full h-full bg-image -z-10"></div>
         <h2 className="text-2xl lg:text-3xl mb-5">
-          Send us a <HighlightedText>message</HighlightedText>
+          {t.rich("formHeader", {
+            span: (chunks) => <HighlightedText>{chunks}</HighlightedText>,
+          })}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <div className="relative">

@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `contact-form-management-system`
+CREATE DATABASE IF NOT EXISTS `contact-form-management-system`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: contact-form-management-system

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useDispatch } from "react-redux";
+import Link from "next/link";
 
 import { Breadcrumbs, Spinner } from "src/components/ui";
 import { MessagesTable } from "src/components";
@@ -10,12 +12,14 @@ import { MessagesTable } from "src/components";
 import { MessageType } from "src/types";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import {
+  readMessageUpdate,
   useGetAllMessagesQuery,
   useReadMessageMutation,
 } from "src/features/slices";
-import Link from "next/link";
+import { AppDispatch } from "src/features/store";
 
 export default function Messages() {
+  const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(5);
   const [sort, setSort] = useState<string>("creationDateD");
@@ -56,6 +60,8 @@ export default function Messages() {
   const handleClick = async (id: number) => {
     try {
       await readMessage(id).unwrap();
+      dispatch(readMessageUpdate(id) as any);
+
       router.push(`/messages/${id}`);
     } catch (err: any) {
       showSnackbar(err.response.data.error, "error");

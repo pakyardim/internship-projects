@@ -8,7 +8,6 @@ import { Breadcrumbs } from "src/components/ui";
 
 import { useSnackbar } from "src/contexts/snackbarContext";
 import {
-  messagesAPI,
   readMessageUpdate,
   useGetAllMessagesQuery,
   useGetMessageQuery,

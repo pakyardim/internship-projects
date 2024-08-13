@@ -28,7 +28,9 @@ export function AuthSection() {
           })}
         </h2>
         <p className="animated-text text-xl text-light mb-8">
-          It&apos;s always good to see <b>you</b>.
+          {t.rich("authDesc", {
+            b: (chunks) => <b>{chunks}</b>,
+          })}
         </p>
       </div>
     </div>
