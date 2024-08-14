@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-import { Breadcrumbs, Spinner } from "src/components/ui";
-import { MessagesTable } from "src/components";
+import { Breadcrumbs, Spinner } from "src/components/common";
+import { MessagesTable } from "src/components/message";
 
 import { MessageType } from "src/types";
 import { useSnackbar } from "src/contexts/snackbarContext";

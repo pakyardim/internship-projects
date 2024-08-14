@@ -4,7 +4,7 @@ import { useState, ChangeEvent } from "react";
 import { useTranslations } from "next-intl";
 import { CountryType } from "src/types";
 
-interface CustomDropdownProps {
+interface Props {
   options: CountryType[];
   isError: boolean;
   isLoading: boolean;
@@ -20,7 +20,7 @@ export const CustomDropdown = ({
   reset,
   value,
   onChange,
-}: CustomDropdownProps) => {
+}: Props) => {
   const t = useTranslations();
 
   const [query, setQuery] = useState<string>("");

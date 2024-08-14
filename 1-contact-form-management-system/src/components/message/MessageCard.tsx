@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { IoFemaleOutline, IoMaleOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
@@ -10,8 +11,8 @@ import { useSnackbar } from "src/contexts/snackbarContext";
 import { RootState } from "src/features/store";
 import { MessageType } from "src/types";
 import { transformDate } from "src/utils";
-import { Spinner } from "./ui";
-import DeleteModal from "./ui/DeleteModal";
+import { Spinner } from "src/components/common";
+import { DeleteModal } from "src/components/message";
 
 interface Props {
   messageItem: MessageType;

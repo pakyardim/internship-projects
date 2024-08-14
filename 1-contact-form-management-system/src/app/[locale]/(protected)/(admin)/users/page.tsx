@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import { MdOutlineEdit } from "react-icons/md";
 
-import { Breadcrumbs, PrimaryButton, Spinner } from "src/components/ui";
-import { UserTable } from "src/components/UserTable";
+import { Breadcrumbs, PrimaryButton, Spinner } from "src/components/common";
+import { UserTable } from "src/components/user";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import { useGetAllUsersQuery } from "src/features/slices";
 

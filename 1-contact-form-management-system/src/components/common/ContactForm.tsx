@@ -9,7 +9,7 @@ import {
   PrimaryButton,
   CustomDropdown,
   Spinner,
-} from "src/components/ui";
+} from "src/components/common";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import {
   useAddMessageMutation,

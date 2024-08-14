@@ -1,13 +1,18 @@
 "use client";
 
+import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
-import { Breadcrumbs, Spinner, BarChart, PieChart } from "src/components/ui";
+import {
+  Breadcrumbs,
+  Spinner,
+  BarChart,
+  PieChart,
+} from "src/components/common";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import { ChartDataType } from "src/types";
 import { useGetReportsQuery } from "src/features/slices";
-import { useEffect } from "react";
 
 export default function Reports() {
   const t = useTranslations();

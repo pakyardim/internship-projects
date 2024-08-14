@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 import stopPuppyImg from "src/assets/stop-puppy.png";
-import { LoginButton } from "src/components/ui";
 
 export default function NotAuthorized() {
   const t = useTranslations();
@@ -16,7 +15,6 @@ export default function NotAuthorized() {
           <h1 className="text-5xl mb-5">{t("403")}</h1>
           <p className="text-4xl mb-5">{t("notAuthorized")}</p>
           <p className="text-2xl mb-5">{t("notAuthorizedParagraph")}</p>
-          <LoginButton size="lg" />
         </div>
       </div>
       <div className="w-full sm:w-1/2 flex items-center justify-center">

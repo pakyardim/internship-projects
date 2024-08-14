@@ -9,7 +9,7 @@ import {
   LanguageDropdown,
   DarkModeToggle,
   UserProfileDropdown,
-} from "src/components/ui";
+} from "src/components/common";
 import { MobileNavbar } from "src/components/mobile-nav";
 
 import { RootState } from "src/features/store";

@@ -6,9 +6,9 @@ import Image from "next/image";
 
 import { RootState } from "src/features/store";
 
-import { DarkModeToggle, LoginButton } from "src/components/ui";
-import { NavbarItemLocale } from "./NavbarItemLocale";
-import { LogoutButton } from "../ui/LogoutButton";
+import { LoginButton, LogoutButton } from "src/components/auth";
+import { DarkModeToggle } from "src/components/common";
+import { NavbarItemLocale } from "src/components/mobile-nav";
 
 export function MobileNavbar() {
   const { user } = useSelector((state: RootState) => state.auth);

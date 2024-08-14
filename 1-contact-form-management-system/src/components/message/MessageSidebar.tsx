@@ -1,6 +1,6 @@
 import { useLocale, useTranslations } from "next-intl";
 
-import { Spinner } from "src/components/ui";
+import { Spinner } from "src/components/common";
 import { MessageType } from "src/types";
 import { formatRelativeDate } from "src/utils";
 

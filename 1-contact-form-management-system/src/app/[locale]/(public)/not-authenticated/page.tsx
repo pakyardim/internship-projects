@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 import stopPuppyImg from "src/assets/stop-puppy.png";
-import { LoginButton } from "src/components/ui";
+import { LoginButton } from "src/components/auth";
 
 export default function NotAuthorized() {
   const t = useTranslations();

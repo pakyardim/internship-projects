@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
-import { UserForm } from "src/components";
+import { Breadcrumbs, HighlightedText, Spinner } from "src/components/common";
+import { UserForm } from "src/components/user";
 import { useSnackbar } from "src/contexts/snackbarContext";
-import { Breadcrumbs, HighlightedText, Spinner } from "src/components/ui";
 import { useGetUserByIdQuery } from "src/features/slices";
 
 export default function EditUser({ params }: { params: { id: string } }) {

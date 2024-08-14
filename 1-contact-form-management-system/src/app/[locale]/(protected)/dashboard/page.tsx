@@ -10,9 +10,9 @@ import {
   useReadMessageMutation,
 } from "src/features/slices";
 import { RootState } from "src/features/store";
-import { Breadcrumbs } from "src/components/ui";
+import { Breadcrumbs } from "src/components/common";
+import { MessageSidebar } from "src/components/message";
 import { useSnackbar } from "src/contexts/snackbarContext";
-import { MessageSidebar } from "src/components";
 import { MessageType } from "src/types";
 
 export default function Dashboard() {

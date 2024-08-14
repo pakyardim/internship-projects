@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+
 import { AppDispatch, RootState } from "src/features/store";
 import { logoutUser } from "src/features/slices/auth";
-import { useRouter } from "next/navigation";
 import { useSnackbar } from "src/contexts/snackbarContext";
 
 export function UserProfileDropdown() {

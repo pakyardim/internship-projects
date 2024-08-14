@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useSelector } from "react-redux";
 
-import { UserForm } from "src/components";
+import { Breadcrumbs, HighlightedText } from "src/components/common";
+import { UserForm } from "src/components/user";
 import { RootState } from "src/features/store";
 import { useSnackbar } from "src/contexts/snackbarContext";
-import { Breadcrumbs, HighlightedText } from "src/components/ui";
 
 export default function AddUser() {
   const t = useTranslations();

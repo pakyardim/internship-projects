@@ -4,17 +4,26 @@ import axios from "axios";
 import { UserType } from "src/types";
 import { getTokenFromCookies } from "src/utils";
 
+const Statuses = {
+  IDLE: "idle",
+  LOADING: "loading",
+  SUCCEEDED: "succeeded",
+  FAIL: "fail",
+} as const;
+
+type StatusType = (typeof Statuses)[keyof typeof Statuses];
+
 interface AuthState {
   isAuthenticated: boolean;
   user: UserType | null;
   errorMessage: string | null;
-  status: "idle" | "loading" | "succeeded" | "fail";
+  status: StatusType;
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
-  status: "idle",
+  status: Statuses.IDLE,
   errorMessage: null,
 };
 
@@ -85,7 +94,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state: any) => {
-        state.status = "loading";
+        state.status = Statuses.LOADING;
       })
       .addCase(loginUser.fulfilled, (state: any, action) => {
         state.isAuthenticated = true;
@@ -93,14 +102,14 @@ const authSlice = createSlice({
         state.user = user;
         state.errorMessage = null;
         document.cookie = `auth-token=${token}; path=/;`;
-        state.status = "succeeded";
+        state.status = Statuses.SUCCEEDED;
       })
       .addCase(loginUser.rejected, (state: any, action) => {
-        state.status = "failed";
+        state.status = Statuses.FAIL;
         state.errorMessage = action.error.message || "Login failed";
       })
       .addCase(logoutUser.pending, (state) => {
-        state.status = "loading";
+        state.status = Statuses.LOADING;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.isAuthenticated = false;
@@ -108,24 +117,24 @@ const authSlice = createSlice({
         state.errorMessage = null;
         document.cookie =
           "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
-        state.status = "succeeded";
+        state.status = Statuses.SUCCEEDED;
       })
       .addCase(logoutUser.rejected, (state: any, action) => {
-        state.status = "failed";
+        state.status = Statuses.FAIL;
         state.errorMessage = action.error.message || "Logout failed";
       })
       .addCase(checkLoginStatus.pending, (state, action) => {
-        state.status = "loading";
+        state.status = Statuses.LOADING;
       })
       .addCase(checkLoginStatus.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload.user;
-        state.status = "succeeded";
+        state.status = Statuses.SUCCEEDED;
       })
       .addCase(checkLoginStatus.rejected, (state) => {
         state.isAuthenticated = false;
         state.user = null;
-        state.status = "fail";
+        state.status = Statuses.FAIL;
       });
   },
 });

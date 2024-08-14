@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { MessageCard, MessageSidebar } from "src/components";
-import { Breadcrumbs } from "src/components/ui";
+import { MessageCard, MessageSidebar } from "src/components/message";
+import { Breadcrumbs } from "src/components/common";
 
 import { useSnackbar } from "src/contexts/snackbarContext";
 import {

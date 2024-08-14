@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import heroImg from "src/assets/hero2.png";
-import { HighlightedText } from "src/components/ui";
-import { ContactForm } from "src/components";
+import { HighlightedText, ContactForm } from "src/components/common";
 
 function Contact() {
   let t = useTranslations("ContactPage");

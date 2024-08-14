@@ -8,7 +8,7 @@ import * as yup from "yup";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { PrimaryButton, Spinner, ImagePicker } from "src/components/ui";
+import { PrimaryButton, Spinner, ImagePicker } from "src/components/common";
 import { UserType } from "src/types";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import {

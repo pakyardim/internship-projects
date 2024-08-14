@@ -6,17 +6,15 @@ import { useTranslations } from "next-intl";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 
-import { Breadcrumbs, Spinner } from "src/components/ui";
-import { MessagesTable } from "src/components";
+import { Breadcrumbs, Spinner } from "src/components/common";
+import { MessagesTable } from "src/components/message";
 
 import { MessageType } from "src/types";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import {
   readMessageUpdate,
   useGetAllMessagesQuery,
-  useGetAllUsersQuery,
   useReadMessageMutation,
-  userUpdate,
 } from "src/features/slices";
 import { AppDispatch } from "src/features/store";
 

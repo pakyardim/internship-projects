@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, createContext, useContext } from "react";
-import { Snackbar } from "src/components/ui";
+import { Snackbar } from "src/components/common";
 
 interface SnackbarContextType {
   showSnackbar: (message: string, type: "success" | "error") => void;

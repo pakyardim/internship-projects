@@ -4,8 +4,8 @@ import {
   AnimatedLogo,
   LanguageDropdown,
   DarkModeToggle,
-  LoginButton,
-} from "src/components/ui";
+} from "src/components/common";
+import { LoginButton } from "src/components/auth";
 import { MobileNavbar } from "src/components/mobile-nav";
 
 export function Header() {

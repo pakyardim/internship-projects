@@ -8,7 +8,7 @@ interface Props {
   isLoading: boolean;
 }
 
-const DeleteModal = ({ onDelete, onCancel, isLoading }: Props) => {
+export function DeleteModal({ onDelete, onCancel, isLoading }: Props) {
   const t = useTranslations();
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -49,6 +49,4 @@ const DeleteModal = ({ onDelete, onCancel, isLoading }: Props) => {
       </div>
     </div>
   );
-};
-
-export default DeleteModal;
+}
