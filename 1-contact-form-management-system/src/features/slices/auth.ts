@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials: { username: string; password: string }) => {
     const response = await axios.post(
-      "http://localhost:5166/api/users/login",
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login`,
       credentials
     );
     return response.data;
@@ -39,7 +39,7 @@ export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
   };
 
   const response = await axios.request({
-    url: "http://localhost:5166/api/users/logout",
+    url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/logout`,
     method: "POST",
     headers,
   });
@@ -62,7 +62,7 @@ export const checkLoginStatus = createAsyncThunk(
     };
 
     const response = await axios.get(
-      "http://localhost:5166/api/users/check-login",
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/check-login`,
       config
     );
 

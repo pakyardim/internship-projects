@@ -6,7 +6,7 @@ import { getTokenFromCookies } from "src/utils";
 export const usersAPI = createApi({
   reducerPath: "usersAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5166/api",
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
     prepareHeaders: (headers) => {
       const token = getTokenFromCookies();
       if (token) {
