@@ -2,11 +2,12 @@
 
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
 import {
   useGetUnreadMessagesQuery,
+  readMessageUpdate,
   useReadMessageMutation,
 } from "src/features/slices";
 import { RootState } from "src/features/store";
@@ -14,8 +15,10 @@ import { Breadcrumbs } from "src/components/common";
 import { MessageSidebar } from "src/components/message";
 import { useSnackbar } from "src/contexts/snackbarContext";
 import { MessageType } from "src/types";
+import { AppDispatch } from "src/features/store";
 
 export default function Dashboard() {
+  const dispatch: AppDispatch = useDispatch();
   const t = useTranslations("DashboardPage");
   const { user } = useSelector((state: RootState) => state.auth);
 
@@ -45,6 +48,8 @@ export default function Dashboard() {
   const onClickMessage = async (id: number) => {
     try {
       await readMessage(id).unwrap();
+      dispatch(readMessageUpdate(id) as any);
+
       router.push(`/messages/${id}`);
     } catch (error: any) {
       showSnackbar(error.response.data.error, "error");
