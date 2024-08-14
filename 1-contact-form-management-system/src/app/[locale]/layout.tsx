@@ -6,8 +6,7 @@ import type { Metadata } from "next";
 import "./globals.scss";
 import { ReduxProvider } from "src/features/Provider";
 import { SnackbarProvider } from "src/contexts/snackbarContext";
-
-const locales = ["en", "de"];
+import { locales } from "src/navigation";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
